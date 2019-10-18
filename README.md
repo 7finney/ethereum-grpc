@@ -1,2 +1,2 @@
-# ethcode-tools-api
-Devtools API for ETHcode
+# ethcode-tools-api monorepo
+Devtools API monorepo for ETHcode

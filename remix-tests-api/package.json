@@ -1,0 +1,27 @@
+{
+  "name": "remix-tests-api",
+  "version": "0.0.1",
+  "description": "API service for remix-tests",
+  "main": "./build/index.js",
+  "scripts": {
+    "start": "node ./build/index.js",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "GPLv3",
+  "dependencies": {
+    "@grpc/proto-loader": "^0.5.2",
+    "@improbable-eng/grpc-web": "^0.11.0",
+    "grpc": "^1.24.0",
+    "module-alias": "^2.2.2",
+    "ts-protoc-gen": "^0.11.0"
+  },
+  "devDependencies": {
+    "@types/google-protobuf": "^3.7.2",
+    "typescript": "~3.4.3"
+  },
+  "_moduleAliases": {
+    "generated": "./generated"
+  }
+}

@@ -1,0 +1,8 @@
+version: "3.7"
+services:
+  remix-tests-api:
+    container_name: remix-tests-api
+    restart: always
+    build: remix-tests-api/
+    ports:
+      - "50051:50051"
