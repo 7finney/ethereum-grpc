@@ -1,21 +1,21 @@
-// package: greet
+// package: remix_tests
 // file: services/greet.proto
 
 import * as services_greet_pb from "../services/greet_pb";
 import {grpc} from "@improbable-eng/grpc-web";
 
-type GreetServiceGreet = {
+type RemixTestsServiceRunTests = {
   readonly methodName: string;
-  readonly service: typeof GreetService;
+  readonly service: typeof RemixTestsService;
   readonly requestStream: false;
-  readonly responseStream: false;
+  readonly responseStream: true;
   readonly requestType: typeof services_greet_pb.GreetRequest;
   readonly responseType: typeof services_greet_pb.GreetResponse;
 };
 
-export class GreetService {
+export class RemixTestsService {
   static readonly serviceName: string;
-  static readonly Greet: GreetServiceGreet;
+  static readonly RunTests: RemixTestsServiceRunTests;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -46,18 +46,10 @@ interface BidirectionalStream<ReqT, ResT> {
   on(type: 'status', handler: (status: Status) => void): BidirectionalStream<ReqT, ResT>;
 }
 
-export class GreetServiceClient {
+export class RemixTestsServiceClient {
   readonly serviceHost: string;
 
   constructor(serviceHost: string, options?: grpc.RpcOptions);
-  greet(
-    requestMessage: services_greet_pb.GreetRequest,
-    metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: services_greet_pb.GreetResponse|null) => void
-  ): UnaryResponse;
-  greet(
-    requestMessage: services_greet_pb.GreetRequest,
-    callback: (error: ServiceError|null, responseMessage: services_greet_pb.GreetResponse|null) => void
-  ): UnaryResponse;
+  runTests(requestMessage: services_greet_pb.GreetRequest, metadata?: grpc.Metadata): ResponseStream<services_greet_pb.GreetResponse>;
 }
 

@@ -1,4 +1,4 @@
-// package: greet
+// package: remix_tests
 // file: services/greet.proto
 
 import * as jspb from "google-protobuf";

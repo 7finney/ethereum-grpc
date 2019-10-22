@@ -13,8 +13,10 @@
   "dependencies": {
     "@grpc/proto-loader": "^0.5.2",
     "@improbable-eng/grpc-web": "^0.11.0",
+    "@types/web3": "^1.0.20",
     "grpc": "^1.24.0",
     "module-alias": "^2.2.2",
+    "remix-tests": "^0.1.14",
     "ts-protoc-gen": "^0.11.0"
   },
   "devDependencies": {

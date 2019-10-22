@@ -1,61 +1,69 @@
-// package: greet
+// package: remix_tests
 // file: services/greet.proto
 
 var services_greet_pb = require("../services/greet_pb");
 var grpc = require("@improbable-eng/grpc-web").grpc;
 
-var GreetService = (function () {
-  function GreetService() {}
-  GreetService.serviceName = "greet.GreetService";
-  return GreetService;
+var RemixTestsService = (function () {
+  function RemixTestsService() {}
+  RemixTestsService.serviceName = "remix_tests.RemixTestsService";
+  return RemixTestsService;
 }());
 
-GreetService.Greet = {
-  methodName: "Greet",
-  service: GreetService,
+RemixTestsService.RunTests = {
+  methodName: "RunTests",
+  service: RemixTestsService,
   requestStream: false,
-  responseStream: false,
+  responseStream: true,
   requestType: services_greet_pb.GreetRequest,
   responseType: services_greet_pb.GreetResponse
 };
 
-exports.GreetService = GreetService;
+exports.RemixTestsService = RemixTestsService;
 
-function GreetServiceClient(serviceHost, options) {
+function RemixTestsServiceClient(serviceHost, options) {
   this.serviceHost = serviceHost;
   this.options = options || {};
 }
 
-GreetServiceClient.prototype.greet = function greet(requestMessage, metadata, callback) {
-  if (arguments.length === 2) {
-    callback = arguments[1];
-  }
-  var client = grpc.unary(GreetService.Greet, {
+RemixTestsServiceClient.prototype.runTests = function runTests(requestMessage, metadata) {
+  var listeners = {
+    data: [],
+    end: [],
+    status: []
+  };
+  var client = grpc.invoke(RemixTestsService.RunTests, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
     transport: this.options.transport,
     debug: this.options.debug,
-    onEnd: function (response) {
-      if (callback) {
-        if (response.status !== grpc.Code.OK) {
-          var err = new Error(response.statusMessage);
-          err.code = response.status;
-          err.metadata = response.trailers;
-          callback(err, null);
-        } else {
-          callback(null, response.message);
-        }
-      }
+    onMessage: function (responseMessage) {
+      listeners.data.forEach(function (handler) {
+        handler(responseMessage);
+      });
+    },
+    onEnd: function (status, statusMessage, trailers) {
+      listeners.status.forEach(function (handler) {
+        handler({ code: status, details: statusMessage, metadata: trailers });
+      });
+      listeners.end.forEach(function (handler) {
+        handler({ code: status, details: statusMessage, metadata: trailers });
+      });
+      listeners = null;
     }
   });
   return {
+    on: function (type, handler) {
+      listeners[type].push(handler);
+      return this;
+    },
     cancel: function () {
-      callback = null;
+      listeners = null;
       client.close();
     }
   };
 };
 
-exports.GreetServiceClient = GreetServiceClient;
+exports.RemixTestsServiceClient = RemixTestsServiceClient;
 
