@@ -9,8 +9,8 @@ type RemixTestsServiceRunTests = {
   readonly service: typeof RemixTestsService;
   readonly requestStream: false;
   readonly responseStream: true;
-  readonly requestType: typeof services_greet_pb.GreetRequest;
-  readonly responseType: typeof services_greet_pb.GreetResponse;
+  readonly requestType: typeof services_greet_pb.TestRequest;
+  readonly responseType: typeof services_greet_pb.TestResponse;
 };
 
 export class RemixTestsService {
@@ -50,6 +50,6 @@ export class RemixTestsServiceClient {
   readonly serviceHost: string;
 
   constructor(serviceHost: string, options?: grpc.RpcOptions);
-  runTests(requestMessage: services_greet_pb.GreetRequest, metadata?: grpc.Metadata): ResponseStream<services_greet_pb.GreetResponse>;
+  runTests(requestMessage: services_greet_pb.TestRequest, metadata?: grpc.Metadata): ResponseStream<services_greet_pb.TestResponse>;
 }
 

@@ -26,7 +26,13 @@ greetServer.start();
 
 function greet(call: any) {
     let result = new GreetResponse();
-    const sources: Object = JSON.parse(JSON.stringify({"string.sol":{"content":"pragma solidity ^0.5.0;\n\ncontract Strings {\n    function get() public view returns (string memory res) {\n        return \"Hello\";\n    }\n}\n"},"string_test.sol":{"content":"pragma solidity ^0.5.0;\nimport 'string.sol';\n\ncontract StringTest {\n    Strings foo;\n\n    function beforeAll() public {\n        foo = new Strings();\n    }\n\n    function initialValueShouldBeHello() public returns (bool) {\n        return Assert.equal(foo.get(), \"Hello\", \"initial value is correct\");\n    }\n\n    function initialValueShouldNotBeHelloWorld() public returns (bool) {\n        return Assert.notEqual(foo.get(), \"Hello world\", \"initial value is correct\");\n    }\n}\n"}}));
+    console.log(call.request);
+    // const sources: Object = JSON.parse(JSON.stringify({"string.sol":{"content":"pragma solidity ^0.5.0;\n\ncontract Strings {\n    function get() public view returns (string memory res) {\n        return \"Hello\";\n    }\n}\n"},"string_test.sol":{"content":"pragma solidity ^0.5.0;\nimport 'string.sol';\n\ncontract StringTest {\n    Strings foo;\n\n    function beforeAll() public {\n        foo = new Strings();\n    }\n\n    function initialValueShouldBeHello() public returns (bool) {\n        return Assert.equal(foo.get(), \"Hello\", \"initial value is correct\");\n    }\n\n    function initialValueShouldNotBeHelloWorld() public returns (bool) {\n        return Assert.notEqual(foo.get(), \"Hello world\", \"initial value is correct\");\n    }\n}\n"}}));
+    const sources: Object = JSON.parse(call.request.testInterface.payload);
+    // const command: string = call.request.testInterface.command;
+    const { command } = call.request.testInterface;
+    console.log(sources);
+    
     const _finalCallback = function(err: any, response: any) {
         console.log("final : ", response);
         result.setResult(JSON.stringify(response));

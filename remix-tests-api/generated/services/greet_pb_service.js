@@ -15,8 +15,8 @@ RemixTestsService.RunTests = {
   service: RemixTestsService,
   requestStream: false,
   responseStream: true,
-  requestType: services_greet_pb.GreetRequest,
-  responseType: services_greet_pb.GreetResponse
+  requestType: services_greet_pb.TestRequest,
+  responseType: services_greet_pb.TestResponse
 };
 
 exports.RemixTestsService = RemixTestsService;
