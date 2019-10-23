@@ -1,7 +1,7 @@
 // package: remix_tests
-// file: services/greet.proto
+// file: services/remix-tests.proto
 
-var services_greet_pb = require("../services/greet_pb");
+var services_remix_tests_pb = require("../services/remix-tests_pb");
 var grpc = require("@improbable-eng/grpc-web").grpc;
 
 var RemixTestsService = (function () {
@@ -15,8 +15,8 @@ RemixTestsService.RunTests = {
   service: RemixTestsService,
   requestStream: false,
   responseStream: true,
-  requestType: services_greet_pb.TestRequest,
-  responseType: services_greet_pb.TestResponse
+  requestType: services_remix_tests_pb.TestRequest,
+  responseType: services_remix_tests_pb.TestResponse
 };
 
 exports.RemixTestsService = RemixTestsService;

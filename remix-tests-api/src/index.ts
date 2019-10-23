@@ -1,8 +1,8 @@
 require('module-alias/register')
-var PROTO_PATH = './services/greet.proto'
+var PROTO_PATH = './services/remix-tests.proto'
 import * as grpc from 'grpc'
 import * as protoLoader from '@grpc/proto-loader'
-import { GreetResponse } from "generated/services/greet_pb"
+import { TestResponse } from "generated/services/remix-tests_pb"
 import { runTestSources } from 'remix-tests'
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
@@ -25,7 +25,7 @@ console.log('Server running at 0.0.0.0:50051')
 greetServer.start();
 
 function greet(call: any) {
-    let result = new GreetResponse();
+    let result = new TestResponse();
     console.log(call.request);
     // const sources: Object = JSON.parse(JSON.stringify({"string.sol":{"content":"pragma solidity ^0.5.0;\n\ncontract Strings {\n    function get() public view returns (string memory res) {\n        return \"Hello\";\n    }\n}\n"},"string_test.sol":{"content":"pragma solidity ^0.5.0;\nimport 'string.sol';\n\ncontract StringTest {\n    Strings foo;\n\n    function beforeAll() public {\n        foo = new Strings();\n    }\n\n    function initialValueShouldBeHello() public returns (bool) {\n        return Assert.equal(foo.get(), \"Hello\", \"initial value is correct\");\n    }\n\n    function initialValueShouldNotBeHelloWorld() public returns (bool) {\n        return Assert.notEqual(foo.get(), \"Hello world\", \"initial value is correct\");\n    }\n}\n"}}));
     const sources: Object = JSON.parse(call.request.testInterface.payload);
@@ -47,10 +47,9 @@ function greet(call: any) {
     const _resultCallback = function(err: any, response: any) {
         console.log("result : ", response);
     }
-    const _importFileCb = function(e: any, result: any) {
-        if(e) {
-            console.error(e)
-        }
+    const _importFileCb = function(filePath: string) {
+        result.setResult(JSON.stringify({ filePath }));
+        call.write({ result });
         return;
     }
     runTestSources(sources, _testCallback, _resultCallback, _finalCallback, _importFileCb, null);

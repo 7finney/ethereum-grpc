@@ -1,7 +1,7 @@
 // package: remix_tests
-// file: services/greet.proto
+// file: services/remix-tests.proto
 
-import * as services_greet_pb from "../services/greet_pb";
+import * as services_remix_tests_pb from "../services/remix-tests_pb";
 import {grpc} from "@improbable-eng/grpc-web";
 
 type RemixTestsServiceRunTests = {
@@ -9,8 +9,8 @@ type RemixTestsServiceRunTests = {
   readonly service: typeof RemixTestsService;
   readonly requestStream: false;
   readonly responseStream: true;
-  readonly requestType: typeof services_greet_pb.TestRequest;
-  readonly responseType: typeof services_greet_pb.TestResponse;
+  readonly requestType: typeof services_remix_tests_pb.TestRequest;
+  readonly responseType: typeof services_remix_tests_pb.TestResponse;
 };
 
 export class RemixTestsService {
@@ -50,6 +50,6 @@ export class RemixTestsServiceClient {
   readonly serviceHost: string;
 
   constructor(serviceHost: string, options?: grpc.RpcOptions);
-  runTests(requestMessage: services_greet_pb.TestRequest, metadata?: grpc.Metadata): ResponseStream<services_greet_pb.TestResponse>;
+  runTests(requestMessage: services_remix_tests_pb.TestRequest, metadata?: grpc.Metadata): ResponseStream<services_remix_tests_pb.TestResponse>;
 }
 

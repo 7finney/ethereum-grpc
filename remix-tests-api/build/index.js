@@ -8,10 +8,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require('module-alias/register');
-var PROTO_PATH = './services/greet.proto';
+var PROTO_PATH = './services/remix-tests.proto';
 var grpc = __importStar(require("grpc"));
 var protoLoader = __importStar(require("@grpc/proto-loader"));
-var greet_pb_1 = require("generated/services/greet_pb");
+var remix_tests_pb_1 = require("generated/services/remix-tests_pb");
 var remix_tests_1 = require("remix-tests");
 var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
     keepCase: true,
@@ -30,7 +30,7 @@ greetServer.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
 console.log('Server running at 0.0.0.0:50051');
 greetServer.start();
 function greet(call) {
-    var result = new greet_pb_1.GreetResponse();
+    var result = new remix_tests_pb_1.TestResponse();
     console.log(call.request);
     // const sources: Object = JSON.parse(JSON.stringify({"string.sol":{"content":"pragma solidity ^0.5.0;\n\ncontract Strings {\n    function get() public view returns (string memory res) {\n        return \"Hello\";\n    }\n}\n"},"string_test.sol":{"content":"pragma solidity ^0.5.0;\nimport 'string.sol';\n\ncontract StringTest {\n    Strings foo;\n\n    function beforeAll() public {\n        foo = new Strings();\n    }\n\n    function initialValueShouldBeHello() public returns (bool) {\n        return Assert.equal(foo.get(), \"Hello\", \"initial value is correct\");\n    }\n\n    function initialValueShouldNotBeHelloWorld() public returns (bool) {\n        return Assert.notEqual(foo.get(), \"Hello world\", \"initial value is correct\");\n    }\n}\n"}}));
     var sources = JSON.parse(call.request.testInterface.payload);
@@ -51,10 +51,9 @@ function greet(call) {
     var _resultCallback = function (err, response) {
         console.log("result : ", response);
     };
-    var _importFileCb = function (e, result) {
-        if (e) {
-            console.error(e);
-        }
+    var _importFileCb = function (filePath) {
+        result.setResult(JSON.stringify({ filePath: filePath }));
+        call.write({ result: result });
         return;
     };
     remix_tests_1.runTestSources(sources, _testCallback, _resultCallback, _finalCallback, _importFileCb, null);
