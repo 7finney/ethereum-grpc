@@ -21,7 +21,7 @@ greetServer.addService(remix_tests_pb.RemixTestsService.service, {
     RunTests: greet,
 });
 greetServer.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
-console.log('Server running at 0.0.0.0:50051')
+console.log('Server running at 0.0.0.0:50051');
 greetServer.start();
 
 function greet(call: any) {

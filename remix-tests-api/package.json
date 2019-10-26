@@ -16,7 +16,7 @@
     "@types/web3": "^1.0.20",
     "grpc": "^1.24.0",
     "module-alias": "^2.2.2",
-    "remix-tests": "^0.1.14",
+    "remix-tests": "0.1.14",
     "ts-protoc-gen": "^0.11.0",
     "typedarray-to-buffer": "^3.1.5"
   },

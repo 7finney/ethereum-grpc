@@ -1,8 +1,11 @@
 [log]
   level = "debug"
 [entryPoints]
-  [entryPoints.web]
-    address = ":80"
+  [entryPoints.rt-port]
+    address = ":50051"
 [api]
   insecure = true
-[providers.docker]
+  debug = true
+[providers]
+  [providers.docker]
+[accessLog]

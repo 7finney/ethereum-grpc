@@ -4,9 +4,11 @@ services:
   reverse-proxy:
     # The official v2.0 Traefik docker image
     image: traefik:v2.0
+    command:
+      - "--providers.docker.exposedbydefault=false"
     ports:
-      - "80:80"
       - "8080:8080"
+      - "50051:50051"
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
@@ -18,7 +20,9 @@ services:
     container_name: remix-tests-api
     restart: always
     build: remix-tests-api/
-    ports:
-      - "50051:50051"
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.remix-tests-api.rule=Host(`${RT_API_HOST}`)"
+      - "traefik.http.routers.remix-tests-api.entrypoints=rt-port"
+      - "traefik.http.services.remix-tests-api.loadbalancer.server.scheme=h2c"
+      - "traefik.http.services.remix-tests-api.loadbalancer.server.port=50051"
