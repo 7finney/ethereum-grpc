@@ -41,13 +41,14 @@ var ethdebugger = new remix_debug_1.EthDebugger({ web3: web3 });
 function debug(call) {
     var result = new remix_debug_pb_1.DebugResponse();
     console.log(call.request);
-    web3.eth.getTransaction("0x79d432611763d3efd6d2a7d309b7c0ef84102cef9d8113362b83d45458c723df", function (error, tx) {
+    var txHash = JSON.parse(call.request.debugInterface.payload);
+    web3.eth.getTransaction(txHash, function (error, tx) {
         if (error)
             throw error;
         console.log(tx);
         ethdebugger.event.register('newTraceLoaded', function (trace) {
             console.log(trace);
-            call.write({ result: trace });
+            call.write({ result: JSON.stringify(trace) });
         });
         ethdebugger.debug(tx);
     });

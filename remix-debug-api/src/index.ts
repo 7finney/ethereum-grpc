@@ -33,13 +33,14 @@ const ethdebugger = new EthDebugger({ web3 });
 function debug(call: any) {
     let result = new DebugResponse();
     console.log(call.request);
-    web3.eth.getTransaction("0x79d432611763d3efd6d2a7d309b7c0ef84102cef9d8113362b83d45458c723df", (error, tx) => {
+    const txHash: string = JSON.parse(call.request.debugInterface.payload);
+    web3.eth.getTransaction(txHash, (error, tx) => {
         if (error)
             throw error;
         console.log(tx);
         ethdebugger.event.register('newTraceLoaded', (trace: any) => {
             console.log(trace);
-            call.write({ result: trace });
+            call.write({ result: JSON.stringify(trace) });
         });
         ethdebugger.debug(tx);
     })
