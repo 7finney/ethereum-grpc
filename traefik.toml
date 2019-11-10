@@ -3,6 +3,8 @@
 [entryPoints]
   [entryPoints.rt-port]
     address = ":50051"
+  [entryPoints.rd-port]
+    address = ":50052"
 [api]
   insecure = true
   debug = true
