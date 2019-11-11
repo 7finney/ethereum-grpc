@@ -8,11 +8,13 @@ services:
       - "--providers.docker.exposedbydefault=false"
     ports:
       - "8080:8080"
+      - "8082:8082"
       - "50051:50051"
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.toml:/traefik.toml
+      - ./logs:/var/log/
     labels:
       - "traefik.enable=true"
   ## Remix Tests API
