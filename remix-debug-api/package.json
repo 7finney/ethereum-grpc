@@ -15,7 +15,8 @@
     "@improbable-eng/grpc-web": "^0.11.0",
     "grpc": "^1.24.2",
     "module-alias": "^2.2.2",
-    "remix-lib": "file:../../remix/remix-lib",
+    "remix-debug": "file:packages/remix/remix-debug",
+    "remix-lib": "file:packages/remix/remix-lib",
     "ts-protoc-gen": "^0.12.0",
     "web3": "^1.2.2"
   },

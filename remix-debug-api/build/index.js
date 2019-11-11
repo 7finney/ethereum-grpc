@@ -41,7 +41,7 @@ var ethdebugger = new remix_debug_1.EthDebugger({ web3: web3 });
 function debug(call) {
     var result = new remix_debug_pb_1.DebugResponse();
     console.log(call.request);
-    var txHash = JSON.parse(call.request.debugInterface.payload);
+    var txHash = call.request.debugInterface.payload;
     web3.eth.getTransaction(txHash, function (error, tx) {
         if (error)
             throw error;

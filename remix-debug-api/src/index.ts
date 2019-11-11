@@ -33,7 +33,7 @@ const ethdebugger = new EthDebugger({ web3 });
 function debug(call: any) {
     let result = new DebugResponse();
     console.log(call.request);
-    const txHash: string = JSON.parse(call.request.debugInterface.payload);
+    const txHash: string = call.request.debugInterface.payload;
     web3.eth.getTransaction(txHash, (error, tx) => {
         if (error)
             throw error;
