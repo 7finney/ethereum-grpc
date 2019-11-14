@@ -8,6 +8,9 @@ COPY tsconfig.json ./
 
 COPY . .
 
+RUN git submodule update --init --recursive
+RUN git submodule foreach npm install
+
 RUN npm install
 
 RUN npm run build
