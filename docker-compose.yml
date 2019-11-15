@@ -20,16 +20,16 @@ services:
     labels:
       - "traefik.enable=true"
   ## Remix Tests API
-  remix-tests-api:
-    container_name: remix-tests-api
-    restart: always
-    build: remix-tests-api/
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.remix-tests-api.rule=Host(`${RT_API_HOST}`)"
-      - "traefik.http.routers.remix-tests-api.entrypoints=rt-port"
-      - "traefik.http.services.remix-tests-api.loadbalancer.server.scheme=h2c"
-      - "traefik.http.services.remix-tests-api.loadbalancer.server.port=50051"
+  # remix-tests-api:
+  #   container_name: remix-tests-api
+  #   restart: always
+  #   build: remix-tests-api/
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.remix-tests-api.rule=Host(`${RT_API_HOST}`)"
+  #     - "traefik.http.routers.remix-tests-api.entrypoints=rt-port"
+  #     - "traefik.http.services.remix-tests-api.loadbalancer.server.scheme=h2c"
+  #     - "traefik.http.services.remix-tests-api.loadbalancer.server.port=50051"
   ## Prometheus
   prometheus:
     image: prom/prometheus
@@ -46,7 +46,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prometheus.rule=Host(`prometheus.localhost`)"
-      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+      - "traefik.http.routers.prometheus.service=prometheus"
   ## Grafana
   grafana:
     image: grafana/grafana
@@ -54,11 +54,11 @@ services:
       - prometheus
     volumes:
       - ./grafana_data:/var/lib/grafana
-      - ./grafana/provisioning:/etc/garfana/provisioning
+      - ./grafana/provisioning:/etc/grafana/provisioning
     env_file:
       - ./grafana/config.monitoring
     user: "root:root"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.rule=Host(`grafana.localhost`)"
-      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+      - "traefik.http.routers.grafana.service=grafana"

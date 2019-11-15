@@ -5,6 +5,10 @@
     address = ":8082"
   [entryPoints.rt-port]
     address = ":50051"
+  [entryPoints.graf]
+      address = ":3000"
+  [entryPoints.prome]
+      address = ":9090"
 [api]
   dashboard = true
   insecure = true
@@ -12,6 +16,7 @@
 [providers]
   [providers.docker]
 [accessLog]
+  filePath = "/var/log/traefik.log"
 [metrics]
   [metrics.prometheus]
     buckets = [0.1,0.3,1.2,5.0]

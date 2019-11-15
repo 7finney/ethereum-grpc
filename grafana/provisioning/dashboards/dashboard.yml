@@ -19,3 +19,4 @@ providers:
   updateIntervalSeconds: 10
   options:
     path: /etc/grafana/provisioning/dashboards/
+    # path: home/mc06/docker/ethcode-tools-api/grafana/provisioning/dashboards
