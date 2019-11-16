@@ -16,4 +16,7 @@ protoc --plugin="protoc-gen-ts=${PROTOC_GEN_TS_PATH}" --js_out="import_style=com
 ```shell
 git submodule update --init --recursive # initialize remix submodule after first clone
 git submodule update --recursive --remote # update
+RD_API_HOST=remixdebug.localhost RT_API_HOST=remixtests.localhost docker-compose up # bring up all the services
+docker-compose down
+docker rmi ethcode-tools-api_remix-debug-api ethcode-tools-api_remix-tests-api # take down all the images
 ```
