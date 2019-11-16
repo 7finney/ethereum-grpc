@@ -13,11 +13,13 @@
   "dependencies": {
     "@grpc/proto-loader": "^0.5.3",
     "@improbable-eng/grpc-web": "^0.11.0",
+    "crypto-js": "^3.1.9-1",
     "grpc": "^1.24.2",
     "module-alias": "^2.2.2",
     "remix-debug": "file:packages/remix/remix-debug",
     "remix-lib": "file:packages/remix/remix-lib",
     "ts-protoc-gen": "^0.12.0",
+    "web3": "^1.2.2",
     "websocket": "^1.0.30"
   },
   "devDependencies": {
