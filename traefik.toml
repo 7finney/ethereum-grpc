@@ -5,6 +5,8 @@
     address = ":50051"
   [entryPoints.rd-port]
     address = ":50052"
+  [entryPoints.ganache-port]
+    address = ":8545"
 [api]
   insecure = true
   debug = true

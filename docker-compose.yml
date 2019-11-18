@@ -4,12 +4,14 @@ services:
   reverse-proxy:
     # The official v2.0 Traefik docker image
     image: traefik:v2.0
+    restart: always
     command:
       - "--providers.docker.exposedbydefault=false"
     ports:
       - "8080:8080"
       - "50051:50051"
       - "50052:50052"
+      - "8545:8545"
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
@@ -38,3 +40,12 @@ services:
       - "traefik.http.routers.remix-debug-api.entrypoints=rd-port"
       - "traefik.http.services.remix-debug-api.loadbalancer.server.scheme=h2c"
       - "traefik.http.services.remix-debug-api.loadbalancer.server.port=50052"
+  ## ganache
+  ganache:
+    image: trufflesuite/ganache-cli
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ganache-api.rule=Host(`ganache.localhost`)"
+      - "traefik.http.routers.ganache-api.entrypoints=ganache-port"
+      - "traefik.http.services.ganache-api.loadbalancer.server.port=8545"
