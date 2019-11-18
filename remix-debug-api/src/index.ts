@@ -34,7 +34,7 @@ function debug(call: any) {
     let result = new DebugResponse();
     console.log(call.request);
     const txHash: string = call.request.debugInterface.payload;
-    web3.eth.getTransaction(txHash, (error, tx) => {
+    web3.eth.getTransaction(txHash, (error: Error, tx: any) => {
         if (error)
             throw error;
         console.log(tx);
