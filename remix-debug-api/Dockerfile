@@ -12,6 +12,6 @@ RUN npm install
 
 RUN npm run build
 
-EXPOSE 50051
+EXPOSE 50052
 
 CMD [ "node", "build/index.js" ]

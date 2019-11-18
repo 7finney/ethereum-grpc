@@ -1,0 +1,32 @@
+{
+  "name": "remix-debug-api",
+  "version": "0.0.1",
+  "description": "remix debug grpc api",
+  "main": "build/index.js",
+  "scripts": {
+    "start": "node ./build/index.js",
+    "build": "tsc --build tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "0mkara",
+  "license": "MIT",
+  "dependencies": {
+    "@grpc/proto-loader": "^0.5.3",
+    "@improbable-eng/grpc-web": "^0.11.0",
+    "crypto-js": "^3.1.9-1",
+    "grpc": "^1.24.2",
+    "module-alias": "^2.2.2",
+    "remix-debug": "file:packages/remix/remix-debug",
+    "remix-lib": "file:packages/remix/remix-lib",
+    "ts-protoc-gen": "^0.12.0",
+    "web3": "^1.2.2",
+    "websocket": "^1.0.30"
+  },
+  "devDependencies": {
+    "@types/google-protobuf": "^3.7.2",
+    "typescript": "^3.7.2"
+  },
+  "_moduleAliases": {
+    "generated": "./generated"
+  }
+}

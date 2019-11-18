@@ -9,6 +9,7 @@ services:
     ports:
       - "8080:8080"
       - "50051:50051"
+      - "50052:50052"
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
@@ -26,3 +27,14 @@ services:
       - "traefik.http.routers.remix-tests-api.entrypoints=rt-port"
       - "traefik.http.services.remix-tests-api.loadbalancer.server.scheme=h2c"
       - "traefik.http.services.remix-tests-api.loadbalancer.server.port=50051"
+  ## Remix Debug API
+  remix-debug-api:
+    container_name: remix-debug-api
+    restart: always
+    build: remix-debug-api/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.remix-debug-api.rule=Host(`${RD_API_HOST}`)"
+      - "traefik.http.routers.remix-debug-api.entrypoints=rd-port"
+      - "traefik.http.services.remix-debug-api.loadbalancer.server.scheme=h2c"
+      - "traefik.http.services.remix-debug-api.loadbalancer.server.port=50052"
