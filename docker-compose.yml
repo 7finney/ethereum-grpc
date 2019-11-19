@@ -1,17 +1,21 @@
 version: "3.7"
 ## Traefik reverse proxy
 services:
-  reverse-proxy:
+  traefik:
     # The official v2.0 Traefik docker image
-    image: traefik:v2.0
+    image: traefik:v2.0.5
     command:
+      - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.watch"
     ports:
       - "8080:8080"
-      - "8082:8082"
       - "50051:50051"
       - "9090:9090"
       - "3000:3000"
+    networks:
+      - inbound
+      - traefik
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
@@ -19,17 +23,19 @@ services:
       - ./logs:/var/log/
     labels:
       - "traefik.enable=true"
+
   ## Remix Tests API
-  # remix-tests-api:
-  #   container_name: remix-tests-api
-  #   restart: always
-  #   build: remix-tests-api/
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.remix-tests-api.rule=Host(`${RT_API_HOST}`)"
-  #     - "traefik.http.routers.remix-tests-api.entrypoints=rt-port"
-  #     - "traefik.http.services.remix-tests-api.loadbalancer.server.scheme=h2c"
-  #     - "traefik.http.services.remix-tests-api.loadbalancer.server.port=50051"
+  remix-tests-api:
+    container_name: remix-tests-api
+    restart: always
+    build: remix-tests-api/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.remix-tests-api.rule=Host(`${RT_API_HOST}`)"
+      - "traefik.http.routers.remix-tests-api.entrypoints=rt-port"
+      - "traefik.http.services.remix-tests-api.loadbalancer.server.scheme=h2c"
+      - "traefik.http.services.remix-tests-api.loadbalancer.server.port=50051"
+
   ## Prometheus
   prometheus:
     image: prom/prometheus
@@ -38,15 +44,21 @@ services:
     volumes:
       - ./prometheus/:/etc/prometheus/
       - ./prometheus_data:/prometheus
+    networks:
+      - inbound
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
+    
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prometheus.rule=Host(`prometheus.localhost`)"
       - "traefik.http.routers.prometheus.service=prometheus"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+      - "traefik.docker.network=inbound"
+
   ## Grafana
   grafana:
     image: grafana/grafana
@@ -55,6 +67,8 @@ services:
     volumes:
       - ./grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - inbound
     env_file:
       - ./grafana/config.monitoring
     user: "root:root"
@@ -62,3 +76,18 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.rule=Host(`grafana.localhost`)"
       - "traefik.http.routers.grafana.service=grafana"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+      - "traefik.docker.network=inbound"
+
+
+networks:
+  traefik:
+    driver: overlay
+    name: traefik
+  inbound:
+    driver: overlay
+    name: inbound
+
+volumes:
+    prometheus_data: {}
+    grafana_data: {}

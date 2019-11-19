@@ -1,8 +1,6 @@
 [log]
   level = "debug"
 [entryPoints]
-  [entryPoints.metrics]
-    address = ":8082"
   [entryPoints.rt-port]
     address = ":50051"
   [entryPoints.graf]
