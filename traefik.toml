@@ -7,6 +7,8 @@
     address = ":50052"
   [entryPoints.ganache-port]
     address = ":8545"
+  [entryPoints.cc-port]
+    address = ":50053"
 [api]
   insecure = true
   debug = true
