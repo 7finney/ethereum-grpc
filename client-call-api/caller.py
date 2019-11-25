@@ -11,11 +11,16 @@ from google.protobuf.json_format import MessageToJson
 from web3 import Web3
 w3 = Web3(Web3.HTTPProvider("http://ganache:8545"))
 
-class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
+class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):    
     def RunDeploy(self, request, context):
+        print(request)
         if request.callInterface.command == "deploy-contract":
             txRecipt = self.web3Deploy(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=txRecipt)
+            yield resp
+        if request.callInterface.command == "get-gas-estimate":
+            gasEstimate = self.web3GasEstimate(request.callInterface.payload)
+            resp = client_call_pb2.ClientCallResponse(result=gasEstimate)
             yield resp
         else:
             return
@@ -32,6 +37,14 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         txn_receipt = w3.eth.getTransactionReceipt(deploy_txn)
         print(Web3.toJSON(txn_receipt))
         return Web3.toJSON(txn_receipt)
+    def web3GasEstimate(self, payload):
+        input = json.loads(payload)
+        bytecode = input['bytecode']
+        abi = input['abi']
+        Contract = w3.eth.contract(abi=abi, bytecode=bytecode)
+        estimatedGas = Contract.constructor().estimateGas()
+        print(Web3.toJSON(estimatedGas))
+        return Web3.toJSON(estimatedGas)
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     client_call_pb2_grpc.add_ClientCallServiceServicer_to_server(Deploy(), server)
