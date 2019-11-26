@@ -11,9 +11,14 @@ from google.protobuf.json_format import MessageToJson
 from web3 import Web3
 w3 = Web3(Web3.HTTPProvider("http://ganache:8545"))
 
-class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):    
+class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
+    def unpackParams(self, *args):
+        params = []
+        for i in range(0, len(args)):
+            params = args[i]['value']
+        return params
     def RunDeploy(self, request, context):
-        print(request)
+        print("Running command: ", request.callInterface.command)
         if request.callInterface.command == "deploy-contract":
             txRecipt = self.web3Deploy(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=txRecipt)
@@ -30,10 +35,11 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         # abi = json.loads('[{"constant":false,"inputs":[],"name":"kill","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function","signature":"0x41c0e1b5"},{"constant":true,"inputs":[],"name":"greet","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function","signature":"0xcfae3217"},{"constant":false,"inputs":[],"name":"mortal","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function","signature":"0xf1eae25c"},{"inputs":[{"internalType":"string","name":"_greeting","type":"string","value":"Hello"}],"payable":false,"stateMutability":"nonpayable","type":"constructor","signature":"constructor"}]')
         bytecode = input['bytecode']
         abi = input['abi']
+        params = input['params']
         gasSupply = input['gasSupply']
         Contract = w3.eth.contract(abi=abi, bytecode=bytecode)
         # TODO: support input args .constructor("Hello")
-        deploy_txn = Contract.constructor().transact({ 'from': w3.eth.accounts[0], 'gas': gasSupply })
+        deploy_txn = Contract.constructor(self.unpackParams(*params)).transact({ 'from': w3.eth.accounts[0], 'gas': gasSupply })
         txn_receipt = w3.eth.getTransactionReceipt(deploy_txn)
         print(Web3.toJSON(txn_receipt))
         return Web3.toJSON(txn_receipt)
@@ -41,8 +47,9 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         input = json.loads(payload)
         bytecode = input['bytecode']
         abi = input['abi']
+        params = input['params']
         Contract = w3.eth.contract(abi=abi, bytecode=bytecode)
-        estimatedGas = Contract.constructor().estimateGas()
+        estimatedGas = Contract.constructor(self.unpackParams(*params)).estimateGas()
         print(Web3.toJSON(estimatedGas))
         return Web3.toJSON(estimatedGas)
 def serve():
