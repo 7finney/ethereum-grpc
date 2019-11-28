@@ -15,7 +15,10 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
     def unpackParams(self, *args):
         params = []
         for i in range(0, len(args)):
-            params = args[i]['value']
+            if(str.__contains__(args[i]['type'], 'int')):
+                params.append(int(args[i]['value']))
+            else:
+                params.append(args[i]['value'])
         return params
     def RunDeploy(self, request, context):
         print("Running command: ", request.callInterface.command)
@@ -39,7 +42,7 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         gasSupply = input['gasSupply']
         Contract = w3.eth.contract(abi=abi, bytecode=bytecode)
         # TODO: support input args .constructor("Hello")
-        deploy_txn = Contract.constructor(self.unpackParams(*params)).transact({ 'from': w3.eth.accounts[0], 'gas': gasSupply })
+        deploy_txn = Contract.constructor(*self.unpackParams(*params)).transact({ 'from': w3.eth.accounts[0], 'gas': gasSupply })
         txn_receipt = w3.eth.getTransactionReceipt(deploy_txn)
         print(Web3.toJSON(txn_receipt))
         return Web3.toJSON(txn_receipt)
@@ -49,7 +52,7 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         abi = input['abi']
         params = input['params']
         Contract = w3.eth.contract(abi=abi, bytecode=bytecode)
-        estimatedGas = Contract.constructor(self.unpackParams(*params)).estimateGas()
+        estimatedGas = Contract.constructor(*self.unpackParams(*params)).estimateGas()
         print(Web3.toJSON(estimatedGas))
         return Web3.toJSON(estimatedGas)
 def serve():
