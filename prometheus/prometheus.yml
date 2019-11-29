@@ -25,12 +25,14 @@ scrape_configs:
     scrape_interval: 5s
 
     static_configs:
-         - targets: ['localhost:50051']
+         - targets: ['remix-tests-api:50051']
 
   - job_name: 'traefik'
 
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 5s
+    static_configs:
+      - targets: ['traefik:8080']
 
     dns_sd_configs:
     - names:

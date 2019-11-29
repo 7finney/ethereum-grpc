@@ -8,6 +8,8 @@ services:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.watch"
+      - "--logLevel=DEBUG"
+      - "--api"
     ports:
       - "8080:8080"
       - "50051:50051"
@@ -16,6 +18,9 @@ services:
     networks:
       - inbound
       - traefik
+    links:
+      - prometheus
+      - grafana
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
@@ -64,6 +69,8 @@ services:
     image: grafana/grafana
     depends_on:
       - prometheus
+    links: 
+      - prometheus
     volumes:
       - ./grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
@@ -87,6 +94,9 @@ networks:
   inbound:
     driver: overlay
     name: inbound
+  default:
+    external:
+      name: inbound
 
 volumes:
     prometheus_data: {}
