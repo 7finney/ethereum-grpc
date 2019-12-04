@@ -3,15 +3,12 @@
 [entryPoints]
   [entryPoints.rt-port]
     address = ":50051"
-<<<<<<< HEAD
+  [entryPoints.rd-port]
+    address = ":50052"
   [entryPoints.graf]
       address = ":3000"
   [entryPoints.prome]
       address = ":9090"
-=======
-  [entryPoints.rd-port]
-    address = ":50052"
->>>>>>> master
 [api]
   dashboard = true
   insecure = true

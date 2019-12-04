@@ -69,7 +69,6 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
-    
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prometheus.rule=Host(`prometheus.localhost`)"
@@ -107,9 +106,9 @@ networks:
   inbound:
     driver: overlay
     name: inbound
-  default:
-    external:
-      name: inbound
+  # default:
+  #   external:
+  #     name: inbound
 
 volumes:
     prometheus_data: {}

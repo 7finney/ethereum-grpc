@@ -1,4 +1,4 @@
 node_modules/
 prometheus_data/
-# grafana_data/
 *.log
+logs/
