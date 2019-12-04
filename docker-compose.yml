@@ -5,15 +5,11 @@ services:
     # The official v2.0 Traefik docker image
     image: traefik:v2.0.5
     command:
-      - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.watch"
-      - "--logLevel=DEBUG"
-      - "--api"
     ports:
+      - "80:80"
       - "8080:8080"
-      - "9090:9090"
-      - "3000:3000"
       - "50051:50051"
       - "50052:50052"
     networks:
@@ -72,8 +68,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prometheus.rule=Host(`prometheus.localhost`)"
-      - "traefik.http.routers.prometheus.service=prometheus"
-      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+      - "traefik.http.routers.prometheus.entrypoints=web"
       - "traefik.docker.network=inbound"
 
   ## Grafana
@@ -94,11 +89,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.rule=Host(`grafana.localhost`)"
-      - "traefik.http.routers.grafana.service=grafana"
-      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+      - "traefik.http.routers.grafana.entrypoints=web"
       - "traefik.docker.network=inbound"
-
-
 networks:
   traefik:
     driver: overlay
@@ -109,7 +101,6 @@ networks:
   # default:
   #   external:
   #     name: inbound
-
 volumes:
     prometheus_data: {}
     grafana_data: {}
