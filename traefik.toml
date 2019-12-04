@@ -1,13 +1,22 @@
 [log]
-  level = "debug"
+  level = "DEBUG"
 [entryPoints]
   [entryPoints.rt-port]
     address = ":50051"
   [entryPoints.rd-port]
     address = ":50052"
+  [entryPoints.web]
+      address = ":80"
 [api]
-  insecure = true
+  dashboard = true
+  insecure = false
   debug = true
 [providers]
   [providers.docker]
 [accessLog]
+  filePath = "/var/log/traefik.log"
+[metrics]
+  [metrics.prometheus]
+    buckets = [0.1,0.3,1.2,5.0]
+    addEntryPointsLabels = true
+    addServicesLabels = true
