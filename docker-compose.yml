@@ -112,6 +112,10 @@ services:
     image: prom/node-exporter
     ports:
       - '9100:9100'
+    labels:
+      - "traefik.http.routers.prometheus.rule=Host(``)"
+      - "traefik.http.routers.prometheus.entrypoints=prm-port"
+      - "traefik.docker.network=inbound"
 
   ## Grafana
   grafana:
