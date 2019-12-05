@@ -4,6 +4,7 @@ services:
   traefik:
     # The official v2.0 Traefik docker image
     image: traefik:v2.0.5
+    restart: always
     command:
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.watch"
@@ -12,6 +13,7 @@ services:
       - "8080:8080"
       - "50051:50051"
       - "50052:50052"
+      - "50053:50053"
     networks:
       - inbound
       - traefik
@@ -54,6 +56,28 @@ services:
       - "traefik.http.services.remix-debug-api.loadbalancer.server.scheme=h2c"
       - "traefik.http.services.remix-debug-api.loadbalancer.server.port=50052"
 
+  ## client call api
+  client-call-api:
+    container_name: client-call-api
+    restart: always
+    build: client-call-api/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.client-call-api.rule=Host(`${CC_API_HOST}`)"
+      - "traefik.http.routers.client-call-api.entrypoints=cc-port"
+      - "traefik.http.services.client-call-api.loadbalancer.server.scheme=h2c"
+      - "traefik.http.services.client-call-api.loadbalancer.server.port=50053"
+
+  ## ganache
+  ganache:
+    image: trufflesuite/ganache-cli
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ganache-api.rule=Host(`ganache.localhost`)"
+      - "traefik.http.routers.ganache-api.entrypoints=ganache-port"
+      - "traefik.http.services.ganache-api.loadbalancer.server.port=8545"
+
   ## Prometheus
   prometheus:
     image: prom/prometheus
@@ -95,6 +119,7 @@ services:
       - "traefik.http.routers.grafana.rule=Host(`grafana.localhost`)"
       - "traefik.http.routers.grafana.entrypoints=web"
       - "traefik.docker.network=inbound"
+
 networks:
   traefik:
     driver: overlay
@@ -105,6 +130,7 @@ networks:
   # default:
   #   external:
   #     name: inbound
+
 volumes:
     prometheus_data: {}
     grafana_data: {}
