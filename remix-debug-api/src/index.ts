@@ -28,7 +28,7 @@ console.log('Server running at 0.0.0.0:50052');
 rxDbgServer.start();
 
 // remix-debug code
-const web3 = new Web3('http://localhost:8545');
+const web3 = new Web3('http://ganache:8545');
 const ethdebugger = new EthDebugger({ web3 });
 function debug(call: any) {
     let result = new DebugResponse();
