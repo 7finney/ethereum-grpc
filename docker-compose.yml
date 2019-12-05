@@ -59,19 +59,19 @@ services:
       - "traefik.http.services.remix-debug-api.loadbalancer.server.scheme=h2c"
       - "traefik.http.services.remix-debug-api.loadbalancer.server.port=50052"
 
-  ## client call api
-  client-call-api:
-    container_name: client-call-api
-    restart: always
-    build: client-call-api/
-    networks:
-      - inbound
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.client-call-api.rule=Host(`${CC_API_HOST}`)"
-      - "traefik.http.routers.client-call-api.entrypoints=cc-port"
-      - "traefik.http.services.client-call-api.loadbalancer.server.scheme=h2c"
-      - "traefik.http.services.client-call-api.loadbalancer.server.port=50053"
+  # ## client call api
+  # client-call-api:
+  #   container_name: client-call-api
+  #   restart: always
+  #   build: client-call-api/
+  #   networks:
+  #     - inbound
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.client-call-api.rule=Host(`${CC_API_HOST}`)"
+  #     - "traefik.http.routers.client-call-api.entrypoints=cc-port"
+  #     - "traefik.http.services.client-call-api.loadbalancer.server.scheme=h2c"
+  #     - "traefik.http.services.client-call-api.loadbalancer.server.port=50053"
 
   ## ganache
   ganache:
@@ -106,6 +106,12 @@ services:
       - "traefik.http.routers.prometheus.rule=Host(`${PROM_HOST}`)"
       - "traefik.http.routers.prometheus.entrypoints=prm-port"
       - "traefik.docker.network=inbound"
+
+  # Node Exporter
+  node-exporter:
+    image: prom/node-exporter
+    ports:
+      - '9100:9100'
 
   ## Grafana
   grafana:

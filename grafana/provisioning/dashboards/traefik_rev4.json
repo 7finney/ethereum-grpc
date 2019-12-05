@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": 4475,
   "graphTooltip": 0,
-  "iteration": 1575305228918,
+  "iteration": 1575571851764,
   "links": [],
   "panels": [
     {
@@ -28,7 +28,7 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 24,
         "x": 0,
         "y": 0
@@ -63,8 +63,9 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "traefik_entrypoint_requests_total",
+          "expr": "traefik_entrypoint_requests_total{entrypoint=~\"rt-port|rd-port|cc-port|ganache-port\"}",
           "format": "time_series",
+          "instant": false,
           "intervalFactor": 2,
           "legendFormat": "Total requests $backend",
           "refId": "A"
@@ -74,7 +75,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Total requests over 5min $backend",
+      "title": "Total requests for RT, RD. CC & Ganache",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -123,7 +124,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 7
+        "y": 8
       },
       "hiddenSeries": false,
       "id": 14,
@@ -152,7 +153,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "traefik_entrypoint_request_duration_seconds_count",
+          "expr": "traefik_entrypoint_request_duration_seconds_count{entrypoint=~\"rt-port|rd-port|cc-port|ganache-port\"}",
           "instant": false,
           "refId": "A"
         }
@@ -161,7 +162,179 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Http Request duration count",
+      "title": "Request Duration for RT, RD & CC & Ganache",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "hiddenSeries": false,
+      "id": 32,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "traefik_entrypoint_requests_total",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Totla requests Traefik",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 18
+      },
+      "hiddenSeries": false,
+      "id": 34,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "traefik_config_reloads_total",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Total Reloads",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -210,7 +383,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 26
       },
       "hiddenSeries": false,
       "id": 5,
@@ -300,9 +473,9 @@
       "fillGradient": 0,
       "gridPos": {
         "h": 9,
-        "w": 23,
-        "x": 1,
-        "y": 27
+        "w": 24,
+        "x": 0,
+        "y": 36
       },
       "hiddenSeries": false,
       "id": 16,
@@ -402,7 +575,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 36
+        "y": 45
       },
       "hiddenSeries": false,
       "id": 18,
@@ -488,7 +661,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 36
+        "y": 45
       },
       "hiddenSeries": false,
       "id": 20,
@@ -576,7 +749,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 44
+        "y": 53
       },
       "hiddenSeries": false,
       "id": 22,
@@ -663,7 +836,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 44
+        "y": 53
       },
       "hiddenSeries": false,
       "id": 26,
@@ -750,7 +923,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 61
       },
       "hiddenSeries": false,
       "id": 24,
@@ -836,7 +1009,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 60
+        "y": 69
       },
       "hiddenSeries": false,
       "id": 28,
@@ -922,7 +1095,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 60
+        "y": 69
       },
       "hiddenSeries": false,
       "id": 30,
@@ -1002,7 +1175,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 68
+        "y": 77
       },
       "id": 10,
       "title": "$backend stats",
@@ -1015,7 +1188,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 69
+        "y": 78
       },
       "id": 12,
       "panels": [],
@@ -1085,8 +1258,8 @@
     ]
   },
   "time": {
-    "from": "2019-12-02T16:11:45.865Z",
-    "to": "2019-12-02T16:12:48.052Z"
+    "from": "now-15m",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -1106,5 +1279,5 @@
   "timezone": "",
   "title": "Traefik2",
   "uid": "qPdAviJmz1",
-  "version": 3
+  "version": 2
 }

@@ -1,3 +1,4 @@
+defaultEntryPoints = ["http", "https"]
 [log]
   level = "DEBUG"
 [entryPoints]
@@ -13,6 +14,9 @@
     address = ":9090"
   [entryPoints.web]
       address = ":80"
+  # [entryPoints.web]
+  #     address = ":443"
+  #       [entryPoints.https.tls]
 [api]
   dashboard = true
   insecure = false
