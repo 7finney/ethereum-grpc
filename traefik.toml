@@ -9,6 +9,8 @@
     address = ":50053"
   [entryPoints.ganache-port]
     address = ":8545"
+  [entryPoints.prm-port]
+    address = ":9090"
   [entryPoints.web]
       address = ":80"
 [api]

@@ -85,6 +85,8 @@ services:
     volumes:
       - ./prometheus/:/etc/prometheus/
       - ./prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
     networks:
       - inbound
     command:
@@ -93,9 +95,9 @@ services:
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
     labels:
-      - "traefik.enable=true"
+      # - "traefik.enable=true"
       - "traefik.http.routers.prometheus.rule=Host(`prometheus.localhost`)"
-      - "traefik.http.routers.prometheus.entrypoints=web"
+      - "traefik.http.routers.prometheus.entrypoints=prm-port"
       - "traefik.docker.network=inbound"
 
   ## Grafana
