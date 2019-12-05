@@ -3,12 +3,8 @@ version: "3.7"
 services:
   traefik:
     # The official v2.0 Traefik docker image
-<<<<<<< HEAD
-    image: traefik:v2.0
-    restart: always
-=======
     image: traefik:v2.0.5
->>>>>>> 78af6b10da10d563421d9e1c8c1d642acd929fa3
+    restart: always
     command:
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.watch"
@@ -17,17 +13,13 @@ services:
       - "8080:8080"
       - "50051:50051"
       - "50052:50052"
-<<<<<<< HEAD
       - "50053:50053"
-      - "8545:8545"
-=======
     networks:
       - inbound
       - traefik
     links:
       - prometheus
       - grafana
->>>>>>> 78af6b10da10d563421d9e1c8c1d642acd929fa3
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
@@ -63,7 +55,7 @@ services:
       - "traefik.http.routers.remix-debug-api.entrypoints=rd-port"
       - "traefik.http.services.remix-debug-api.loadbalancer.server.scheme=h2c"
       - "traefik.http.services.remix-debug-api.loadbalancer.server.port=50052"
-<<<<<<< HEAD
+
   ## client call api
   client-call-api:
     container_name: client-call-api
@@ -75,6 +67,7 @@ services:
       - "traefik.http.routers.client-call-api.entrypoints=cc-port"
       - "traefik.http.services.client-call-api.loadbalancer.server.scheme=h2c"
       - "traefik.http.services.client-call-api.loadbalancer.server.port=50053"
+
   ## ganache
   ganache:
     image: trufflesuite/ganache-cli
@@ -84,7 +77,6 @@ services:
       - "traefik.http.routers.ganache-api.rule=Host(`ganache.localhost`)"
       - "traefik.http.routers.ganache-api.entrypoints=ganache-port"
       - "traefik.http.services.ganache-api.loadbalancer.server.port=8545"
-=======
 
   ## Prometheus
   prometheus:
@@ -127,6 +119,7 @@ services:
       - "traefik.http.routers.grafana.rule=Host(`grafana.localhost`)"
       - "traefik.http.routers.grafana.entrypoints=web"
       - "traefik.docker.network=inbound"
+
 networks:
   traefik:
     driver: overlay
@@ -137,7 +130,7 @@ networks:
   # default:
   #   external:
   #     name: inbound
+
 volumes:
     prometheus_data: {}
     grafana_data: {}
->>>>>>> 78af6b10da10d563421d9e1c8c1d642acd929fa3

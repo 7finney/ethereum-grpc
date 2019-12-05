@@ -5,15 +5,12 @@
     address = ":50051"
   [entryPoints.rd-port]
     address = ":50052"
-<<<<<<< HEAD
-  [entryPoints.ganache-port]
-    address = ":8545"
   [entryPoints.cc-port]
     address = ":50053"
-=======
+  [entryPoints.ganache-port]
+    address = ":8545"
   [entryPoints.web]
       address = ":80"
->>>>>>> 78af6b10da10d563421d9e1c8c1d642acd929fa3
 [api]
   dashboard = true
   insecure = false
