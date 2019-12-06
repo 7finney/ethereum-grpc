@@ -21,6 +21,12 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
          - targets: ['remix-debug-api:50052']
+  # Node Exporter
+  - job_name: 'node-exporter'
+    scrape_interval: 5s
+    static_configs:
+         - targets: ['node-exporter:9100']
+  
   # traefik scrape config
   - job_name: 'traefik'
     scrape_interval: 5s

@@ -12,6 +12,8 @@ defaultEntryPoints = ["http", "https"]
     address = ":8545"
   [entryPoints.prm-port]
     address = ":9090"
+  [entryPoints.node]
+    address = ":9100"
   [entryPoints.web]
       address = ":80"
   # [entryPoints.web]
