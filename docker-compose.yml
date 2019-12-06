@@ -106,6 +106,8 @@ services:
       - "traefik.http.routers.prometheus.rule=Host(`${PROM_HOST}`)"
       - "traefik.http.routers.prometheus.entrypoints=prm-port"
       - "traefik.docker.network=inbound"
+      - "traefik.prometheus.auth.basicauth.users=admin:$$apr1$$LAHn3.vc$$47mKL7WmzOQWwJ2OjND46/"
+
 
   # Node Exporter
   node-exporter:
