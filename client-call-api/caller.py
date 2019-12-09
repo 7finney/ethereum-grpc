@@ -65,7 +65,8 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         methodName = input['methodName']
         abi = input['abi']
         params = input['params']
-        Contract = w3.eth.contract(address=Web3.toChecksumAddress('0x03118940b35c7af3e259391989534724314c08c1'), abi=abi)
+        contractAddress = input['address']
+        Contract = w3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
         # callResult = Contract.caller().cal(7, 3)
         method_to_call = getattr(Contract.caller, methodName)
         callResult = method_to_call(*self.unpackParams(*params))
