@@ -9,7 +9,7 @@ from concurrent import futures
 from google.protobuf.json_format import MessageToJson
 
 from web3 import Web3
-w3 = Web3(Web3.HTTPProvider("http://ganache:8545"))
+w3 = Web3(Web3.HTTPProvider("http://127.0.0.1:8545"))
 
 class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
     def unpackParams(self, *args):
@@ -29,6 +29,10 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         if request.callInterface.command == "get-gas-estimate":
             gasEstimate = self.web3GasEstimate(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=gasEstimate)
+            yield resp
+        if request.callInterface.command == "contract-method-call":
+            callResponse = self.web3CallMethods(request.callInterface.payload)
+            resp = client_call_pb2.ClientCallResponse(result=callResponse)
             yield resp
         else:
             return
@@ -55,6 +59,18 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         estimatedGas = Contract.constructor(*self.unpackParams(*params)).estimateGas()
         print(Web3.toJSON(estimatedGas))
         return Web3.toJSON(estimatedGas)
+    def web3CallMethods(self, payload):
+        print("calling web3 method ....")
+        input = json.loads(payload)
+        methodName = input['methodName']
+        abi = input['abi']
+        params = input['params']
+        Contract = w3.eth.contract(address=Web3.toChecksumAddress('0x03118940b35c7af3e259391989534724314c08c1'), abi=abi)
+        # callResult = Contract.caller().cal(7, 3)
+        method_to_call = getattr(Contract.caller, methodName)
+        callResult = method_to_call(*self.unpackParams(*params))
+        print(Web3.toJSON(callResult))
+        return Web3.toJSON(callResult)
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     client_call_pb2_grpc.add_ClientCallServiceServicer_to_server(Deploy(), server)
