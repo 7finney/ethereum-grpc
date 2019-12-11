@@ -30,6 +30,10 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             gasEstimate = self.web3GasEstimate(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=gasEstimate)
             yield resp
+        if request.callInterface.command == "contract-method-call":
+            callResponse = self.web3CallMethods(request.callInterface.payload)
+            resp = client_call_pb2.ClientCallResponse(result=callResponse)
+            yield resp
         else:
             return
     def web3Deploy(self, payload):
@@ -55,6 +59,19 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         estimatedGas = Contract.constructor(*self.unpackParams(*params)).estimateGas()
         print(Web3.toJSON(estimatedGas))
         return Web3.toJSON(estimatedGas)
+    def web3CallMethods(self, payload):
+        print("calling web3 method ....")
+        input = json.loads(payload)
+        methodName = input['methodName']
+        abi = input['abi']
+        params = input['params']
+        contractAddress = input['address']
+        Contract = w3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
+        # callResult = Contract.caller().cal(7, 3)
+        method_to_call = getattr(Contract.caller, methodName)
+        callResult = method_to_call(*self.unpackParams(*params))
+        print(Web3.toJSON(callResult))
+        return Web3.toJSON(callResult)
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     client_call_pb2_grpc.add_ClientCallServiceServicer_to_server(Deploy(), server)
