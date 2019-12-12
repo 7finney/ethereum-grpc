@@ -36,7 +36,6 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
                 "accounts": accounts,
                 "balance": balance
             })
-            print("printing the account results\n", result)
             resp = client_call_pb2.ClientCallResponse(result=result)
             yield resp
         if request.callInterface.command == "get-balance":
@@ -61,7 +60,6 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         # TODO: support input args .constructor("Hello")
         deploy_txn = Contract.constructor(*self.unpackParams(*params)).transact({ 'from': w3.eth.accounts[0], 'gas': gasSupply })
         txn_receipt = w3.eth.getTransactionReceipt(deploy_txn)
-        print(Web3.toJSON(txn_receipt))
         return Web3.toJSON(txn_receipt)
     def web3GasEstimate(self, payload):
         input = json.loads(payload)
@@ -70,30 +68,23 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         params = input['params']
         Contract = w3.eth.contract(abi=abi, bytecode=bytecode)
         estimatedGas = Contract.constructor(*self.unpackParams(*params)).estimateGas()
-        print(Web3.toJSON(estimatedGas))
         return Web3.toJSON(estimatedGas)
     def web3CallMethods(self, payload):
-        print("calling web3 method ....")
         input = json.loads(payload)
         methodName = input['methodName']
         abi = input['abi']
         params = input['params']
         contractAddress = input['address']
         Contract = w3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
-        # callResult = Contract.caller().cal(7, 3)
         method_to_call = getattr(Contract.caller, methodName)
         callResult = method_to_call(*self.unpackParams(*params))
-        print(Web3.toJSON(callResult))
         return Web3.toJSON(callResult)
     def web3getAccounts(self):
-        print("fetching accounts")
         accounts = w3.eth.accounts
         balance = w3.eth.getBalance(accounts[0])
         return accounts, balance
     def web3getAccBalance(self, account):
-        print("getting balance")
         balance = w3.eth.getBalance(account)
-        print(account, "balance :", balance)
         return balance
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
