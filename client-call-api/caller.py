@@ -30,6 +30,19 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             gasEstimate = self.web3GasEstimate(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=gasEstimate)
             yield resp
+        if request.callInterface.command == "get-accounts":
+            accounts, balance = self.web3getAccounts()
+            result = json.dumps({
+                "accounts": accounts,
+                "balance": balance
+            })
+            print("printing the account results\n", result)
+            resp = client_call_pb2.ClientCallResponse(result=result)
+            yield resp
+        if request.callInterface.command == "get-balance":
+            balance = self.web3getAccBalance(request.callInterface.account)
+            resp = client_call_pb2.ClientCallResponse(result=balance)
+            yield resp
         if request.callInterface.command == "contract-method-call":
             callResponse = self.web3CallMethods(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=callResponse)
@@ -72,6 +85,16 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         callResult = method_to_call(*self.unpackParams(*params))
         print(Web3.toJSON(callResult))
         return Web3.toJSON(callResult)
+    def web3getAccounts(self):
+        print("fetching accounts")
+        accounts = w3.eth.accounts
+        balance = w3.eth.getBalance(accounts[0])
+        return accounts, balance
+    def web3getAccBalance(self, account):
+        print("getting balance")
+        balance = w3.eth.getBalance(account)
+        print(account, "balance :", balance)
+        return balance
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     client_call_pb2_grpc.add_ClientCallServiceServicer_to_server(Deploy(), server)
