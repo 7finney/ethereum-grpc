@@ -42,6 +42,10 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             balance = self.web3getAccBalance(request.callInterface.account)
             resp = client_call_pb2.ClientCallResponse(result=balance)
             yield resp
+        if request.callInterface.command == "send-ether":
+            transaction = self.web3Transactions(request.callInterface.payload)
+            resp = client_call_pb2.ClientCallResponse(result=transaction)
+            yield resp
         if request.callInterface.command == "contract-method-call":
             callResponse = self.web3CallMethods(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=callResponse)
@@ -86,6 +90,13 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
     def web3getAccBalance(self, account):
         balance = w3.eth.getBalance(account)
         return balance
+    def web3Transactions(self, transactionInfo):
+        transaction_Info = json.loads(transactionInfo)
+        toAddress = transaction_Info['toAddress']
+        fromAddress = transaction_Info['fromAddress']
+        amount = transaction_Info['amount']
+        transaction = w3.eth.sendTransaction({ 'to': toAddress, 'from': fromAddress, 'value': amount })
+        return Web3.toJSON(transaction)
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     client_call_pb2_grpc.add_ClientCallServiceServicer_to_server(Deploy(), server)
