@@ -80,8 +80,16 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         params = input['params']
         contractAddress = input['address']
         Contract = w3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
-        method_to_call = getattr(Contract.caller, methodName)
-        callResult = method_to_call(*self.unpackParams(*params))
+        method_to_call = getattr(Contract.functions, methodName)
+        for i in abi:
+            if i['name'] == methodName and (i['constant'] == False or i['payable'] == True):
+                txHash = method_to_call(*self.unpackParams(*params)).transact({ 'from': w3.eth.accounts[0] })
+                callResult = w3.eth.waitForTransactionReceipt(txHash)
+                break
+            else:
+                callResult = method_to_call(*self.unpackParams(*params)).call()
+                break
+        print(callResult)
         return Web3.toJSON(callResult)
     def web3getAccounts(self):
         accounts = w3.eth.accounts
