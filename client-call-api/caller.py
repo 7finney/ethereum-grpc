@@ -17,6 +17,18 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         for i in range(0, len(args)):
             if(str.__contains__(args[i]['type'], 'int')):
                 params.append(int(args[i]['value']))
+            elif(str.__contains__(args[i]['type'], 'tuple')):
+                comp = args[i]['components']
+                inpStr = args[i]['value'].replace('(', '')
+                inpStr = inpStr.replace(')', '')
+                inpStr = inpStr.split(', ')
+                tupl = ()
+                for j in range(0, len(comp)):
+                    if(str.__contains__(comp[j]['type'], 'int')):
+                        tupl = tupl + tuple(map(int, inpStr[j]))
+                    else:
+                        tupl = tupl + tuple(map(str, inpStr[j]))
+                params.append(tupl)
             else:
                 params.append(args[i]['value'])
         return params
