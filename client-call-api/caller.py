@@ -39,7 +39,8 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             resp = client_call_pb2.ClientCallResponse(result=result)
             yield resp
         if request.callInterface.command == "get-balance":
-            balance = self.web3getAccBalance(request.callInterface.account)
+            print(request.callInterface)
+            balance = self.web3getAccBalance(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=balance)
             yield resp
         if request.callInterface.command == "send-ether":
@@ -97,7 +98,7 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         return accounts, balance
     def web3getAccBalance(self, account):
         balance = w3.eth.getBalance(account)
-        return balance
+        return Web3.toJSON(balance)
     def web3Transactions(self, transactionInfo):
         transaction_Info = json.loads(transactionInfo)
         toAddress = transaction_Info['toAddress']
