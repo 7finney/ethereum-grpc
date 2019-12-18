@@ -9,7 +9,7 @@ from concurrent import futures
 from google.protobuf.json_format import MessageToJson
 
 from web3 import Web3
-w3 = Web3(Web3.HTTPProvider("http://ganache:8545"))
+w3 = Web3(Web3.HTTPProvider("http://localhost:8545"))
 
 class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
     def unpackParams(self, *args):
@@ -85,7 +85,7 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         for i in abi:
             if i['name'] == methodName:
                 if i['constant'] == False or i['payable'] == True:
-                    txHash = method_to_call(*self.unpackParams(*params)).transact({ 'from': w3.eth.accounts[0] })
+                    txHash = method_to_call(*self.unpackParams(*params)).transact({ 'from': input['deployAccount'] })
                     callResult = w3.eth.waitForTransactionReceipt(txHash)
                     break
                 else:
