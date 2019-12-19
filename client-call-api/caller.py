@@ -7,28 +7,20 @@ import client_call_pb2
 import client_call_pb2_grpc
 from concurrent import futures
 from google.protobuf.json_format import MessageToJson
+import re
 
 from web3 import Web3
-w3 = Web3(Web3.HTTPProvider("http://ganache:8545"))
+w3 = Web3(Web3.HTTPProvider("http://localhost:8545"))
 
 class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
     def unpackParams(self, *args):
         params = []
+        regExp = r'\w+(?=\[\d*\])'
         for i in range(0, len(args)):
-            if(str.__contains__(args[i]['type'], 'int')):
+            if(re.match(regExp, args[i]['type']) or str.__contains__(args[i]['type'], 'tuple')):
+                params.append(json.loads(args[i]['value']))
+            elif(str.__contains__(args[i]['type'], 'int')):
                 params.append(int(args[i]['value']))
-            elif(str.__contains__(args[i]['type'], 'tuple')):
-                comp = args[i]['components']
-                inpStr = args[i]['value'].replace('(', '')
-                inpStr = inpStr.replace(')', '')
-                inpStr = inpStr.split(', ')
-                tupl = ()
-                for j in range(0, len(comp)):
-                    if(str.__contains__(comp[j]['type'], 'int')):
-                        tupl = tupl + tuple(map(int, inpStr[j]))
-                    else:
-                        tupl = tupl + tuple(map(str, inpStr[j]))
-                params.append(tupl)
             else:
                 params.append(args[i]['value'])
         return params
