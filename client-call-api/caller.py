@@ -7,6 +7,7 @@ import client_call_pb2
 import client_call_pb2_grpc
 from concurrent import futures
 from google.protobuf.json_format import MessageToJson
+import re
 
 from web3 import Web3
 w3 = Web3(Web3.HTTPProvider("http://ganache:8545"))
@@ -14,8 +15,11 @@ w3 = Web3(Web3.HTTPProvider("http://ganache:8545"))
 class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
     def unpackParams(self, *args):
         params = []
+        regExp = r'\w+(?=\[\d*\])'
         for i in range(0, len(args)):
-            if(str.__contains__(args[i]['type'], 'int')):
+            if(re.match(regExp, args[i]['type']) or str.__contains__(args[i]['type'], 'tuple')):
+                params.append(json.loads(args[i]['value']))
+            elif(str.__contains__(args[i]['type'], 'int')):
                 params.append(int(args[i]['value']))
             else:
                 params.append(args[i]['value'])
@@ -39,7 +43,8 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             resp = client_call_pb2.ClientCallResponse(result=result)
             yield resp
         if request.callInterface.command == "get-balance":
-            balance = self.web3getAccBalance(request.callInterface.account)
+            print(request.callInterface)
+            balance = self.web3getAccBalance(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=balance)
             yield resp
         if request.callInterface.command == "send-ether":
@@ -80,8 +85,16 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         params = input['params']
         contractAddress = input['address']
         Contract = w3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
-        method_to_call = getattr(Contract.caller, methodName)
-        callResult = method_to_call(*self.unpackParams(*params))
+        method_to_call = getattr(Contract.functions, methodName)
+        for i in abi:
+            if i['name'] == methodName:
+                if i['constant'] == False or i['payable'] == True:
+                    txHash = method_to_call(*self.unpackParams(*params)).transact({ 'from': input['deployAccount'] })
+                    callResult = w3.eth.waitForTransactionReceipt(txHash)
+                    break
+                else:
+                    callResult = method_to_call(*self.unpackParams(*params)).call()
+                    break
         return Web3.toJSON(callResult)
     def web3getAccounts(self):
         accounts = w3.eth.accounts
@@ -89,7 +102,7 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         return accounts, balance
     def web3getAccBalance(self, account):
         balance = w3.eth.getBalance(account)
-        return balance
+        return Web3.toJSON(balance)
     def web3Transactions(self, transactionInfo):
         transaction_Info = json.loads(transactionInfo)
         toAddress = transaction_Info['toAddress']
