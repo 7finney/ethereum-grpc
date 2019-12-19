@@ -10,7 +10,7 @@ from google.protobuf.json_format import MessageToJson
 import re
 
 from web3 import Web3
-w3 = Web3(Web3.HTTPProvider("http://localhost:8545"))
+w3 = Web3(Web3.HTTPProvider("http://ganache:8545"))
 
 class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
     def unpackParams(self, *args):
