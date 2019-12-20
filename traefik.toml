@@ -32,17 +32,9 @@ defaultEntryPoints = ["http", "https"]
     addEntryPointsLabels = true
     addServicesLabels = true
 [certificatesResolvers.le.acme]
-  email = "your-email@your-domain.org"
+  email = "ayanb1999@gmail.com"
   storage = "acme.json"
+  caServer = "https://acme-v02.api.letsencrypt.org/directory"
   [certificatesResolvers.le.acme.httpChallenge]
     # used during the challenge
     entryPoint = "web"
-  caServer = "https://acme-v02.api.letsencrypt.org/directory"
-  onHostRule = true
-    [acme.dnsChallenge]
-    provider = "aws"
-    delayBeforeCheck = 0
-    [[acme.domains]]
-    main = "ethcode.dev"
-    [[acme.domains]]
-    main = "*.ethcode.dev"
