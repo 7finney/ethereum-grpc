@@ -10,6 +10,7 @@ services:
       - "--providers.docker.watch"
     ports:
       - "80:80"
+      - "443:443"
       - "50051:50051"
       - "50052:50052"
       - "50053:50053"
@@ -23,6 +24,7 @@ services:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.toml:/traefik.toml
+      - ./acme.json:/acme.json
       - ./logs:/var/log/
     labels:
       - "traefik.enable=true"
