@@ -31,16 +31,18 @@ defaultEntryPoints = ["http", "https"]
     buckets = [0.1,0.3,1.2,5.0]
     addEntryPointsLabels = true
     addServicesLabels = true
-[acme]
-email = "ayanb1999@gmail.com"
-entryPoint = "https"
-storage = "./acme.json"
-caServer = "https://acme-v02.api.letsencrypt.org/directory"
-onHostRule = true
-  [acme.dnsChallenge]
-  provider = "aws"
-  delayBeforeCheck = 0
-  [[acme.domains]]
-   main = "ethcode.dev"
-  [[acme.domains]]
-   main = "*.ethcode.dev"
+[certificatesResolvers.le.acme]
+  email = "your-email@your-domain.org"
+  storage = "acme.json"
+  [certificatesResolvers.le.acme.httpChallenge]
+    # used during the challenge
+    entryPoint = "web"
+  caServer = "https://acme-v02.api.letsencrypt.org/directory"
+  onHostRule = true
+    [acme.dnsChallenge]
+    provider = "aws"
+    delayBeforeCheck = 0
+    [[acme.domains]]
+    main = "ethcode.dev"
+    [[acme.domains]]
+    main = "*.ethcode.dev"
