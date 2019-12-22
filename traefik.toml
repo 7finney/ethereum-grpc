@@ -1,4 +1,4 @@
-defaultEntryPoints = ["http", "https"]
+defaultEntryPoints = ["web", "web-secure"]
 [log]
   level = "DEBUG"
 [entryPoints]
@@ -18,6 +18,11 @@ defaultEntryPoints = ["http", "https"]
       address = ":80"
   [entryPoints.web-secure]
     address = ":443"
+[http.routers]
+  [http.routers.web-secure]
+    rule = "Host(`ethcode.com`)"
+    [http.routers.web-secure.tls]
+      certResolver = "le"
 [api]
   dashboard = true
   insecure = false
@@ -31,10 +36,9 @@ defaultEntryPoints = ["http", "https"]
     buckets = [0.1,0.3,1.2,5.0]
     addEntryPointsLabels = true
     addServicesLabels = true
-[certificatesResolvers.le.acme]
-  email = "ayanb1999@gmail.com"
-  storage = "acme.json"
-  caServer = "https://acme-v02.api.letsencrypt.org/directory"
-  [certificatesResolvers.le.acme.httpChallenge]
-    # used during the challenge
-    entryPoint = "web"
+[certificatesResolvers]
+  [certificatesResolvers.le]
+    [certificatesResolvers.le.acme]
+      email = "ayanb1999@gmail.com"
+      storage = "acme.json"
+      caServer = "https://acme-v02.api.letsencrypt.org/directory"
