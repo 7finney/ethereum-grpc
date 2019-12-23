@@ -1,4 +1,4 @@
-defaultEntryPoints = ["http", "https"]
+defaultEntryPoints = ["web", "web-secure"]
 [log]
   level = "DEBUG"
 [entryPoints]
@@ -10,14 +10,22 @@ defaultEntryPoints = ["http", "https"]
     address = ":50053"
   [entryPoints.ganache-port]
     address = ":8545"
-  [entryPoints.prm-port]
-    address = ":9090"
+  # [entryPoints.prm-port]
+    # address = ":443"
   [entryPoints.node]
     address = ":9100"
   [entryPoints.web]
-      address = ":80"
+    address = ":80"
   [entryPoints.web-secure]
     address = ":443"
+# [http.routers]
+# [http.routers.prm-port]
+#   entryPoints=["web-secure"]
+#  [http.routers.web-secure.tls]
+#   certResolver = "le"
+#  [[http.routers.traefik.tls.domains]]
+# main = "ethcode.dev"
+
 [api]
   dashboard = true
   insecure = false
@@ -32,9 +40,9 @@ defaultEntryPoints = ["http", "https"]
     addEntryPointsLabels = true
     addServicesLabels = true
 [certificatesResolvers.le.acme]
-  email = "ayanb1999@gmail.com"
-  storage = "acme.json"
-  caServer = "https://acme-v02.api.letsencrypt.org/directory"
+  email = "ayanb21999@gmail.com"
+  storage = "/acme.json"
+  caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
   [certificatesResolvers.le.acme.httpChallenge]
-    # used during the challenge
-    entryPoint = "web"
+    entryPoint = "web-secure"
+  [certificatesResolvers.le.acme.tlsChallenge]

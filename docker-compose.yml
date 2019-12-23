@@ -8,6 +8,12 @@ services:
     command:
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.watch"
+      - "--entrypoints.https.address=:443"
+      - "--certificatesresolvers.traefik.acme.httpchallenge=true"
+      - "--certificatesresolvers.traefik.acme.httpchallenge.entrypoint=web-secure"
+      - "--certificatesresolvers.traefik.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.traefik.acme.email=ayanb1999@gmail.com"
+      - "--certificatesresolvers.traefik.acme.storage=/acme.json"      
     ports:
       - "80:80"
       - "443:443"
@@ -24,15 +30,17 @@ services:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.toml:/traefik.toml
-      - ./acme.json:/acme.json
+      # - ./acme.json:/acme.json
       - ./logs:/var/log/
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=Host(`${TRAEFIK_HOST}`)"
-      - "traefik.http.routers.api.service=api@internal"
-      - traefik.http.routers.traefik.tls=true
-      - traefik.http.routers.traefik.tls.certresolver=le
-      - "traefik.http.routers.api.middlewares=auth"
+      - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.middlewares=auth"
+      - "traefik.http.routers.traefik.tls.certresolver=le"
+      - "traefik.http.routers.traefik.tls.domains[0].main=trf.ethcode.dev"
+      - "traefik.http.routers.traefik.tls.domains[1].main=graf.ethcode.dev"
+      - "traefik.http.routers.traefik.tls.domains[2].main=prom.ethcode.dev"
       - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$LAHn3.vc$$47mKL7WmzOQWwJ2OjND46/"
 
   ## Remix Tests API
@@ -108,10 +116,9 @@ services:
       - '--web.console.templates=/usr/share/prometheus/consoles'
     labels:
       - "traefik.http.routers.prometheus.rule=Host(`${PROM_HOST}`)"
-      - "traefik.http.routers.prometheus.entrypoints=prm-port"
-      - "traefik.docker.network=inbound"
-      - traefik.http.routers.prometheus.tls=true
-      - traefik.http.routers.prometheus.tls.certresolver=le
+      - "traefik.http.routers.prometheus.entrypoints=web-secure"
+      # - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+      - "traefik.http.routers.prometheus.middlewares=auth"
       - "traefik.prometheus.auth.basicauth.users=admin:$$apr1$$LAHn3.vc$$47mKL7WmzOQWwJ2OjND46/"
 
 
@@ -145,7 +152,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.rule=Host(`${GRAFANA_HOST}`)"
-      - "traefik.http.routers.grafana.entrypoints=web"
+      - "traefik.http.routers.grafana.entrypoints=web-secure"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
       - "traefik.docker.network=inbound"
 
 networks:
