@@ -2,27 +2,28 @@ defaultEntryPoints = ["web", "web-secure"]
 [log]
   level = "DEBUG"
 [entryPoints]
-  [entryPoints.rt-port]
-    address = ":50051"
-  [entryPoints.rd-port]
-    address = ":50052"
-  [entryPoints.cc-port]
-    address = ":50053"
-  [entryPoints.ganache-port]
-    address = ":8545"
-  # [entryPoints.prm-port]
-    # address = ":443"
-  [entryPoints.node]
-    address = ":9100"
+  #[entryPoints.rt-port]
+   # address = ":50051"
+  #[entryPoints.rd-port]
+  #  address = ":50052"
+  #[entryPoints.cc-port]
+   # address = ":50053"
+  #[entryPoints.ganache-port]
+   # address = ":8545"
+  #[entryPoints.prm-port]
+    #address = ":9090"
+  #[entryPoints.node]
+   # address = ":9100"
   [entryPoints.web]
     address = ":80"
   [entryPoints.web-secure]
     address = ":443"
 [http.routers]
   [http.routers.web-secure]
-    rule = "Host(`ethcode.com`)"
+    entryPoints=["web-secure"]
     [http.routers.web-secure.tls]
-      certResolver = "le"
+
+
 [api]
   dashboard = true
   insecure = false
@@ -41,4 +42,5 @@ defaultEntryPoints = ["web", "web-secure"]
     [certificatesResolvers.le.acme]
       email = "ayanb1999@gmail.com"
       storage = "acme.json"
-      caServer = "https://acme-v02.api.letsencrypt.org/directory"
+      caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+    [certificatesResolvers.le.acme.tlsChallenge]

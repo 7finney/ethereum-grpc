@@ -39,8 +39,6 @@ services:
       - "traefik.http.routers.traefik.middlewares=auth"
       - "traefik.http.routers.traefik.tls.certresolver=le"
       - "traefik.http.routers.traefik.tls.domains[0].main=trf.ethcode.dev"
-      - "traefik.http.routers.traefik.tls.domains[1].main=graf.ethcode.dev"
-      - "traefik.http.routers.traefik.tls.domains[2].main=prom.ethcode.dev"
       - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$LAHn3.vc$$47mKL7WmzOQWwJ2OjND46/"
 
   ## Remix Tests API
@@ -53,7 +51,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.remix-tests-api.rule=Host(`${RT_API_HOST}`)"
-      - "traefik.http.routers.remix-tests-api.entrypoints=rt-port"
+      - "traefik.http.routers.remix-tests-api.entrypoints=web,web-secure"
+      - "traefik.http.routers.remix-tests-api.tls.certresolver=le"
+      - "traefik.http.routers.remix-tests-api.tls.domains[0].main=rtapi.ethcode.dev"
       - "traefik.http.services.remix-tests-api.loadbalancer.server.scheme=h2c"
       - "traefik.http.services.remix-tests-api.loadbalancer.server.port=50051"
   
@@ -67,7 +67,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.remix-debug-api.rule=Host(`${RD_API_HOST}`)"
-      - "traefik.http.routers.remix-debug-api.entrypoints=rd-port"
+      - "traefik.http.routers.remix-debug-api.entrypoints=web,web-secure"
+      - "traefik.http.routers.remix-debug-api.tls.certresolver=le"
+      - "traefik.http.routers.remix-debug-api.tls.domains[0].main=remixdebug.ethcode.dev"
       - "traefik.http.services.remix-debug-api.loadbalancer.server.scheme=h2c"
       - "traefik.http.services.remix-debug-api.loadbalancer.server.port=50052"
 
@@ -81,7 +83,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.client-call-api.rule=Host(`${CC_API_HOST}`)"
-      - "traefik.http.routers.client-call-api.entrypoints=cc-port"
+      - "traefik.http.routers.client-call-api.entrypoints=web,web-secure"
+      - "traefik.http.routers.client-call.tls.certresolver=le"
+      - "traefik.http.routers.client-call.tls.domains[0].main=cc.ethcode.dev"
       - "traefik.http.services.client-call-api.loadbalancer.server.scheme=h2c"
       - "traefik.http.services.client-call-api.loadbalancer.server.port=50053"
 
@@ -94,7 +98,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.ganache-api.rule=Host(`ganache.localhost`)"
-      - "traefik.http.routers.ganache-api.entrypoints=ganache-port"
+      - "traefik.http.routers.ganache-api.entrypoints=web"
       - "traefik.http.services.ganache-api.loadbalancer.server.port=8545"
 
   ## Prometheus
@@ -109,15 +113,21 @@ services:
       - "9090:9090"
     networks:
       - inbound
+      - traefik
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
+
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.prometheus.rule=Host(`${PROM_HOST}`)"
       - "traefik.http.routers.prometheus.entrypoints=web-secure"
-      # - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+      - "traefik.http.routers.prometheus.tls.certresolver=le"
+      - "traefik.http.routers.prometheus.tls.domains[0].main=prom.ethcode.dev"
+      - "traefik.docker.network=inbound"
       - "traefik.http.routers.prometheus.middlewares=auth"
       - "traefik.prometheus.auth.basicauth.users=admin:$$apr1$$LAHn3.vc$$47mKL7WmzOQWwJ2OjND46/"
 
@@ -130,8 +140,10 @@ services:
     networks: 
       - inbound
     labels:
-      - "traefik.http.routers.prometheus.rule=Host(`node.localhost`)"
-      - "traefik.http.routers.prometheus.entrypoints=node"
+      - "traefik.http.routers.nodeExporter.rule=Host(`node.ethcode.dev`)"
+      - "traefik.http.routers.nodeExporter.entrypoints=web-secure"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9100"
+      - "traefik.http.routers.prometheus.tls.certresolver=le"
       - "traefik.docker.network=inbound"
 
   ## Grafana
@@ -146,6 +158,8 @@ services:
       - ./grafana/provisioning:/etc/grafana/provisioning
     networks:
       - inbound
+    ports:
+      - "3000:3000" 
     env_file:
       - ./grafana/config.monitoring
     user: "root:root"
@@ -154,6 +168,8 @@ services:
       - "traefik.http.routers.grafana.rule=Host(`${GRAFANA_HOST}`)"
       - "traefik.http.routers.grafana.entrypoints=web-secure"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+      - "traefik.http.routers.grafana.tls.certresolver=le"
+      - "traefik.http.routers.grafana.tls.domains[0].sans=graf.ethcode.dev"
       - "traefik.docker.network=inbound"
 
 networks:
