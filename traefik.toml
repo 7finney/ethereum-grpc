@@ -2,18 +2,7 @@ defaultEntryPoints = ["web", "web-secure"]
 [log]
   level = "DEBUG"
 [entryPoints]
-  #[entryPoints.rt-port]
-   # address = ":50051"
-  #[entryPoints.rd-port]
-  #  address = ":50052"
-  #[entryPoints.cc-port]
-   # address = ":50053"
-  #[entryPoints.ganache-port]
-   # address = ":8545"
-  #[entryPoints.prm-port]
-    #address = ":9090"
-  #[entryPoints.node]
-   # address = ":9100"
+
   [entryPoints.web]
     address = ":80"
   [entryPoints.web-secure]

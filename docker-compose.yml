@@ -30,7 +30,7 @@ services:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.toml:/traefik.toml
-      # - ./acme.json:/acme.json
+      - ./acme.json:/acme.json
       - ./logs:/var/log/
     labels:
       - "traefik.enable=true"
@@ -141,9 +141,6 @@ services:
     labels:
       - "traefik.http.routers.nodeExporter.rule=Host(`node.localhost`)"
       - "traefik.http.routers.nodeExporter.entrypoints=web"
-      # - "traefik.http.services.prometheus.loadbalancer.server.port=9100"
-      # - "traefik.http.routers.prometheus.tls.certresolver=le"
-      # - "traefik.docker.network=inbound"
 
   ## Grafana
   grafana:
@@ -178,9 +175,6 @@ networks:
   inbound:
     driver: overlay
     name: inbound
-  # default:
-  #   external:
-  #     name: inbound
 
 volumes:
     prometheus_data: {}
