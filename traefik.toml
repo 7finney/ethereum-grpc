@@ -42,5 +42,5 @@ defaultEntryPoints = ["web", "web-secure"]
     [certificatesResolvers.le.acme]
       email = "ayanb1999@gmail.com"
       storage = "acme.json"
-      caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+      caServer = "https://acme-v02.api.letsencrypt.org/directory"
     [certificatesResolvers.le.acme.tlsChallenge]
