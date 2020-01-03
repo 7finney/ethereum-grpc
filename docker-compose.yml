@@ -51,7 +51,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.remix-tests-api.rule=Host(`${RT_API_HOST}`)"
-      - "traefik.http.routers.remix-tests-api.entrypoints=web,web-secure"
+      - "traefik.http.routers.remix-tests-api.entrypoints=rt-port"
       # - "traefik.http.routers.remix-tests-api.tls.certresolver=le"
       # - "traefik.http.routers.remix-tests-api.tls.domains[0].main=rtapi.ethcode.dev"
       - "traefik.http.services.remix-tests-api.loadbalancer.server.scheme=h2c"
@@ -67,7 +67,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.remix-debug-api.rule=Host(`${RD_API_HOST}`)"
-      - "traefik.http.routers.remix-debug-api.entrypoints=web,web-secure"
+      - "traefik.http.routers.remix-debug-api.entrypoints=rd-port"
       # - "traefik.http.routers.remix-debug-api.tls.certresolver=le"
       # - "traefik.http.routers.remix-debug-api.tls.domains[0].main=remixdebug.ethcode.dev"
       - "traefik.http.services.remix-debug-api.loadbalancer.server.scheme=h2c"
@@ -83,7 +83,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.client-call-api.rule=Host(`${CC_API_HOST}`)"
-      - "traefik.http.routers.client-call-api.entrypoints=web,web-secure"
+      - "traefik.http.routers.client-call-api.entrypoints=cc-port"
       # - "traefik.http.routers.client-call.tls.certresolver=le"
       # - "traefik.http.routers.client-call.tls.domains[0].main=cc.ethcode.dev"
       - "traefik.http.services.client-call-api.loadbalancer.server.scheme=h2c"
@@ -98,7 +98,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.ganache-api.rule=Host(`ganache.localhost`)"
-      - "traefik.http.routers.ganache-api.entrypoints=web"
       - "traefik.http.services.ganache-api.loadbalancer.server.port=8545"
 
   ## Prometheus
@@ -127,8 +126,8 @@ services:
       - "traefik.docker.network=inbound"
       - "traefik.http.routers.prometheus.tls.certresolver=le"
       - "traefik.http.routers.prometheus.tls.domains[0].main=prometheus.ethcode.dev"
-      - "traefik.http.routers.prometheus.middlewares=auth"
-      - "traefik.prometheus.auth.basicauth.users=admin:$$apr1$$LAHn3.vc$$47mKL7WmzOQWwJ2OjND46/"
+      # - "traefik.http.routers.prometheus.middlewares=auth"
+      # - "traefik.prometheus.auth.basicauth.users=admin:$$apr1$$LAHn3.vc$$47mKL7WmzOQWwJ2OjND46/"
 
 
   # Node Exporter

@@ -3,6 +3,12 @@ defaultEntryPoints = ["web", "web-secure"]
   level = "DEBUG"
 [entryPoints]
 
+  [entryPoints.rt-port]
+    address = ":50051"
+  [entryPoints.rd-port]
+    address = ":50052"
+  [entryPoints.cc-port]
+    address = ":50053"
   [entryPoints.web]
     address = ":80"
   [entryPoints.web-secure]
