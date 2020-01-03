@@ -12,7 +12,7 @@ services:
       - "--certificatesresolvers.traefik.acme.httpchallenge=true"
       - "--certificatesresolvers.traefik.acme.httpchallenge.entrypoint=web-secure"
       - "--certificatesresolvers.traefik.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
-      - "--certificatesresolvers.traefik.acme.email=ayanb1999@gmail.com"
+      - "--certificatesresolvers.traefik.acme.email=0mkar@protonmail.com"
       - "--certificatesresolvers.traefik.acme.storage=/acme.json"      
     ports:
       - "80:80"
@@ -30,7 +30,7 @@ services:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.toml:/traefik.toml
-      - ./acme.json:/acme.json
+      # - ./acme.json:/acme.json
       - ./logs:/var/log/
     labels:
       - "traefik.enable=true"
@@ -38,7 +38,7 @@ services:
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.middlewares=auth"
       - "traefik.http.routers.traefik.tls.certresolver=le"
-      - "traefik.http.routers.traefik.tls.domains[0].main=trf.ethcode.dev"
+      - "traefik.http.routers.traefik.tls.domains[0].main=traefik.ethcode.dev"
       - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$LAHn3.vc$$47mKL7WmzOQWwJ2OjND46/"
 
   ## Remix Tests API
@@ -126,7 +126,7 @@ services:
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
       - "traefik.docker.network=inbound"
       - "traefik.http.routers.prometheus.tls.certresolver=le"
-      - "traefik.http.routers.prometheus.tls.domains[0].main=prom.ethcode.dev"
+      - "traefik.http.routers.prometheus.tls.domains[0].main=prometheus.ethcode.dev"
       - "traefik.http.routers.prometheus.middlewares=auth"
       - "traefik.prometheus.auth.basicauth.users=admin:$$apr1$$LAHn3.vc$$47mKL7WmzOQWwJ2OjND46/"
 
@@ -168,7 +168,7 @@ services:
       - "traefik.http.routers.grafana.entrypoints=web-secure"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
       - "traefik.http.routers.grafana.tls.certresolver=le"
-      - "traefik.http.routers.grafana.tls.domains[0].main=graf.ethcode.dev"
+      - "traefik.http.routers.grafana.tls.domains[0].main=grafana.ethcode.dev"
       - "traefik.docker.network=inbound"
 
 networks:

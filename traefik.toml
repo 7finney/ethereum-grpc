@@ -40,7 +40,7 @@ defaultEntryPoints = ["web", "web-secure"]
 [certificatesResolvers]
   [certificatesResolvers.le]
     [certificatesResolvers.le.acme]
-      email = "ayanb1999@gmail.com"
+      email = "0mkar@protonmail.com"
       storage = "acme.json"
       caServer = "https://acme-v02.api.letsencrypt.org/directory"
     [certificatesResolvers.le.acme.tlsChallenge]
