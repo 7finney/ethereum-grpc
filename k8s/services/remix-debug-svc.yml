@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: remix-debug-cluster-ip-svc
+spec:
+  type: ClusterIP
+  selector:
+    backend: remix-debug-api
+  ports:
+    - port: 50052
+      targetPort: 50052

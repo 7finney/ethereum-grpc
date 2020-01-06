@@ -1,0 +1,8 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: admin-auth
+spec:
+  basicAuth:
+    users:
+    - admin:$$apr1$$LAHn3.vc$$47mKL7WmzOQWwJ2OjND46/

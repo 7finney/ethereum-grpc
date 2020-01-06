@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitoring-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      backend: monitoring
+  template:
+    metadata:
+      labels:
+        backend: monitoring
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: prometheus
+          image: prom/prometheus:latest
+          ports:
+            - containerPort: 9090
+        - name: grafana
+          image: grafana/grafana
+          ports:
+            - containerPort: 3000
+        - name: node-exporter
+          image: prom/node-exporter
+          ports:
+            - containerPort: 9100
