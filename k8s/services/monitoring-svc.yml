@@ -3,16 +3,19 @@ kind: Service
 metadata:
   name: monitoring-cluster-ip-svc
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     backend: monitoring
   ports:
     - name: prometheus
       port: 9090
       targetPort: 9090
-    - name: grafana
-      port: 3000
-      targetPort: 3000
-    - name: node-exporter
-      port: 9100
-      targetPort: 9100
+      nodePort: 31515
+    # - name: grafana
+    #   port: 3000
+    #   targetPort: 3000
+    #   nodePort: 31512
+    # - name: node-exporter
+    #   port: 9100
+    #   targetPort: 9100
+    #   targetPort: 31513
