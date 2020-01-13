@@ -3,9 +3,10 @@ kind: Service
 metadata:
   name: remix-tests-api-cluster-ip-svc
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     backend: remix-tests-api
   ports:
     - port: 50051
       targetPort: 50051
+      NodePort: 31515

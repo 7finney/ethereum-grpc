@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      backend: grafana
+  template:
+    metadata:
+      labels:
+        backend: grafana
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: grafana
+        image: grafana/grafana
+        ports:
+          - containerPort: 3000
