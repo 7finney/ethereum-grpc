@@ -166,6 +166,20 @@ services:
       - "traefik.http.routers.grafana.tls.certresolver=le"
       - "traefik.http.routers.grafana.tls.domains[0].main=grafana.ethcode.dev"
       - "traefik.docker.network=inbound"
+  
+  # grpc-auth-middleware
+  grpc-auth-middleware:
+    build: ./server
+    ports: 
+      - "4040:4040"
+    links: 
+      - redis
+
+  # Redis    
+  redis:
+    image: redis
+    ports: 
+      - "6379:6379"
 
 networks:
   traefik:
