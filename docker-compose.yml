@@ -169,7 +169,7 @@ services:
   
   # grpc-auth-middleware
   grpc-auth-middleware:
-    build: ./server
+    build: ./grpc-auth-api/
     ports: 
       - "4040:4040"
     links: 

@@ -2,7 +2,7 @@ FROM golang
 
 WORKDIR /usr/src/app
 
-COPY ./services/ .
+# COPY ./server/services/ .
 
 COPY ./server/main .
 
