@@ -14,7 +14,7 @@ spec:
     spec:
       restartPolicy: Always
       containers:
-        - name: grafana
+      - name: grafana
         image: grafana/grafana
         ports:
           - containerPort: 3000

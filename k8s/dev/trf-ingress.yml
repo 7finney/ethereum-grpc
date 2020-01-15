@@ -7,8 +7,8 @@ spec:
   entryPoints:
     - web
   routes:
-  - match: Host(`trf.localhost`) && PathPrefix(`/`)
+  - match: Host(`your.domain.com`) && PathPrefix(`/notls`)
     kind: Rule
     services:
-    - name: traefik
-      port: 8080
+    - name: whoami
+      port: 80

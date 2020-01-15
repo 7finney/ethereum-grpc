@@ -4,6 +4,7 @@ metadata:
   name: prometheus-cluster-ip-svc
 spec:
   type: NodePort
+  externalTrafficPolicy: Cluster
   selector:
     backend: prometheus
   ports:
