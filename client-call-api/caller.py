@@ -8,8 +8,10 @@ import client_call_pb2_grpc
 from concurrent import futures
 from google.protobuf.json_format import MessageToJson
 import re
-
+import requests
 from web3 import Web3
+from request_header_validator_interceptor import RequestHeaderValidatorInterceptor
+
 w3 = Web3(Web3.HTTPProvider("http://ganache:8545"))
 
 class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
@@ -110,8 +112,10 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         amount = transaction_Info['amount']
         transaction = w3.eth.sendTransaction({ 'to': toAddress, 'from': fromAddress, 'value': amount })
         return Web3.toJSON(transaction)
+  
 def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    header_validator = RequestHeaderValidatorInterceptor(grpc.StatusCode.UNAUTHENTICATED, 'Access denied!')
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), interceptors=(header_validator,))
     client_call_pb2_grpc.add_ClientCallServiceServicer_to_server(Deploy(), server)
     server.add_insecure_port('[::]:50053')
     server.start()

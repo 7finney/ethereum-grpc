@@ -16,4 +16,4 @@ COPY . .
 
 EXPOSE 50053
 
-CMD [ "pipenv", "run", "python", "caller.py" ]
+CMD [ "pipenv", "run", "python", "-u", "caller.py" ]
