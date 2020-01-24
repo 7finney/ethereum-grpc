@@ -1,16 +1,19 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: myingressroute
+  name: simpleingressroute
   namespace: default
-
 spec:
   entryPoints:
     - web
-
   routes:
   - match: Host(`trf.ethco.de`) && PathPrefix(`/`)
     kind: Rule
     services:
-    - name: traefik
-      port: 80
+    - name: api@internal
+      kind: TraefikService
+  - match: Host(`graf.ethco.de`) && PathPrefix(`/`)
+    kind: Rule
+    services:
+    - name: grafana-cluster-ip-svc
+      port: 3000
