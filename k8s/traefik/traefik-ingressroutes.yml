@@ -14,9 +14,14 @@ spec:
   - match: Host(`trf.ethco.de`) && PathPrefix(`/`)
     kind: Rule
     services:
-    - name: api@internal
+    - name: admin
       kind: TraefikService
       port: 8080
+  - match: Host(`auth.ethco.de`) && PathPrefix(`/`)
+    kind: Rule
+    services:
+    - name: auth-api-cluster-ip-svc
+      port: 4040
   - match: Host(`graf.ethco.de`) && PathPrefix(`/`)
     kind: Rule
     services:

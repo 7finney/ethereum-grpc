@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: remix-debug-api-deployment
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       backend: remix-debug-api
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: remix-debug-api
-          image: gcr.io/eth-devtools-api-dev/remix-debug-api:0.1
+          image: gcr.io/eth-devtools-api-dev/remix-debug:0.1
           ports:
             - containerPort: 50052
       restartPolicy: Always

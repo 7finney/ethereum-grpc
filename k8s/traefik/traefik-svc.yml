@@ -12,6 +12,9 @@ spec:
       name: web-secure
       port: 443
     - protocol: TCP
+      port: 8080
+      name: admin
+    - protocol: TCP
       name: cc-port
       port: 50053
     - protocol: TCP
