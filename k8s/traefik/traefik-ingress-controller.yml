@@ -33,6 +33,9 @@ spec:
             - --accesslog
             - --entrypoints.web.address=:80
             - --entrypoints.web-secure.address=:443
+            - --entrypoints.cc-port.address=:50053
+            - --entrypoints.rd-port.address=:50052
+            - --entrypoints.rt-port.address=:50051
             - --providers.kubernetescrd=true
             - --log.level=DEBUG
             # - --certificatesresolvers.default.acme.tlschallenge
@@ -46,3 +49,9 @@ spec:
               containerPort: 80
             - name: web-secure
               containerPort: 443
+            - name: rt-port
+              containerPort: 50051
+            - name: rd-port
+              containerPort: 50052
+            - name: cc-port
+              containerPort: 50053

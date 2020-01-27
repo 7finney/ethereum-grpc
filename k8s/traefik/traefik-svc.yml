@@ -11,6 +11,15 @@ spec:
     - protocol: TCP
       name: web-secure
       port: 443
+    - protocol: TCP
+      name: cc-port
+      port: 50053
+    - protocol: TCP
+      name: rd-port
+      port: 50052
+    - protocol: TCP
+      name: rt-port
+      port: 50051
   selector:
     app: traefik
   type: LoadBalancer

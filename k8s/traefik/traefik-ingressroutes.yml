@@ -6,14 +6,42 @@ metadata:
 spec:
   entryPoints:
     - web
+    - web-secure
+    - rt-port
+    - rd-port
+    - cc-port
   routes:
   - match: Host(`trf.ethco.de`) && PathPrefix(`/`)
     kind: Rule
     services:
     - name: api@internal
       kind: TraefikService
+      port: 8080
   - match: Host(`graf.ethco.de`) && PathPrefix(`/`)
     kind: Rule
     services:
     - name: grafana-cluster-ip-svc
       port: 3000
+  - match: Host(`prom.ethco.de`) && PathPrefix(`/`)
+    kind: Rule
+    services:
+    - name: prometheus-cluster-ip-svc
+      port: 9090
+  - match: Host(`rt.ethco.de`) && PathPrefix(`/`)
+    kind: Rule
+    services:
+    - name: remix-tests-api-cluster-ip-svc
+      port: 50051
+      scheme: h2c
+  - match: Host(`rd.ethco.de`) && PathPrefix(`/`)
+    kind: Rule
+    services:
+    - name: remix-debug-cluster-ip-svc
+      port: 50052
+      scheme: h2c
+  - match: Host(`cc.ethco.de`) && PathPrefix(`/`)
+    kind: Rule
+    services:
+    - name: client-call-cluster-ip-svc
+      port: 50053
+      scheme: h2c
