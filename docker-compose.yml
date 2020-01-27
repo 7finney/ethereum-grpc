@@ -41,37 +41,37 @@ services:
       - "traefik.http.routers.traefik.tls.domains[0].main=traefik.ethcode.dev"
       - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$LAHn3.vc$$47mKL7WmzOQWwJ2OjND46/"
 
-  ## Remix Tests API
-  remix-tests-api:
-    container_name: remix-tests-api
-    restart: always
-    build: remix-tests-api/
-    networks:
-      - inbound
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.remix-tests-api.rule=Host(`${RT_API_HOST}`)"
-      - "traefik.http.routers.remix-tests-api.entrypoints=rt-port"
-      # - "traefik.http.routers.remix-tests-api.tls.certresolver=le"
-      # - "traefik.http.routers.remix-tests-api.tls.domains[0].main=rtapi.ethcode.dev"
-      - "traefik.http.services.remix-tests-api.loadbalancer.server.scheme=h2c"
-      - "traefik.http.services.remix-tests-api.loadbalancer.server.port=50051"
+  # ## Remix Tests API
+  # remix-tests-api:
+  #   container_name: remix-tests-api
+  #   restart: always
+  #   build: remix-tests-api/
+  #   networks:
+  #     - inbound
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.remix-tests-api.rule=Host(`${RT_API_HOST}`)"
+  #     - "traefik.http.routers.remix-tests-api.entrypoints=rt-port"
+  #     # - "traefik.http.routers.remix-tests-api.tls.certresolver=le"
+  #     # - "traefik.http.routers.remix-tests-api.tls.domains[0].main=rtapi.ethcode.dev"
+  #     - "traefik.http.services.remix-tests-api.loadbalancer.server.scheme=h2c"
+  #     - "traefik.http.services.remix-tests-api.loadbalancer.server.port=50051"
   
-  # ## Remix Debug API
-  remix-debug-api:
-    container_name: remix-debug-api
-    restart: always
-    build: remix-debug-api/
-    networks:
-      - inbound
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.remix-debug-api.rule=Host(`${RD_API_HOST}`)"
-      - "traefik.http.routers.remix-debug-api.entrypoints=rd-port"
-      # - "traefik.http.routers.remix-debug-api.tls.certresolver=le"
-      # - "traefik.http.routers.remix-debug-api.tls.domains[0].main=remixdebug.ethcode.dev"
-      - "traefik.http.services.remix-debug-api.loadbalancer.server.scheme=h2c"
-      - "traefik.http.services.remix-debug-api.loadbalancer.server.port=50052"
+  # # ## Remix Debug API
+  # remix-debug-api:
+  #   container_name: remix-debug-api
+  #   restart: always
+  #   build: remix-debug-api/
+  #   networks:
+  #     - inbound
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.remix-debug-api.rule=Host(`${RD_API_HOST}`)"
+  #     - "traefik.http.routers.remix-debug-api.entrypoints=rd-port"
+  #     # - "traefik.http.routers.remix-debug-api.tls.certresolver=le"
+  #     # - "traefik.http.routers.remix-debug-api.tls.domains[0].main=remixdebug.ethcode.dev"
+  #     - "traefik.http.services.remix-debug-api.loadbalancer.server.scheme=h2c"
+  #     - "traefik.http.services.remix-debug-api.loadbalancer.server.port=50052"
 
   # ## client call api
   client-call-api:
@@ -166,6 +166,30 @@ services:
       - "traefik.http.routers.grafana.tls.certresolver=le"
       - "traefik.http.routers.grafana.tls.domains[0].main=grafana.ethcode.dev"
       - "traefik.docker.network=inbound"
+  
+  # grpc-auth-service
+  grpc-auth-service:
+    build: ./grpc-auth-api/
+    ports: 
+      - "4040:4040"
+    links: 
+      - redis
+    networks: 
+      - inbound
+    labels: 
+      - "traefik.enable=true"
+      - "traefik.http.routers.grpc-auth-service.rule=Host(`auth.localhost`)"
+      - "traefik.http.routers.grpc-auth-service.entrypoints=web"
+      # - "traefik.http.services.grpc-auth-service.loadbalancer.server.port=4040"
+      # - "traefik.docker.network=inbound"
+
+  # Redis    
+  redis:
+    image: redis
+    networks: 
+      - inbound
+    ports: 
+      - "6379:6379"
 
 networks:
   traefik:
