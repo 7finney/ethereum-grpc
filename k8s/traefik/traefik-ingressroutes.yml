@@ -14,7 +14,7 @@ spec:
   - match: Host(`trf.ethco.de`) && PathPrefix(`/`)
     kind: Rule
     services:
-    - name: admin
+    - name: traefik
       kind: TraefikService
       port: 8080
   - match: Host(`auth.ethco.de`) && PathPrefix(`/`)

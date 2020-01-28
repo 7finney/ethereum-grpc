@@ -38,6 +38,7 @@ spec:
             - --entrypoints.rt-port.address=:50051
             - --providers.kubernetescrd=true
             - --log.level=DEBUG
+            - --metrics.prometheus=true
             # - --certificatesresolvers.default.acme.tlschallenge
             # - --certificatesresolvers.default.acme.email=foo@you.com
             # - --certificatesresolvers.default.acme.storage=acme.json
@@ -49,8 +50,6 @@ spec:
               containerPort: 80
             - name: web-secure
               containerPort: 443
-            - name: admin
-              containerPort: 8080
             - name: rt-port
               containerPort: 50051
             - name: rd-port
