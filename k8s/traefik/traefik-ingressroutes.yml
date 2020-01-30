@@ -50,3 +50,6 @@ spec:
     - name: client-call-cluster-ip-svc
       port: 50053
       scheme: h2c
+
+  tls:
+    certResolver: default

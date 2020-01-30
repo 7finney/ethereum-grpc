@@ -13,7 +13,7 @@ data:
                 "name": "prometheus",
                 "orgId": 1,
                 "type": "prometheus",
-                "url": "http://prom.ethco.de",
+                "url": "http://prometheus-cluster-ip-svc:9090",
                 "version": 1
             }
         ]

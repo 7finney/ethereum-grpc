@@ -18,18 +18,17 @@ spec:
         image: grafana/grafana
         ports:
           - containerPort: 3000
-          # !TODO
-      #   volumeMounts:
-      #     - mountPath: /var/lib/grafana
-      #       name: monitoring-pv-claim
-      #       readOnly: false
-      #     - mountPath: /etc/grafana/provisioning/datasources
-      #       name: grafana-datasources
-      #       readOnly: false
-      # volumes:
-      #   - name: monitoring-pv-claim
-      #     persistentVolumeClaim:
-      #       claimName: monitoring-pv-claim
-      #   - name: grafana-datasources
-      #     configMap:
-      #         name: grafana-datasources
+        volumeMounts:
+          - mountPath: /var/lib/grafana
+            name: monitoring-pv-claim
+            readOnly: false
+          - mountPath: /etc/grafana/provisioning/datasources
+            name: grafana-datasources
+            readOnly: false
+      volumes:
+        - name: monitoring-pv-claim
+          persistentVolumeClaim:
+            claimName: monitoring-pv-claim
+        - name: grafana-datasources
+          configMap:
+              name: grafana-datasources
