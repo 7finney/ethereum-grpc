@@ -11,6 +11,8 @@ spec:
   routes:
   - match: Host(`trf.ethco.de`) && PathPrefix(`/`)
     kind: Rule
+    middlewares:
+      - name: test-auth
     services:
     - name: traefik
       kind: TraefikService
