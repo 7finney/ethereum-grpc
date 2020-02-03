@@ -1,14 +1,10 @@
 package main
 
 import (
-	// "context"
-	// "errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"grpc-auth-api/server/controllers"
 	"grpc-auth-api/server/database"
-	// "log"
-	// "net"
 )
 
 func main() {

@@ -21,7 +21,6 @@ func SaveToDB(token string, machID string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// Output: PONG <nil>
 }
 
 // CheckFromDB -> Check token from db

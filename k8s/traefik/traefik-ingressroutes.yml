@@ -5,33 +5,10 @@ metadata:
   namespace: default
 spec:
   entryPoints:
-    - web
-    - web-secure
     - rt-port
     - rd-port
     - cc-port
   routes:
-  - match: Host(`trf.ethco.de`) && PathPrefix(`/`)
-    kind: Rule
-    services:
-    - name: traefik
-      kind: TraefikService
-      port: 8080
-  - match: Host(`auth.ethco.de`) && PathPrefix(`/`)
-    kind: Rule
-    services:
-    - name: auth-api-cluster-ip-svc
-      port: 4040
-  - match: Host(`graf.ethco.de`) && PathPrefix(`/`)
-    kind: Rule
-    services:
-    - name: grafana-cluster-ip-svc
-      port: 3000
-  - match: Host(`prom.ethco.de`) && PathPrefix(`/`)
-    kind: Rule
-    services:
-    - name: prometheus-cluster-ip-svc
-      port: 9090
   - match: Host(`rt.ethco.de`) && PathPrefix(`/`)
     kind: Rule
     services:
@@ -50,6 +27,3 @@ spec:
     - name: client-call-cluster-ip-svc
       port: 50053
       scheme: h2c
-
-  tls:
-    certResolver: default

@@ -14,8 +14,6 @@ var jwtKey = []byte("qwerty")
 // GetToken -> To get token with machine id
 func GetToken(c *gin.Context) {
 	machineID := c.Param("machineID")
-	// expirationTime := time.Now().Add(5 * time.Minute)
-
 	claims := &types.Claims{
 		MachineID:      machineID,
 		StandardClaims: jwt.StandardClaims{},
