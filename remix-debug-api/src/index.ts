@@ -28,20 +28,44 @@ console.log('Server running at 0.0.0.0:50052');
 rxDbgServer.start();
 
 // remix-debug code
-const web3 = new Web3('http://ganache:8545');
-const ethdebugger = new EthDebugger({ web3 });
+// const web3 = new Web3('http://ganache:8545');
+// const goerliWeb3 = new Web3('http://172.26.84.11:7545');
+
+// const web3 = new Web3('http://172.26.84.11:7545');
 function debug(call: any) {
     let result = new DebugResponse();
-    console.log(call.request);
+    // console.log(call.request);
+    // const txHash: string = call.request.debugInterface.payload;
     const txHash: string = call.request.debugInterface.payload;
-    web3.eth.getTransaction(txHash, (error: Error, tx: any) => {
-        if (error)
-            throw error;
-        console.log(tx);
+    const testnetId: string = call.request.debugInterface.testnetId;
+    var url: string = "http://172.26.84.11:754";
+    switch (testnetId) {
+        case "5":
+            url += "5";
+            break;
+        case "3":
+            url += "6";
+            break;
+        case "4":
+            url += "7";
+            break;
+        case "ganache":
+            url = "http://ganache:8545";
+            break;
+        default:
+            url = "http://ganache:8545";
+    }
+    const web3 = new Web3(url);
+    const ethdebugger = new EthDebugger({ web3 });
+    web3.eth.getTransaction(txHash).then((tx: any) => {
+        console.log("tx",tx);
         ethdebugger.event.register('newTraceLoaded', (trace: any) => {
-            console.log(trace);
+            console.log("hghjgygj",trace);
             call.write({ result: JSON.stringify(trace) });
         });
         ethdebugger.debug(tx);
-    })
+
+    }).catch((error: any) => {
+        throw error;
+    });
 }
