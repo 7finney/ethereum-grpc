@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package protoeth;
+option go_package = "protoeth";
+
+message ClientCallInterface {
+    string command = 1;
+    string payload = 2;
+}
+
+message ClientCallRequest {
+    ClientCallInterface callInterface = 1;
+}
+
+message ClientCallResponse {
+    string result = 1;
+}
+
+service ProtoEthService {
+    rpc GetAccounts(ClientCallRequest) returns (stream ClientCallResponse) {};
+}
