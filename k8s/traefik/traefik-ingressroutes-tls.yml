@@ -11,6 +11,8 @@ spec:
   routes:
   - match: Host(`trf.ethco.de`) && PathPrefix(`/`)
     kind: Rule
+    middlewares:
+      - name: basic-auth
     services:
     - name: traefik
       kind: TraefikService
@@ -27,6 +29,8 @@ spec:
       port: 3000
   - match: Host(`prom.ethco.de`) && PathPrefix(`/`)
     kind: Rule
+    middlewares:
+      - name: basic-auth
     services:
     - name: prometheus-cluster-ip-svc
       port: 9090
