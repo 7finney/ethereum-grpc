@@ -20,33 +20,19 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='protoeth',
   syntax='proto3',
   serialized_options=_b('Z\010protoeth'),
-  serialized_pb=_b('\n\x0e\x65thereum.proto\x12\x08protoeth\"7\n\x13\x43lientCallInterface\x12\x0f\n\x07\x63ommand\x18\x01 \x01(\t\x12\x0f\n\x07payload\x18\x02 \x01(\t\"I\n\x11\x43lientCallRequest\x12\x34\n\rcallInterface\x18\x01 \x01(\x0b\x32\x1d.protoeth.ClientCallInterface\"$\n\x12\x43lientCallResponse\x12\x0e\n\x06result\x18\x01 \x01(\t2_\n\x0fProtoEthService\x12L\n\x0bGetAccounts\x12\x1b.protoeth.ClientCallRequest\x1a\x1c.protoeth.ClientCallResponse\"\x00\x30\x01\x42\nZ\x08protoethb\x06proto3')
+  serialized_pb=_b('\n\x0e\x65thereum.proto\x12\x08protoeth\"\x14\n\x12GetAccountsRequest\"%\n\x13GetAccountsResponse\x12\x0e\n\x06result\x18\x01 \x01(\t\"\x1a\n\x0cRawTxRequest\x12\n\n\x02tx\x18\x01 \x01(\t\"\x1c\n\nTxResponse\x12\x0e\n\x06txData\x18\x01 \x01(\t2\xaa\x01\n\x0fProtoEthService\x12N\n\x0bGetAccounts\x12\x1c.protoeth.GetAccountsRequest\x1a\x1d.protoeth.GetAccountsResponse\"\x00\x30\x01\x12G\n\x13SendRawTransactions\x12\x16.protoeth.RawTxRequest\x1a\x14.protoeth.TxResponse\"\x00\x30\x01\x42\nZ\x08protoethb\x06proto3')
 )
 
 
 
 
-_CLIENTCALLINTERFACE = _descriptor.Descriptor(
-  name='ClientCallInterface',
-  full_name='protoeth.ClientCallInterface',
+_GETACCOUNTSREQUEST = _descriptor.Descriptor(
+  name='GetAccountsRequest',
+  full_name='protoeth.GetAccountsRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
-    _descriptor.FieldDescriptor(
-      name='command', full_name='protoeth.ClientCallInterface.command', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='payload', full_name='protoeth.ClientCallInterface.payload', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -60,50 +46,19 @@ _CLIENTCALLINTERFACE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=28,
-  serialized_end=83,
+  serialized_end=48,
 )
 
 
-_CLIENTCALLREQUEST = _descriptor.Descriptor(
-  name='ClientCallRequest',
-  full_name='protoeth.ClientCallRequest',
+_GETACCOUNTSRESPONSE = _descriptor.Descriptor(
+  name='GetAccountsResponse',
+  full_name='protoeth.GetAccountsResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='callInterface', full_name='protoeth.ClientCallRequest.callInterface', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=85,
-  serialized_end=158,
-)
-
-
-_CLIENTCALLRESPONSE = _descriptor.Descriptor(
-  name='ClientCallResponse',
-  full_name='protoeth.ClientCallResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='result', full_name='protoeth.ClientCallResponse.result', index=0,
+      name='result', full_name='protoeth.GetAccountsResponse.result', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -121,36 +76,105 @@ _CLIENTCALLRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=160,
-  serialized_end=196,
+  serialized_start=50,
+  serialized_end=87,
 )
 
-_CLIENTCALLREQUEST.fields_by_name['callInterface'].message_type = _CLIENTCALLINTERFACE
-DESCRIPTOR.message_types_by_name['ClientCallInterface'] = _CLIENTCALLINTERFACE
-DESCRIPTOR.message_types_by_name['ClientCallRequest'] = _CLIENTCALLREQUEST
-DESCRIPTOR.message_types_by_name['ClientCallResponse'] = _CLIENTCALLRESPONSE
+
+_RAWTXREQUEST = _descriptor.Descriptor(
+  name='RawTxRequest',
+  full_name='protoeth.RawTxRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='tx', full_name='protoeth.RawTxRequest.tx', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=89,
+  serialized_end=115,
+)
+
+
+_TXRESPONSE = _descriptor.Descriptor(
+  name='TxResponse',
+  full_name='protoeth.TxResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='txData', full_name='protoeth.TxResponse.txData', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=117,
+  serialized_end=145,
+)
+
+DESCRIPTOR.message_types_by_name['GetAccountsRequest'] = _GETACCOUNTSREQUEST
+DESCRIPTOR.message_types_by_name['GetAccountsResponse'] = _GETACCOUNTSRESPONSE
+DESCRIPTOR.message_types_by_name['RawTxRequest'] = _RAWTXREQUEST
+DESCRIPTOR.message_types_by_name['TxResponse'] = _TXRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-ClientCallInterface = _reflection.GeneratedProtocolMessageType('ClientCallInterface', (_message.Message,), {
-  'DESCRIPTOR' : _CLIENTCALLINTERFACE,
+GetAccountsRequest = _reflection.GeneratedProtocolMessageType('GetAccountsRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETACCOUNTSREQUEST,
   '__module__' : 'ethereum_pb2'
-  # @@protoc_insertion_point(class_scope:protoeth.ClientCallInterface)
+  # @@protoc_insertion_point(class_scope:protoeth.GetAccountsRequest)
   })
-_sym_db.RegisterMessage(ClientCallInterface)
+_sym_db.RegisterMessage(GetAccountsRequest)
 
-ClientCallRequest = _reflection.GeneratedProtocolMessageType('ClientCallRequest', (_message.Message,), {
-  'DESCRIPTOR' : _CLIENTCALLREQUEST,
+GetAccountsResponse = _reflection.GeneratedProtocolMessageType('GetAccountsResponse', (_message.Message,), {
+  'DESCRIPTOR' : _GETACCOUNTSRESPONSE,
   '__module__' : 'ethereum_pb2'
-  # @@protoc_insertion_point(class_scope:protoeth.ClientCallRequest)
+  # @@protoc_insertion_point(class_scope:protoeth.GetAccountsResponse)
   })
-_sym_db.RegisterMessage(ClientCallRequest)
+_sym_db.RegisterMessage(GetAccountsResponse)
 
-ClientCallResponse = _reflection.GeneratedProtocolMessageType('ClientCallResponse', (_message.Message,), {
-  'DESCRIPTOR' : _CLIENTCALLRESPONSE,
+RawTxRequest = _reflection.GeneratedProtocolMessageType('RawTxRequest', (_message.Message,), {
+  'DESCRIPTOR' : _RAWTXREQUEST,
   '__module__' : 'ethereum_pb2'
-  # @@protoc_insertion_point(class_scope:protoeth.ClientCallResponse)
+  # @@protoc_insertion_point(class_scope:protoeth.RawTxRequest)
   })
-_sym_db.RegisterMessage(ClientCallResponse)
+_sym_db.RegisterMessage(RawTxRequest)
+
+TxResponse = _reflection.GeneratedProtocolMessageType('TxResponse', (_message.Message,), {
+  'DESCRIPTOR' : _TXRESPONSE,
+  '__module__' : 'ethereum_pb2'
+  # @@protoc_insertion_point(class_scope:protoeth.TxResponse)
+  })
+_sym_db.RegisterMessage(TxResponse)
 
 
 DESCRIPTOR._options = None
@@ -161,16 +185,25 @@ _PROTOETHSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=198,
-  serialized_end=293,
+  serialized_start=148,
+  serialized_end=318,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetAccounts',
     full_name='protoeth.ProtoEthService.GetAccounts',
     index=0,
     containing_service=None,
-    input_type=_CLIENTCALLREQUEST,
-    output_type=_CLIENTCALLRESPONSE,
+    input_type=_GETACCOUNTSREQUEST,
+    output_type=_GETACCOUNTSRESPONSE,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='SendRawTransactions',
+    full_name='protoeth.ProtoEthService.SendRawTransactions',
+    index=1,
+    containing_service=None,
+    input_type=_RAWTXREQUEST,
+    output_type=_TXRESPONSE,
     serialized_options=None,
   ),
 ])

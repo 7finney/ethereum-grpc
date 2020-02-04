@@ -16,8 +16,13 @@ class ProtoEthServiceStub(object):
     """
     self.GetAccounts = channel.unary_stream(
         '/protoeth.ProtoEthService/GetAccounts',
-        request_serializer=ethereum__pb2.ClientCallRequest.SerializeToString,
-        response_deserializer=ethereum__pb2.ClientCallResponse.FromString,
+        request_serializer=ethereum__pb2.GetAccountsRequest.SerializeToString,
+        response_deserializer=ethereum__pb2.GetAccountsResponse.FromString,
+        )
+    self.SendRawTransactions = channel.unary_stream(
+        '/protoeth.ProtoEthService/SendRawTransactions',
+        request_serializer=ethereum__pb2.RawTxRequest.SerializeToString,
+        response_deserializer=ethereum__pb2.TxResponse.FromString,
         )
 
 
@@ -32,13 +37,25 @@ class ProtoEthServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def SendRawTransactions(self, request, context):
+    """eth_sendRawTransaction should have simple requests but stream of responses
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_ProtoEthServiceServicer_to_server(servicer, server):
   rpc_method_handlers = {
       'GetAccounts': grpc.unary_stream_rpc_method_handler(
           servicer.GetAccounts,
-          request_deserializer=ethereum__pb2.ClientCallRequest.FromString,
-          response_serializer=ethereum__pb2.ClientCallResponse.SerializeToString,
+          request_deserializer=ethereum__pb2.GetAccountsRequest.FromString,
+          response_serializer=ethereum__pb2.GetAccountsResponse.SerializeToString,
+      ),
+      'SendRawTransactions': grpc.unary_stream_rpc_method_handler(
+          servicer.SendRawTransactions,
+          request_deserializer=ethereum__pb2.RawTxRequest.FromString,
+          response_serializer=ethereum__pb2.TxResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

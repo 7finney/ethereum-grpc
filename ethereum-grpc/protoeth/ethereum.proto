@@ -3,19 +3,28 @@ syntax = "proto3";
 package protoeth;
 option go_package = "protoeth";
 
-message ClientCallInterface {
-    string command = 1;
-    string payload = 2;
-}
+message GetAccountsRequest {}
 
-message ClientCallRequest {
-    ClientCallInterface callInterface = 1;
-}
-
-message ClientCallResponse {
+message GetAccountsResponse {
     string result = 1;
 }
 
-service ProtoEthService {
-    rpc GetAccounts(ClientCallRequest) returns (stream ClientCallResponse) {};
+message RawTxRequest {
+    string tx = 1;
 }
+
+message TxResponse {
+    string txData = 1;
+}
+
+service ProtoEthService {
+    rpc GetAccounts(GetAccountsRequest) returns (stream GetAccountsResponse) {};
+    // eth_sendRawTransaction should have simple requests but stream of responses
+    rpc SendRawTransactions(RawTxRequest) returns (stream TxResponse) {};
+}
+
+// ##############################
+// ## 1. create protocol buffer for sendTransaction
+// ## this protobuf should return a stream. Once the transaction is successful, stream will return confirmations
+// ## 2. split functions in multiple subs exmp - eth, personal, debug
+// ##############################

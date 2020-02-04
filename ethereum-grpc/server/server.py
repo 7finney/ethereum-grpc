@@ -13,17 +13,14 @@ w3 = Web3(Web3.HTTPProvider("http://localhost:8545"))
 
 class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
     def GetAccounts(self, request, context):
-        print("Running command: ", request.callInterface)
-        if request.callInterface.command == "get-accounts":
-            accounts, balance = self.web3getAccounts()
-            result = json.dumps({
-                "accounts": accounts,
-                "balance": balance
-            })
-            resp = ethereum_pb2.ClientCallResponse(result=result)
-            yield resp
-        else:
-            return
+        print("Running getAccounts....")
+        accounts, balance = self.web3getAccounts()
+        result = json.dumps({
+            "accounts": accounts,
+            "balance": balance
+        })
+        resp = ethereum_pb2.GetAccountsResponse(result=result)
+        yield resp
     def web3getAccounts(self):
         accounts = w3.eth.accounts
         balance = w3.eth.getBalance(accounts[0])

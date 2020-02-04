@@ -28,8 +28,8 @@ def run():
     # of the code.
     with grpc.insecure_channel('localhost:50053') as channel:
         stub = ethereum_pb2_grpc.ProtoEthServiceStub(channel)
-        request = ethereum_pb2.ClientCallInterface(command="get-accounts")
-        responses = stub.GetAccounts(ethereum_pb2.ClientCallRequest(callInterface=request))
+        request = ethereum_pb2.GetAccountsRequest()
+        responses = stub.GetAccounts(request)
         for response in responses:
           print("Received accounts from stream:")
           print(response.result)
