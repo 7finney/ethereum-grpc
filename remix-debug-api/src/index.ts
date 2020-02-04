@@ -38,16 +38,17 @@ function debug(call: any) {
     // const txHash: string = call.request.debugInterface.payload;
     const txHash: string = call.request.debugInterface.payload;
     const testnetId: string = call.request.debugInterface.testnetId;
-    var url: string = "http://172.26.84.11:754";
+    var url: string = "http://172.26.84.11:";
+    var port: string = "754"
     switch (testnetId) {
         case "5":
-            url += "5";
+            url += port + "5";
             break;
         case "3":
-            url += "6";
+            url += port + "6";
             break;
         case "4":
-            url += "7";
+            url += port + "7";
             break;
         case "ganache":
             url = "http://ganache:8545";
