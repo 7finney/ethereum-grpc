@@ -12,7 +12,7 @@ spec:
   - match: Host(`trf.ethco.de`) && PathPrefix(`/`)
     kind: Rule
     middlewares:
-      - name: test-auth
+      - name: basic-auth
     services:
     - name: traefik
       kind: TraefikService
@@ -30,7 +30,7 @@ spec:
   - match: Host(`prom.ethco.de`) && PathPrefix(`/`)
     kind: Rule
     middlewares:
-      - name: test-auth
+      - name: basic-auth
     services:
     - name: prometheus-cluster-ip-svc
       port: 9090
