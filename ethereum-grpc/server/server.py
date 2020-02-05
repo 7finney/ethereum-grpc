@@ -21,6 +21,10 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
         print("Running getBalance....")
         balance = w3.eth.getBalance(request.address)
         return ethereum_pb2.GetBalanceResp(balance=json.dumps(balance))
+    def GetTransaction(self, request, context):
+        print("Running getTransaction...")
+        tx = w3.eth.getTransaction(request.txhash)
+        return ethereum_pb2.TransactionInfo(transaction=Web3.toJSON(tx))
   
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

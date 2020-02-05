@@ -9,12 +9,20 @@ message GetAccountsResp {
     string accounts = 1; // TODO: accounts should return array of addresses
 }
 
-// GetBalance
+// GetBalance -> Eth.getBalance -> eth_getBalance
 message GetBalanceReq {
     string address = 1;
 }
 message GetBalanceResp {
     string balance = 1;
+}
+
+// GetTransaction -> Eth.getTransaction -> eth_getTransactionByHAsh
+message TxHash {
+    string txhash = 1;
+}
+message TransactionInfo {
+    string transaction = 1;
 }
 
 message RawTxRequest {
@@ -28,6 +36,7 @@ message TxResponse {
 service ProtoEthService {
     rpc GetAccounts(GetAccountsReq) returns (GetAccountsResp) {};
     rpc GetBalance(GetBalanceReq) returns (GetBalanceResp) {};
+    rpc GetTransaction(TxHash) returns (TransactionInfo) {};
     // eth_sendRawTransaction should have simple requests but stream of responses
     rpc SendRawTransactions(RawTxRequest) returns (stream TxResponse) {};
 }
