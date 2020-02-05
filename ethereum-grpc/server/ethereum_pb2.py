@@ -20,15 +20,15 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='protoeth',
   syntax='proto3',
   serialized_options=_b('Z\010protoeth'),
-  serialized_pb=_b('\n\x0e\x65thereum.proto\x12\x08protoeth\"\x14\n\x12GetAccountsRequest\"%\n\x13GetAccountsResponse\x12\x0e\n\x06result\x18\x01 \x01(\t\"\x1a\n\x0cRawTxRequest\x12\n\n\x02tx\x18\x01 \x01(\t\"\x1c\n\nTxResponse\x12\x0e\n\x06txData\x18\x01 \x01(\t2\xaa\x01\n\x0fProtoEthService\x12N\n\x0bGetAccounts\x12\x1c.protoeth.GetAccountsRequest\x1a\x1d.protoeth.GetAccountsResponse\"\x00\x30\x01\x12G\n\x13SendRawTransactions\x12\x16.protoeth.RawTxRequest\x1a\x14.protoeth.TxResponse\"\x00\x30\x01\x42\nZ\x08protoethb\x06proto3')
+  serialized_pb=_b('\n\x0e\x65thereum.proto\x12\x08protoeth\"\x10\n\x0eGetAccountsReq\"#\n\x0fGetAccountsResp\x12\x10\n\x08\x61\x63\x63ounts\x18\x01 \x01(\t\" \n\rGetBalanceReq\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\"!\n\x0eGetBalanceResp\x12\x0f\n\x07\x62\x61lance\x18\x01 \x01(\t\"\x1a\n\x0cRawTxRequest\x12\n\n\x02tx\x18\x01 \x01(\t\"\x1c\n\nTxResponse\x12\x0e\n\x06txData\x18\x01 \x01(\t2\xe3\x01\n\x0fProtoEthService\x12\x44\n\x0bGetAccounts\x12\x18.protoeth.GetAccountsReq\x1a\x19.protoeth.GetAccountsResp\"\x00\x12\x41\n\nGetBalance\x12\x17.protoeth.GetBalanceReq\x1a\x18.protoeth.GetBalanceResp\"\x00\x12G\n\x13SendRawTransactions\x12\x16.protoeth.RawTxRequest\x1a\x14.protoeth.TxResponse\"\x00\x30\x01\x42\nZ\x08protoethb\x06proto3')
 )
 
 
 
 
-_GETACCOUNTSREQUEST = _descriptor.Descriptor(
-  name='GetAccountsRequest',
-  full_name='protoeth.GetAccountsRequest',
+_GETACCOUNTSREQ = _descriptor.Descriptor(
+  name='GetAccountsReq',
+  full_name='protoeth.GetAccountsReq',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -46,19 +46,19 @@ _GETACCOUNTSREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=28,
-  serialized_end=48,
+  serialized_end=44,
 )
 
 
-_GETACCOUNTSRESPONSE = _descriptor.Descriptor(
-  name='GetAccountsResponse',
-  full_name='protoeth.GetAccountsResponse',
+_GETACCOUNTSRESP = _descriptor.Descriptor(
+  name='GetAccountsResp',
+  full_name='protoeth.GetAccountsResp',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='result', full_name='protoeth.GetAccountsResponse.result', index=0,
+      name='accounts', full_name='protoeth.GetAccountsResp.accounts', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -76,8 +76,70 @@ _GETACCOUNTSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=50,
-  serialized_end=87,
+  serialized_start=46,
+  serialized_end=81,
+)
+
+
+_GETBALANCEREQ = _descriptor.Descriptor(
+  name='GetBalanceReq',
+  full_name='protoeth.GetBalanceReq',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='address', full_name='protoeth.GetBalanceReq.address', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=83,
+  serialized_end=115,
+)
+
+
+_GETBALANCERESP = _descriptor.Descriptor(
+  name='GetBalanceResp',
+  full_name='protoeth.GetBalanceResp',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='balance', full_name='protoeth.GetBalanceResp.balance', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=117,
+  serialized_end=150,
 )
 
 
@@ -107,8 +169,8 @@ _RAWTXREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=89,
-  serialized_end=115,
+  serialized_start=152,
+  serialized_end=178,
 )
 
 
@@ -138,29 +200,45 @@ _TXRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=117,
-  serialized_end=145,
+  serialized_start=180,
+  serialized_end=208,
 )
 
-DESCRIPTOR.message_types_by_name['GetAccountsRequest'] = _GETACCOUNTSREQUEST
-DESCRIPTOR.message_types_by_name['GetAccountsResponse'] = _GETACCOUNTSRESPONSE
+DESCRIPTOR.message_types_by_name['GetAccountsReq'] = _GETACCOUNTSREQ
+DESCRIPTOR.message_types_by_name['GetAccountsResp'] = _GETACCOUNTSRESP
+DESCRIPTOR.message_types_by_name['GetBalanceReq'] = _GETBALANCEREQ
+DESCRIPTOR.message_types_by_name['GetBalanceResp'] = _GETBALANCERESP
 DESCRIPTOR.message_types_by_name['RawTxRequest'] = _RAWTXREQUEST
 DESCRIPTOR.message_types_by_name['TxResponse'] = _TXRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-GetAccountsRequest = _reflection.GeneratedProtocolMessageType('GetAccountsRequest', (_message.Message,), {
-  'DESCRIPTOR' : _GETACCOUNTSREQUEST,
+GetAccountsReq = _reflection.GeneratedProtocolMessageType('GetAccountsReq', (_message.Message,), {
+  'DESCRIPTOR' : _GETACCOUNTSREQ,
   '__module__' : 'ethereum_pb2'
-  # @@protoc_insertion_point(class_scope:protoeth.GetAccountsRequest)
+  # @@protoc_insertion_point(class_scope:protoeth.GetAccountsReq)
   })
-_sym_db.RegisterMessage(GetAccountsRequest)
+_sym_db.RegisterMessage(GetAccountsReq)
 
-GetAccountsResponse = _reflection.GeneratedProtocolMessageType('GetAccountsResponse', (_message.Message,), {
-  'DESCRIPTOR' : _GETACCOUNTSRESPONSE,
+GetAccountsResp = _reflection.GeneratedProtocolMessageType('GetAccountsResp', (_message.Message,), {
+  'DESCRIPTOR' : _GETACCOUNTSRESP,
   '__module__' : 'ethereum_pb2'
-  # @@protoc_insertion_point(class_scope:protoeth.GetAccountsResponse)
+  # @@protoc_insertion_point(class_scope:protoeth.GetAccountsResp)
   })
-_sym_db.RegisterMessage(GetAccountsResponse)
+_sym_db.RegisterMessage(GetAccountsResp)
+
+GetBalanceReq = _reflection.GeneratedProtocolMessageType('GetBalanceReq', (_message.Message,), {
+  'DESCRIPTOR' : _GETBALANCEREQ,
+  '__module__' : 'ethereum_pb2'
+  # @@protoc_insertion_point(class_scope:protoeth.GetBalanceReq)
+  })
+_sym_db.RegisterMessage(GetBalanceReq)
+
+GetBalanceResp = _reflection.GeneratedProtocolMessageType('GetBalanceResp', (_message.Message,), {
+  'DESCRIPTOR' : _GETBALANCERESP,
+  '__module__' : 'ethereum_pb2'
+  # @@protoc_insertion_point(class_scope:protoeth.GetBalanceResp)
+  })
+_sym_db.RegisterMessage(GetBalanceResp)
 
 RawTxRequest = _reflection.GeneratedProtocolMessageType('RawTxRequest', (_message.Message,), {
   'DESCRIPTOR' : _RAWTXREQUEST,
@@ -185,22 +263,31 @@ _PROTOETHSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=148,
-  serialized_end=318,
+  serialized_start=211,
+  serialized_end=438,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetAccounts',
     full_name='protoeth.ProtoEthService.GetAccounts',
     index=0,
     containing_service=None,
-    input_type=_GETACCOUNTSREQUEST,
-    output_type=_GETACCOUNTSRESPONSE,
+    input_type=_GETACCOUNTSREQ,
+    output_type=_GETACCOUNTSRESP,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetBalance',
+    full_name='protoeth.ProtoEthService.GetBalance',
+    index=1,
+    containing_service=None,
+    input_type=_GETBALANCEREQ,
+    output_type=_GETBALANCERESP,
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(
     name='SendRawTransactions',
     full_name='protoeth.ProtoEthService.SendRawTransactions',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_RAWTXREQUEST,
     output_type=_TXRESPONSE,

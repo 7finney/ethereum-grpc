@@ -3,10 +3,18 @@ syntax = "proto3";
 package protoeth;
 option go_package = "protoeth";
 
-message GetAccountsRequest {}
+// GetAccounts
+message GetAccountsReq {}
+message GetAccountsResp {
+    string accounts = 1; // TODO: accounts should return array of addresses
+}
 
-message GetAccountsResponse {
-    string result = 1;
+// GetBalance
+message GetBalanceReq {
+    string address = 1;
+}
+message GetBalanceResp {
+    string balance = 1;
 }
 
 message RawTxRequest {
@@ -18,7 +26,8 @@ message TxResponse {
 }
 
 service ProtoEthService {
-    rpc GetAccounts(GetAccountsRequest) returns (stream GetAccountsResponse) {};
+    rpc GetAccounts(GetAccountsReq) returns (GetAccountsResp) {};
+    rpc GetBalance(GetBalanceReq) returns (GetBalanceResp) {};
     // eth_sendRawTransaction should have simple requests but stream of responses
     rpc SendRawTransactions(RawTxRequest) returns (stream TxResponse) {};
 }

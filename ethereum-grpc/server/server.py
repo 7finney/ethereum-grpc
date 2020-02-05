@@ -9,22 +9,18 @@ import re
 import requests
 from web3 import Web3
 
-w3 = Web3(Web3.HTTPProvider("http://localhost:8545"))
+w3 = Web3(Web3.HTTPProvider("http://172.26.84.11:7545"))
+# w3 = Web3(Web3.HTTPProvider("http://localhost:8545"))
 
 class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
     def GetAccounts(self, request, context):
         print("Running getAccounts....")
-        accounts, balance = self.web3getAccounts()
-        result = json.dumps({
-            "accounts": accounts,
-            "balance": balance
-        })
-        resp = ethereum_pb2.GetAccountsResponse(result=result)
-        yield resp
-    def web3getAccounts(self):
         accounts = w3.eth.accounts
-        balance = w3.eth.getBalance(accounts[0])
-        return accounts, balance
+        return ethereum_pb2.GetAccountsResp(accounts=json.dumps(accounts))
+    def GetBalance(self, request, context):
+        print("Running getBalance....")
+        balance = w3.eth.getBalance(request.address)
+        return ethereum_pb2.GetBalanceResp(balance=json.dumps(balance))
   
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

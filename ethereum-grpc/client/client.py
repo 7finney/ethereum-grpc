@@ -15,6 +15,7 @@
 
 from __future__ import print_function
 import logging
+import json
 
 import grpc
 
@@ -27,12 +28,15 @@ def run():
     # used in circumstances in which the with statement does not fit the needs
     # of the code.
     with grpc.insecure_channel('localhost:50053') as channel:
-        stub = ethereum_pb2_grpc.ProtoEthServiceStub(channel)
-        request = ethereum_pb2.GetAccountsRequest()
-        responses = stub.GetAccounts(request)
-        for response in responses:
-          print("Received accounts from stream:")
-          print(response.result)
+        ethstub = ethereum_pb2_grpc.ProtoEthServiceStub(channel)
+        request = ethereum_pb2.GetAccountsReq()
+        result = ethstub.GetAccounts(request)
+        accounts = json.loads(result.accounts)
+        print(accounts)
+        request = ethereum_pb2.GetBalanceReq(address=accounts[0])
+        resp = ethstub.GetBalance(request)
+        balance = json.loads(resp.balance)
+        print(balance)
 
 
 if __name__ == '__main__':

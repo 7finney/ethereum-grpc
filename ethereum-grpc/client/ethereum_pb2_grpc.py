@@ -14,10 +14,15 @@ class ProtoEthServiceStub(object):
     Args:
       channel: A grpc.Channel.
     """
-    self.GetAccounts = channel.unary_stream(
+    self.GetAccounts = channel.unary_unary(
         '/protoeth.ProtoEthService/GetAccounts',
-        request_serializer=ethereum__pb2.GetAccountsRequest.SerializeToString,
-        response_deserializer=ethereum__pb2.GetAccountsResponse.FromString,
+        request_serializer=ethereum__pb2.GetAccountsReq.SerializeToString,
+        response_deserializer=ethereum__pb2.GetAccountsResp.FromString,
+        )
+    self.GetBalance = channel.unary_unary(
+        '/protoeth.ProtoEthService/GetBalance',
+        request_serializer=ethereum__pb2.GetBalanceReq.SerializeToString,
+        response_deserializer=ethereum__pb2.GetBalanceResp.FromString,
         )
     self.SendRawTransactions = channel.unary_stream(
         '/protoeth.ProtoEthService/SendRawTransactions',
@@ -37,6 +42,13 @@ class ProtoEthServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def GetBalance(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def SendRawTransactions(self, request, context):
     """eth_sendRawTransaction should have simple requests but stream of responses
     """
@@ -47,10 +59,15 @@ class ProtoEthServiceServicer(object):
 
 def add_ProtoEthServiceServicer_to_server(servicer, server):
   rpc_method_handlers = {
-      'GetAccounts': grpc.unary_stream_rpc_method_handler(
+      'GetAccounts': grpc.unary_unary_rpc_method_handler(
           servicer.GetAccounts,
-          request_deserializer=ethereum__pb2.GetAccountsRequest.FromString,
-          response_serializer=ethereum__pb2.GetAccountsResponse.SerializeToString,
+          request_deserializer=ethereum__pb2.GetAccountsReq.FromString,
+          response_serializer=ethereum__pb2.GetAccountsResp.SerializeToString,
+      ),
+      'GetBalance': grpc.unary_unary_rpc_method_handler(
+          servicer.GetBalance,
+          request_deserializer=ethereum__pb2.GetBalanceReq.FromString,
+          response_serializer=ethereum__pb2.GetBalanceResp.SerializeToString,
       ),
       'SendRawTransactions': grpc.unary_stream_rpc_method_handler(
           servicer.SendRawTransactions,
