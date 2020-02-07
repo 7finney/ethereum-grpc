@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: client-call-api
-          image: gcr.io/eth-devtools-api-dev/client-call-api:0.1
+          image: gcr.io/eth-devtools-api-dev/client-call-api:0.2
           ports:
             - containerPort: 50053
       restartPolicy: Always
