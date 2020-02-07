@@ -34,12 +34,14 @@ data:
       - job_name: 'remix-tests-api'
         scrape_interval: 5s
         static_configs:
-             - targets: ['rt.ethco.de:50051']
+            #  - targets: ['rt.ethco.de:50051']
+             - targets: ['remix-tests-api-cluster-ip-svc:50051']
       # remix-debug-api scrape config
       - job_name: 'remix-debug-api'
         scrape_interval: 5s
         static_configs:
-             - targets: ['rd.ethco.de:50052']
+             - targets: ['remix-debug-cluster-ip-svc:50052']
+            #  - targets: ['rd.ethco.de:50052']
       # Node Exporter
       - job_name: 'node-exporter'
         scrape_interval: 5s
@@ -50,7 +52,7 @@ data:
       - job_name: 'traefik'
         scrape_interval: 5s
         static_configs:
-          - targets: ['trf.ethco.de']
+          - targets: ['traefik:8080']
         dns_sd_configs:
         - names:
           - 'tasks.traefik'

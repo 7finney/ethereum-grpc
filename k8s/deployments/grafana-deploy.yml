@@ -21,7 +21,7 @@ spec:
         volumeMounts:
           - mountPath: /var/lib/grafana
             name: monitoring-pv-claim
-            readOnly: false
+            # readOnly: false
           - mountPath: /etc/grafana/provisioning/datasources
             name: grafana-datasources
             readOnly: false
