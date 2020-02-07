@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-var url, _ = redis.ParseURL("redis://redis:6379")
+var url, _ = redis.ParseURL("redis://localhost:6379")
 
 // Client -> redis client
 var Client = redis.NewClient(&redis.Options{
