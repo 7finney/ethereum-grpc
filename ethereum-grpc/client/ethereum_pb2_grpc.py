@@ -37,7 +37,7 @@ class ProtoEthServiceStub(object):
     self.GetTransactionReceipt = channel.unary_unary(
         '/protoeth.ProtoEthService/GetTransactionReceipt',
         request_serializer=ethereum__pb2.TxHash.SerializeToString,
-        response_deserializer=ethereum__pb2.TransactionInfo.FromString,
+        response_deserializer=ethereum__pb2.TxReceipt.FromString,
         )
 
 
@@ -106,7 +106,7 @@ def add_ProtoEthServiceServicer_to_server(servicer, server):
       'GetTransactionReceipt': grpc.unary_unary_rpc_method_handler(
           servicer.GetTransactionReceipt,
           request_deserializer=ethereum__pb2.TxHash.FromString,
-          response_serializer=ethereum__pb2.TransactionInfo.SerializeToString,
+          response_serializer=ethereum__pb2.TxReceipt.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
