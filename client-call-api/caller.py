@@ -31,13 +31,13 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         id = request.callInterface.testnetId
         if(id == "5"):
             self.url += self.port + "5"
-        if(id == "4"):
+        elif(id == "4"):
             self.url += self.port + "7"
-        if(id == "3"):
+        elif(id == "3"):
             self.url += self.port + "6"
-        if(id == "ganache"):
+        elif(id == "ganache"):
             self.url = "http://ganache:8545"
-        if(id == ""):
+        else:
             self.url = "http://ganache:8545"
         self.w3 = Web3(Web3.HTTPProvider(self.url))
         print("Running command: ", request.callInterface.command)
