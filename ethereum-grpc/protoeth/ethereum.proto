@@ -39,6 +39,7 @@ service ProtoEthService {
     rpc GetTransaction(TxHash) returns (TransactionInfo) {};
     // eth_sendRawTransaction should have simple requests but stream of responses
     rpc SendRawTransactions(RawTxRequest) returns (stream TxResponse) {};
+    rpc GetTransactionReceipt(TxHash) returns (TransactionInfo) {};
 }
 
 // ##############################

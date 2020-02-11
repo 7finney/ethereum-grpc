@@ -42,6 +42,10 @@ def run():
         resp = ethstub.GetTransaction(request)
         tx = json.loads(resp.transaction)
         print(tx)
+        request = ethereum_pb2.TxHash(txhash="0xc739e9d5d3e55537e703012c6d162c37e3b06bc4ce2456570c097b7421290ef6")
+        resp = ethstub.GetTransactionReceipt(request)
+        receipt = json.loads(resp.transaction)
+        print("receipt: ", receipt)
 
 
 if __name__ == '__main__':

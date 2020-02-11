@@ -34,6 +34,11 @@ class ProtoEthServiceStub(object):
         request_serializer=ethereum__pb2.RawTxRequest.SerializeToString,
         response_deserializer=ethereum__pb2.TxResponse.FromString,
         )
+    self.GetTransactionReceipt = channel.unary_unary(
+        '/protoeth.ProtoEthService/GetTransactionReceipt',
+        request_serializer=ethereum__pb2.TxHash.SerializeToString,
+        response_deserializer=ethereum__pb2.TransactionInfo.FromString,
+        )
 
 
 class ProtoEthServiceServicer(object):
@@ -68,6 +73,13 @@ class ProtoEthServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def GetTransactionReceipt(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_ProtoEthServiceServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -90,6 +102,11 @@ def add_ProtoEthServiceServicer_to_server(servicer, server):
           servicer.SendRawTransactions,
           request_deserializer=ethereum__pb2.RawTxRequest.FromString,
           response_serializer=ethereum__pb2.TxResponse.SerializeToString,
+      ),
+      'GetTransactionReceipt': grpc.unary_unary_rpc_method_handler(
+          servicer.GetTransactionReceipt,
+          request_deserializer=ethereum__pb2.TxHash.FromString,
+          response_serializer=ethereum__pb2.TransactionInfo.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

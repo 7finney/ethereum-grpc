@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='protoeth',
   syntax='proto3',
   serialized_options=_b('Z\010protoeth'),
-  serialized_pb=_b('\n\x0e\x65thereum.proto\x12\x08protoeth\"\x10\n\x0eGetAccountsReq\"#\n\x0fGetAccountsResp\x12\x10\n\x08\x61\x63\x63ounts\x18\x01 \x03(\t\" \n\rGetBalanceReq\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\"!\n\x0eGetBalanceResp\x12\x0f\n\x07\x62\x61lance\x18\x01 \x01(\t\"\x18\n\x06TxHash\x12\x0e\n\x06txhash\x18\x01 \x01(\t\"&\n\x0fTransactionInfo\x12\x13\n\x0btransaction\x18\x01 \x01(\t\"\x1a\n\x0cRawTxRequest\x12\n\n\x02tx\x18\x01 \x01(\t\"\x1c\n\nTxResponse\x12\x0e\n\x06txData\x18\x01 \x01(\t2\xa4\x02\n\x0fProtoEthService\x12\x44\n\x0bGetAccounts\x12\x18.protoeth.GetAccountsReq\x1a\x19.protoeth.GetAccountsResp\"\x00\x12\x41\n\nGetBalance\x12\x17.protoeth.GetBalanceReq\x1a\x18.protoeth.GetBalanceResp\"\x00\x12?\n\x0eGetTransaction\x12\x10.protoeth.TxHash\x1a\x19.protoeth.TransactionInfo\"\x00\x12G\n\x13SendRawTransactions\x12\x16.protoeth.RawTxRequest\x1a\x14.protoeth.TxResponse\"\x00\x30\x01\x42\nZ\x08protoethb\x06proto3')
+  serialized_pb=_b('\n\x0e\x65thereum.proto\x12\x08protoeth\"\x10\n\x0eGetAccountsReq\"#\n\x0fGetAccountsResp\x12\x10\n\x08\x61\x63\x63ounts\x18\x01 \x03(\t\" \n\rGetBalanceReq\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\"!\n\x0eGetBalanceResp\x12\x0f\n\x07\x62\x61lance\x18\x01 \x01(\t\"\x18\n\x06TxHash\x12\x0e\n\x06txhash\x18\x01 \x01(\t\"&\n\x0fTransactionInfo\x12\x13\n\x0btransaction\x18\x01 \x01(\t\"\x1a\n\x0cRawTxRequest\x12\n\n\x02tx\x18\x01 \x01(\t\"\x1c\n\nTxResponse\x12\x0e\n\x06txData\x18\x01 \x01(\t2\xec\x02\n\x0fProtoEthService\x12\x44\n\x0bGetAccounts\x12\x18.protoeth.GetAccountsReq\x1a\x19.protoeth.GetAccountsResp\"\x00\x12\x41\n\nGetBalance\x12\x17.protoeth.GetBalanceReq\x1a\x18.protoeth.GetBalanceResp\"\x00\x12?\n\x0eGetTransaction\x12\x10.protoeth.TxHash\x1a\x19.protoeth.TransactionInfo\"\x00\x12G\n\x13SendRawTransactions\x12\x16.protoeth.RawTxRequest\x1a\x14.protoeth.TxResponse\"\x00\x30\x01\x12\x46\n\x15GetTransactionReceipt\x12\x10.protoeth.TxHash\x1a\x19.protoeth.TransactionInfo\"\x00\x42\nZ\x08protoethb\x06proto3')
 )
 
 
@@ -342,7 +342,7 @@ _PROTOETHSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   serialized_start=277,
-  serialized_end=569,
+  serialized_end=641,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetAccounts',
@@ -378,6 +378,15 @@ _PROTOETHSERVICE = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_RAWTXREQUEST,
     output_type=_TXRESPONSE,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetTransactionReceipt',
+    full_name='protoeth.ProtoEthService.GetTransactionReceipt',
+    index=4,
+    containing_service=None,
+    input_type=_TXHASH,
+    output_type=_TRANSACTIONINFO,
     serialized_options=None,
   ),
 ])

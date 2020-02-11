@@ -25,6 +25,10 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
         print("Running getTransaction...")
         tx = w3.eth.getTransaction(request.txhash)
         return ethereum_pb2.TransactionInfo(transaction=Web3.toJSON(tx))
+    def GetTransactionReceipt(self, request, context):
+        print("Running getTransactionReceipt...")
+        receipt = w3.eth.getTransactionReceipt(request.txhash)
+        return ethereum_pb2.TransactionInfo(transaction=Web3.toJSON(receipt))
   
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
