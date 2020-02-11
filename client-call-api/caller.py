@@ -14,8 +14,8 @@ from request_header_validator_interceptor import RequestHeaderValidatorIntercept
 
 class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
     w3: any
-    url = "http://172.26.84.11:"
-    port = "754"
+    url: str
+    port: str
     def unpackParams(self, *args):
         params = []
         regExp = r'\w+(?=\[\d*\])'
@@ -29,6 +29,8 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         return params
     def RunDeploy(self, request, context):
         id = request.callInterface.testnetId
+        self.url = "http://172.26.84.11:"
+        self.port = "754"
         if(id == "5"):
             self.url += self.port + "5"
         elif(id == "4"):
