@@ -15,6 +15,6 @@ spec:
       restartPolicy: Always
       containers:
         - name: auth-api
-          image: gcr.io/eth-devtools-api-dev/auth-api:0.1
+          image: gcr.io/eth-devtools-api-dev/auth-api:0.3
           ports:
             - containerPort: 4040
