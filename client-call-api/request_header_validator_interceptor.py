@@ -37,7 +37,7 @@ class RequestHeaderValidatorInterceptor(grpc.ServerInterceptor):
                 authToken=value
                 break
         if (len(authToken) > 0):
-            url = f"http://grpc-auth-service:4040/verifyToken/{authToken}"
+            url = f"http://auth-api-cluster-ip-svc:4040/verifyToken/{authToken}"
             r = requests.get(url)
             if r.status_code == 200:
                 return continuation(handler_call_details)
