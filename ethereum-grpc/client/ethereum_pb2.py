@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='protoeth',
   syntax='proto3',
   serialized_options=_b('Z\010protoeth'),
-  serialized_pb=_b('\n\x0e\x65thereum.proto\x12\x08protoeth\"\x10\n\x0eGetAccountsReq\"#\n\x0fGetAccountsResp\x12\x10\n\x08\x61\x63\x63ounts\x18\x01 \x01(\t\" \n\rGetBalanceReq\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\"!\n\x0eGetBalanceResp\x12\x0f\n\x07\x62\x61lance\x18\x01 \x01(\t\"%\n\x0eGetTransaction\x12\x13\n\x0btransaction\x18\x01 \x01(\t\"\x18\n\x06TxHash\x12\x0e\n\x06txhash\x18\x01 \x01(\t\"&\n\x0fTransactionInfo\x12\x13\n\x0btransaction\x18\x01 \x01(\t\"\x1a\n\x0cRawTxRequest\x12\n\n\x02tx\x18\x01 \x01(\t\"\x1c\n\nTxResponse\x12\x0e\n\x06txData\x18\x01 \x01(\t2\xa4\x02\n\x0fProtoEthService\x12\x44\n\x0bGetAccounts\x12\x18.protoeth.GetAccountsReq\x1a\x19.protoeth.GetAccountsResp\"\x00\x12\x41\n\nGetBalance\x12\x17.protoeth.GetBalanceReq\x1a\x18.protoeth.GetBalanceResp\"\x00\x12?\n\x0eGetTransaction\x12\x10.protoeth.TxHash\x1a\x19.protoeth.TransactionInfo\"\x00\x12G\n\x13SendRawTransactions\x12\x16.protoeth.RawTxRequest\x1a\x14.protoeth.TxResponse\"\x00\x30\x01\x42\nZ\x08protoethb\x06proto3')
+  serialized_pb=_b('\n\x0e\x65thereum.proto\x12\x08protoeth\"\x10\n\x0eGetAccountsReq\"#\n\x0fGetAccountsResp\x12\x10\n\x08\x61\x63\x63ounts\x18\x01 \x03(\t\" \n\rGetBalanceReq\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\"!\n\x0eGetBalanceResp\x12\x0f\n\x07\x62\x61lance\x18\x01 \x01(\t\"\x18\n\x06TxHash\x12\x0e\n\x06txhash\x18\x01 \x01(\t\"&\n\x0fTransactionInfo\x12\x13\n\x0btransaction\x18\x01 \x01(\t\"\x1a\n\x0cRawTxRequest\x12\n\n\x02tx\x18\x01 \x01(\t\"\x1c\n\nTxResponse\x12\x0e\n\x06txData\x18\x01 \x01(\t2\xa4\x02\n\x0fProtoEthService\x12\x44\n\x0bGetAccounts\x12\x18.protoeth.GetAccountsReq\x1a\x19.protoeth.GetAccountsResp\"\x00\x12\x41\n\nGetBalance\x12\x17.protoeth.GetBalanceReq\x1a\x18.protoeth.GetBalanceResp\"\x00\x12?\n\x0eGetTransaction\x12\x10.protoeth.TxHash\x1a\x19.protoeth.TransactionInfo\"\x00\x12G\n\x13SendRawTransactions\x12\x16.protoeth.RawTxRequest\x1a\x14.protoeth.TxResponse\"\x00\x30\x01\x42\nZ\x08protoethb\x06proto3')
 )
 
 
@@ -59,8 +59,8 @@ _GETACCOUNTSRESP = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='accounts', full_name='protoeth.GetAccountsResp.accounts', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -143,37 +143,6 @@ _GETBALANCERESP = _descriptor.Descriptor(
 )
 
 
-_GETTRANSACTION = _descriptor.Descriptor(
-  name='GetTransaction',
-  full_name='protoeth.GetTransaction',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='transaction', full_name='protoeth.GetTransaction.transaction', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=152,
-  serialized_end=189,
-)
-
-
 _TXHASH = _descriptor.Descriptor(
   name='TxHash',
   full_name='protoeth.TxHash',
@@ -200,8 +169,8 @@ _TXHASH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=191,
-  serialized_end=215,
+  serialized_start=152,
+  serialized_end=176,
 )
 
 
@@ -231,8 +200,8 @@ _TRANSACTIONINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=217,
-  serialized_end=255,
+  serialized_start=178,
+  serialized_end=216,
 )
 
 
@@ -262,8 +231,8 @@ _RAWTXREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=257,
-  serialized_end=283,
+  serialized_start=218,
+  serialized_end=244,
 )
 
 
@@ -293,15 +262,14 @@ _TXRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=285,
-  serialized_end=313,
+  serialized_start=246,
+  serialized_end=274,
 )
 
 DESCRIPTOR.message_types_by_name['GetAccountsReq'] = _GETACCOUNTSREQ
 DESCRIPTOR.message_types_by_name['GetAccountsResp'] = _GETACCOUNTSRESP
 DESCRIPTOR.message_types_by_name['GetBalanceReq'] = _GETBALANCEREQ
 DESCRIPTOR.message_types_by_name['GetBalanceResp'] = _GETBALANCERESP
-DESCRIPTOR.message_types_by_name['GetTransaction'] = _GETTRANSACTION
 DESCRIPTOR.message_types_by_name['TxHash'] = _TXHASH
 DESCRIPTOR.message_types_by_name['TransactionInfo'] = _TRANSACTIONINFO
 DESCRIPTOR.message_types_by_name['RawTxRequest'] = _RAWTXREQUEST
@@ -335,13 +303,6 @@ GetBalanceResp = _reflection.GeneratedProtocolMessageType('GetBalanceResp', (_me
   # @@protoc_insertion_point(class_scope:protoeth.GetBalanceResp)
   })
 _sym_db.RegisterMessage(GetBalanceResp)
-
-GetTransaction = _reflection.GeneratedProtocolMessageType('GetTransaction', (_message.Message,), {
-  'DESCRIPTOR' : _GETTRANSACTION,
-  '__module__' : 'ethereum_pb2'
-  # @@protoc_insertion_point(class_scope:protoeth.GetTransaction)
-  })
-_sym_db.RegisterMessage(GetTransaction)
 
 TxHash = _reflection.GeneratedProtocolMessageType('TxHash', (_message.Message,), {
   'DESCRIPTOR' : _TXHASH,
@@ -380,8 +341,8 @@ _PROTOETHSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=316,
-  serialized_end=608,
+  serialized_start=277,
+  serialized_end=569,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetAccounts',

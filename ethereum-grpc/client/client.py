@@ -31,7 +31,7 @@ def run():
         ethstub = ethereum_pb2_grpc.ProtoEthServiceStub(channel)
         request = ethereum_pb2.GetAccountsReq()
         result = ethstub.GetAccounts(request)
-        accounts = json.loads(result.accounts)
+        accounts = result.accounts
         print(accounts)
         request = ethereum_pb2.GetBalanceReq(address=accounts[0])
         resp = ethstub.GetBalance(request)

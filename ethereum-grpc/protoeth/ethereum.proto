@@ -6,7 +6,7 @@ option go_package = "protoeth";
 // GetAccounts
 message GetAccountsReq {}
 message GetAccountsResp {
-    string accounts = 1; // TODO: accounts should return array of addresses
+    repeated string accounts = 1;
 }
 
 // GetBalance -> Eth.getBalance -> eth_getBalance

@@ -16,7 +16,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
     def GetAccounts(self, request, context):
         print("Running getAccounts....")
         accounts = w3.eth.accounts
-        return ethereum_pb2.GetAccountsResp(accounts=json.dumps(accounts))
+        return ethereum_pb2.GetAccountsResp(accounts=accounts)
     def GetBalance(self, request, context):
         print("Running getBalance....")
         balance = w3.eth.getBalance(request.address)
