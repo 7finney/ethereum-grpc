@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-exporter-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      backend: node-exporter
+  template:
+    metadata:
+      labels:
+        backend: node-exporter
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: node-exporter
+          image: prom/node-exporter
+          ports:
+            - containerPort: 9100

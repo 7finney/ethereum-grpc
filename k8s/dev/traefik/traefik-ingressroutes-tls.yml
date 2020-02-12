@@ -1,0 +1,39 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-tls
+  namespace: default
+spec:
+  entryPoints:
+    # - web
+    - web-secure
+
+  routes:
+  - match: Host(`trf.staging.ethco.de`) && PathPrefix(`/`)
+    kind: Rule
+    middlewares:
+      - name: basic-auth
+    services:
+    - name: traefik
+      kind: TraefikService
+      port: 8080
+  - match: Host(`auth.staging.ethco.de`) && PathPrefix(`/`)
+    kind: Rule
+    services:
+    - name: auth-api-cluster-ip-svc
+      port: 4040
+  # - match: Host(`graf.ethco.de`) && PathPrefix(`/`)
+  #   kind: Rule
+  #   services:
+  #   - name: grafana-cluster-ip-svc
+  #     port: 3000
+  # - match: Host(`prom.ethco.de`) && PathPrefix(`/`)
+  #   kind: Rule
+  #   middlewares:
+  #     - name: basic-auth
+  #   services:
+  #   - name: prometheus-cluster-ip-svc
+  #     port: 9090
+
+  tls:
+    certResolver: default

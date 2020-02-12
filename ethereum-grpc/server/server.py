@@ -29,9 +29,9 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     ethereum_pb2_grpc.add_ProtoEthServiceServicer_to_server(ProtoEth(), server)
-    server.add_insecure_port('[::]:50053')
+    server.add_insecure_port('[::]:50054')
     server.start()
-    print("gRPC server listening on port 50053")
+    print("gRPC server listening on port 50054")
     server.wait_for_termination()
 if __name__ == '__main__':
     logging.basicConfig()
