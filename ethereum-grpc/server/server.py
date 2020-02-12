@@ -29,6 +29,37 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
         print("Running getTransactionReceipt...")
         receipt = w3.eth.getTransactionReceipt(request.txhash)
         return ethereum_pb2.TxReceipt(txReceipt=Web3.toJSON(receipt))
+    def GetBlockNumber(self, request, context):
+        print("Running getBlockNumber...")
+        blockNumber = w3.eth.blockNumber
+        return ethereum_pb2.BlockNumber(blocknum=blockNumber)
+    def GetBlockTransactionCount(self, request, context):
+        print("Running getBlockTransactionCount...")
+        if(request.reqString) :
+            count = w3.eth.getBlockTransactionCount(request.reqString)
+        else:
+            count = w3.eth.getBlockTransactionCount(request.reqNum)
+        return ethereum_pb2.CountResp(count=count)
+    def GetBlock(self, request, context):
+        print("Running getBlock...")
+        resp = w3.eth.getBlock(request.reqString)
+        return ethereum_pb2.ObjResp(respObj=resp)
+    def GetTransactionFromBlock(self, request, context):
+        print("Running getTransactionFromBlock...")
+        if(request.req.reqString):
+            resp = w3.eth.getTransactionFromBlock(request.req.reqString, request.index)
+        else:
+            resp = w3.eth.getTransactionFromBlock(request.req.reqNum, request.index)
+        return ethereum_pb2.ObjResp(respObj=resp)
+    def GetHashrate(self, request, context):
+        print("Running getHashRate...")
+        resp = w3.eth.hashrate
+        return ethereum_pb2.NumResult(resultNum=resp)
+    def GetGasPrice(self, request, context):
+        print("Running getGasPrice...")
+        resp = w3.eth.gasPrice
+        return ethereum_pb2.NumResult(resultNum=resp)
+        
   
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

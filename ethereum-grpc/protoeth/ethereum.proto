@@ -5,6 +5,25 @@ option go_package = "protoeth";
 
 // GetAccounts
 message GetAccountsReq {}
+message EmptyStringReq {}
+message HashStringOrNumber {
+    string reqString = 1;
+    uint64 reqNum = 2;
+}
+
+message InfoWithIndex {
+    HashStringOrNumber req = 1;
+    uint64 index = 2;
+}
+
+message CountResp {
+    uint64 count = 1;
+}
+
+message ObjResp {
+    string respObj = 1;
+}
+
 message GetAccountsResp {
     repeated string accounts = 1;
 }
@@ -33,8 +52,16 @@ message RawTxRequest {
     string tx = 1;
 }
 
+message BlockNumber {
+    uint64 blocknum = 1;
+}
+
 message TxResponse {
     string txData = 1;
+}
+
+message NumResult {
+    uint64 resultNum = 1;
 }
 
 service ProtoEthService {
@@ -44,6 +71,16 @@ service ProtoEthService {
     // eth_sendRawTransaction should have simple requests but stream of responses
     rpc SendRawTransactions(RawTxRequest) returns (stream TxResponse) {};
     rpc GetTransactionReceipt(TxHash) returns (TxReceipt) {};
+    // rpc GetProtocolVersion() returns () {};
+    // rpc GetCoinbase() returns () {};
+    rpc GetHashrate(EmptyStringReq) returns (NumResult) {};
+    rpc GetGasPrice(EmptyStringReq) returns (NumResult) {};
+    rpc GetBlockNumber(EmptyStringReq) returns (BlockNumber) {};
+    // rpc GetStorageAt() returns () {};
+    rpc GetBlockTransactionCount(HashStringOrNumber) returns (CountResp) {};
+    // rpc GetCode() returns () {};
+    rpc GetBlock(HashStringOrNumber) returns (ObjResp) {};
+    rpc GetTransactionFromBlock(InfoWithIndex) returns (ObjResp) {};
 }
 
 // ##############################
