@@ -1,0 +1,22 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: redis
+spec:
+  selector:
+    matchLabels:
+      backend: redis  # has to match .spec.template.metadata.labels
+  serviceName: redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        backend: redis  # has to match .spec.selector.matchLabels
+    spec:
+      containers:
+        - name: redis
+          image: redis:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 6379
+              name: redis

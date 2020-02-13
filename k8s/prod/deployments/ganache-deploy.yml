@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ganache-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      backend: ganache
+  template:
+    metadata:
+      labels:
+        backend: ganache
+    spec:
+      containers:
+        - name: ganache
+          image: gcr.io/eth-devtools-api-dev/ganache:0.1
+          ports:
+            - containerPort: 8545
+      restartPolicy: Always

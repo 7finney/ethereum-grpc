@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-api-cluster-ip-svc
+spec:
+  type: NodePort
+  selector:
+    backend: auth-api
+  ports:
+    - port: 4040
+      targetPort: 4040
