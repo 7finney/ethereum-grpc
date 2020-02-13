@@ -2,10 +2,15 @@ syntax = "proto3";
 
 package protoeth;
 option go_package = "protoeth";
+import "google/protobuf/empty.proto";
 
 // GetAccounts
 message GetAccountsReq {}
-message EmptyStringReq {}
+
+message TestnetReq {
+    uint32 id = 1;
+}
+
 message HashStringOrNumber {
     string reqString = 1;
     uint64 reqNum = 2;
@@ -45,7 +50,7 @@ message TransactionInfo {
 }
 
 message TxReceipt {
-    string txReceipt =1;
+    string txReceipt = 1;
 }
 
 message RawTxRequest {
@@ -73,14 +78,15 @@ service ProtoEthService {
     rpc GetTransactionReceipt(TxHash) returns (TxReceipt) {};
     // rpc GetProtocolVersion() returns () {};
     // rpc GetCoinbase() returns () {};
-    rpc GetHashrate(EmptyStringReq) returns (NumResult) {};
-    rpc GetGasPrice(EmptyStringReq) returns (NumResult) {};
-    rpc GetBlockNumber(EmptyStringReq) returns (BlockNumber) {};
+    rpc GetHashrate(google.protobuf.Empty) returns (NumResult) {};
+    rpc GetGasPrice(google.protobuf.Empty) returns (NumResult) {};
+    rpc GetBlockNumber(google.protobuf.Empty) returns (BlockNumber) {};
     // rpc GetStorageAt() returns () {};
     rpc GetBlockTransactionCount(HashStringOrNumber) returns (CountResp) {};
     // rpc GetCode() returns () {};
     rpc GetBlock(HashStringOrNumber) returns (ObjResp) {};
     rpc GetTransactionFromBlock(InfoWithIndex) returns (ObjResp) {};
+    rpc SetTestnet(TestnetReq) returns (google.protobuf.Empty) {};
 }
 
 // ##############################

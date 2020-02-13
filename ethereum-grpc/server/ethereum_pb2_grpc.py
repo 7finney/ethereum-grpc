@@ -2,6 +2,7 @@
 import grpc
 
 import ethereum_pb2 as ethereum__pb2
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class ProtoEthServiceStub(object):
@@ -41,17 +42,17 @@ class ProtoEthServiceStub(object):
         )
     self.GetHashrate = channel.unary_unary(
         '/protoeth.ProtoEthService/GetHashrate',
-        request_serializer=ethereum__pb2.EmptyStringReq.SerializeToString,
+        request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         response_deserializer=ethereum__pb2.NumResult.FromString,
         )
     self.GetGasPrice = channel.unary_unary(
         '/protoeth.ProtoEthService/GetGasPrice',
-        request_serializer=ethereum__pb2.EmptyStringReq.SerializeToString,
+        request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         response_deserializer=ethereum__pb2.NumResult.FromString,
         )
     self.GetBlockNumber = channel.unary_unary(
         '/protoeth.ProtoEthService/GetBlockNumber',
-        request_serializer=ethereum__pb2.EmptyStringReq.SerializeToString,
+        request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         response_deserializer=ethereum__pb2.BlockNumber.FromString,
         )
     self.GetBlockTransactionCount = channel.unary_unary(
@@ -68,6 +69,11 @@ class ProtoEthServiceStub(object):
         '/protoeth.ProtoEthService/GetTransactionFromBlock',
         request_serializer=ethereum__pb2.InfoWithIndex.SerializeToString,
         response_deserializer=ethereum__pb2.ObjResp.FromString,
+        )
+    self.SetTestnet = channel.unary_unary(
+        '/protoeth.ProtoEthService/SetTestnet',
+        request_serializer=ethereum__pb2.TestnetReq.SerializeToString,
+        response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
 
 
@@ -111,8 +117,8 @@ class ProtoEthServiceServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def GetHashrate(self, request, context):
-    """rpc GetProtocolVersion() returns () {}; imp later
-    rpc GetCoinbase() returns () {}; imp later
+    """rpc GetProtocolVersion() returns () {};
+    rpc GetCoinbase() returns () {};
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -133,20 +139,27 @@ class ProtoEthServiceServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def GetBlockTransactionCount(self, request, context):
-    """rpc GetStorageAt() returns () {}; imp later
+    """rpc GetStorageAt() returns () {};
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def GetBlock(self, request, context):
-    """rpc GetCode() returns () {}; imp later
+    """rpc GetCode() returns () {};
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
   def GetTransactionFromBlock(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def SetTestnet(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -183,17 +196,17 @@ def add_ProtoEthServiceServicer_to_server(servicer, server):
       ),
       'GetHashrate': grpc.unary_unary_rpc_method_handler(
           servicer.GetHashrate,
-          request_deserializer=ethereum__pb2.EmptyStringReq.FromString,
+          request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
           response_serializer=ethereum__pb2.NumResult.SerializeToString,
       ),
       'GetGasPrice': grpc.unary_unary_rpc_method_handler(
           servicer.GetGasPrice,
-          request_deserializer=ethereum__pb2.EmptyStringReq.FromString,
+          request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
           response_serializer=ethereum__pb2.NumResult.SerializeToString,
       ),
       'GetBlockNumber': grpc.unary_unary_rpc_method_handler(
           servicer.GetBlockNumber,
-          request_deserializer=ethereum__pb2.EmptyStringReq.FromString,
+          request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
           response_serializer=ethereum__pb2.BlockNumber.SerializeToString,
       ),
       'GetBlockTransactionCount': grpc.unary_unary_rpc_method_handler(
@@ -210,6 +223,11 @@ def add_ProtoEthServiceServicer_to_server(servicer, server):
           servicer.GetTransactionFromBlock,
           request_deserializer=ethereum__pb2.InfoWithIndex.FromString,
           response_serializer=ethereum__pb2.ObjResp.SerializeToString,
+      ),
+      'SetTestnet': grpc.unary_unary_rpc_method_handler(
+          servicer.SetTestnet,
+          request_deserializer=ethereum__pb2.TestnetReq.FromString,
+          response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
