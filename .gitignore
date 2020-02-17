@@ -3,3 +3,6 @@ prometheus_data/
 *.log
 logs/
 grafana_data/
+.vscode/
+ethereum_data/
+build/
