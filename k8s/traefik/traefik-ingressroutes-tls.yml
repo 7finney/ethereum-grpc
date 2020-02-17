@@ -5,7 +5,7 @@ metadata:
   namespace: default
 spec:
   entryPoints:
-    - web
+    # - web
     - web-secure
 
   routes:
@@ -13,15 +13,19 @@ spec:
     kind: Rule
     middlewares:
       - name: basic-auth
+      # - name: https-redirectscheme
     services:
-    - name: traefik
-      kind: TraefikService
-      port: 8080
+      - name: traefik
+        kind: TraefikService
+        port: 8080
+        # scheme: https
   - match: Host(`auth.ethco.de`) && PathPrefix(`/`)
     kind: Rule
     services:
     - name: auth-api-cluster-ip-svc
       port: 4040
+    middlewares:
+      - name: https-redirectscheme
   - match: Host(`graf.ethco.de`) && PathPrefix(`/`)
     kind: Rule
     services:
@@ -34,6 +38,49 @@ spec:
     services:
     - name: prometheus-cluster-ip-svc
       port: 9090
+      # scheme: https
 
   tls:
     certResolver: default
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-web
+  namespace: default
+spec:
+  entryPoints:
+    - web
+
+  routes:
+  - match: Host(`trf.ethco.de`) && PathPrefix(`/`)
+    kind: Rule
+    middlewares:
+      - name: https-redirectscheme
+    services:
+      - name: traefik
+        kind: TraefikService
+        port: 8080
+  - match: Host(`auth.ethco.de`) && PathPrefix(`/`)
+    kind: Rule
+    services:
+    - name: auth-api-cluster-ip-svc
+      port: 4040
+    middlewares:
+      - name: https-redirectscheme
+  - match: Host(`graf.ethco.de`) && PathPrefix(`/`)
+    kind: Rule
+    services:
+    - name: grafana-cluster-ip-svc
+      port: 3000
+    middlewares:
+      - name: https-redirectscheme
+  - match: Host(`prom.ethco.de`) && PathPrefix(`/`)
+    kind: Rule
+    middlewares:
+      - name: basic-auth
+      - name: https-redirectscheme
+    services:
+    - name: prometheus-cluster-ip-svc
+      port: 9090
