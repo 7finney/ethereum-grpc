@@ -28,14 +28,8 @@ console.log('Server running at 0.0.0.0:50052');
 rxDbgServer.start();
 
 // remix-debug code
-// const web3 = new Web3('http://ganache:8545');
-// const goerliWeb3 = new Web3('http://172.26.84.11:7545');
-
-// const web3 = new Web3('http://172.26.84.11:7545');
 function debug(call: any) {
     let result = new DebugResponse();
-    // console.log(call.request);
-    // const txHash: string = call.request.debugInterface.payload;
     const txHash: string = call.request.debugInterface.payload;
     const testnetId: string = call.request.debugInterface.testnetId;
     var url: string = "http://172.26.84.11:";
@@ -59,9 +53,7 @@ function debug(call: any) {
     const web3 = new Web3(url);
     const ethdebugger = new EthDebugger({ web3 });
     web3.eth.getTransaction(txHash).then((tx: any) => {
-        console.log("tx",tx);
         ethdebugger.event.register('newTraceLoaded', (trace: any) => {
-            console.log("hghjgygj",trace);
             call.write({ result: JSON.stringify(trace) });
         });
         ethdebugger.debug(tx);

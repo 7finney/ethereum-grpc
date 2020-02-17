@@ -83,7 +83,6 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         params = input['params']
         gasSupply = input['gasSupply']
         Contract = self.w3.eth.contract(abi=abi, bytecode=bytecode)
-        # TODO: support input args .constructor("Hello")
         deploy_txn = Contract.constructor(*self.unpackParams(*params)).transact({ 'from': self.w3.eth.accounts[0], 'gas': gasSupply })
         txn_receipt = self.w3.eth.getTransactionReceipt(deploy_txn)
         return Web3.toJSON(txn_receipt)
