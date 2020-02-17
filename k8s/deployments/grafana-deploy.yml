@@ -20,19 +20,10 @@ spec:
           - containerPort: 3000
         volumeMounts:
           - mountPath: /var/lib/grafana
-            # name: monitoring-pv-claim
             name: grafana-storage
-            # readOnly: false
           - mountPath: /etc/grafana/provisioning/datasources
             name: grafana-datasources
             readOnly: false
-      # volumes:
-      #   - name: monitoring-pv-claim
-      #     persistentVolumeClaim:
-      #       claimName: monitoring-pv-claim
-      #   - name: grafana-datasources
-      #     configMap:
-      #         name: grafana-datasources
       volumes:
         - name: grafana-storage
           emptyDir: {}

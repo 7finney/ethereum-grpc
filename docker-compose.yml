@@ -42,32 +42,32 @@ services:
       - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$LAHn3.vc$$47mKL7WmzOQWwJ2OjND46/"
 
   # ## Remix Tests API
-  # remix-tests-api:
-  #   container_name: remix-tests-api
-  #   restart: always
-  #   build: remix-tests-api/
-  #   networks:
-  #     - inbound
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.remix-tests-api.rule=Host(`${RT_API_HOST}`)"
-  #     - "traefik.http.routers.remix-tests-api.entrypoints=rt-port"
-  #     - "traefik.http.services.remix-tests-api.loadbalancer.server.scheme=h2c"
-  #     - "traefik.http.services.remix-tests-api.loadbalancer.server.port=50051"
+  remix-tests-api:
+    container_name: remix-tests-api
+    restart: always
+    build: remix-tests-api/
+    networks:
+      - inbound
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.remix-tests-api.rule=Host(`${RT_API_HOST}`)"
+      - "traefik.http.routers.remix-tests-api.entrypoints=rt-port"
+      - "traefik.http.services.remix-tests-api.loadbalancer.server.scheme=h2c"
+      - "traefik.http.services.remix-tests-api.loadbalancer.server.port=50051"
   
   # # # ## Remix Debug API
-  # remix-debug-api:
-  #   container_name: remix-debug-api
-  #   restart: always
-  #   build: remix-debug-api/
-  #   networks:
-  #     - inbound
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.remix-debug-api.rule=Host(`${RD_API_HOST}`)"
-  #     - "traefik.http.routers.remix-debug-api.entrypoints=rd-port"
-  #     - "traefik.http.services.remix-debug-api.loadbalancer.server.scheme=h2c"
-  #     - "traefik.http.services.remix-debug-api.loadbalancer.server.port=50052"
+  remix-debug-api:
+    container_name: remix-debug-api
+    restart: always
+    build: remix-debug-api/
+    networks:
+      - inbound
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.remix-debug-api.rule=Host(`${RD_API_HOST}`)"
+      - "traefik.http.routers.remix-debug-api.entrypoints=rd-port"
+      - "traefik.http.services.remix-debug-api.loadbalancer.server.scheme=h2c"
+      - "traefik.http.services.remix-debug-api.loadbalancer.server.port=50052"
 
   # ## client call api
   client-call-api:
