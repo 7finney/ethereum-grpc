@@ -9,8 +9,8 @@ import re
 import requests
 from web3 import Web3
 
-w3 = Web3(Web3.HTTPProvider("http://172.26.84.11:7545"))
-# w3 = Web3(Web3.HTTPProvider("http://localhost:8545"))
+w3 = Web3(Web3.HTTPProvider("http://115.187.58.4:7545"))
+# w3 = Web3(Web3.HTTPProvider("http://172.26.84.11:8545")) # inside local network only
 
 
 class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
