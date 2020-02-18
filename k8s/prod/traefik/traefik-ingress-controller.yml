@@ -39,7 +39,9 @@ spec:
             - --providers.kubernetescrd=true
             - --log.level=DEBUG
             - --metrics.prometheus=true
+            # - --certificatesresolvers.default.acme.httpchallenge=true
             - --certificatesresolvers.default.acme.tlschallenge
+            # - --certificatesresolvers.default.acme.httpchallenge.entrypoint=web-secure
             - --certificatesresolvers.default.acme.email=0mkar@protonmail.com
             - --certificatesresolvers.default.acme.storage=acme.json
             # - --certificatesresolvers.default.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory

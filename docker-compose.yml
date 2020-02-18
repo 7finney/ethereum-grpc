@@ -55,7 +55,7 @@ services:
       - "traefik.http.services.remix-tests-api.loadbalancer.server.scheme=h2c"
       - "traefik.http.services.remix-tests-api.loadbalancer.server.port=50051"
   
-  # # ## Remix Debug API
+  # # # ## Remix Debug API
   remix-debug-api:
     container_name: remix-debug-api
     restart: always

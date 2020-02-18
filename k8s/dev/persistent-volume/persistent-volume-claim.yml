@@ -5,9 +5,8 @@ metadata:
     app: monitoring
   name: monitoring-pv-claim
 spec:
-  storageClassName: standard
   accessModes:
-  - ReadWriteMany
+  - ReadWriteOnce
   resources:
     requests:
       storage: 50M

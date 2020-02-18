@@ -12,9 +12,10 @@ import requests
 from web3 import Web3
 from request_header_validator_interceptor import RequestHeaderValidatorInterceptor
 
-w3 = Web3(Web3.HTTPProvider("http://ganache:8545"))
-
 class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
+    _w3: any
+    url: str
+    port: str
     def unpackParams(self, *args):
         params = []
         regExp = r'\w+(?=\[\d*\])'
@@ -27,6 +28,20 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
                 params.append(args[i]['value'])
         return params
     def RunDeploy(self, request, context):
+        id = request.callInterface.testnetId
+        self.url = "http://115.187.58.4:"
+        self.port = "754"
+        if(id == "5"):
+            self.url += self.port + "5"
+        elif(id == "4"):
+            self.url += self.port + "7"
+        elif(id == "3"):
+            self.url += self.port + "6"
+        elif(id == "ganache"):
+            self.url = "http://ganache:8545"
+        else:
+            self.url = "http://ganache:8545"
+        self._w3 = Web3(Web3.HTTPProvider(self.url))
         print("Running command: ", request.callInterface.command)
         if request.callInterface.command == "deploy-contract":
             txRecipt = self.web3Deploy(request.callInterface.payload)
@@ -67,17 +82,16 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         abi = input['abi']
         params = input['params']
         gasSupply = input['gasSupply']
-        Contract = w3.eth.contract(abi=abi, bytecode=bytecode)
-        # TODO: support input args .constructor("Hello")
-        deploy_txn = Contract.constructor(*self.unpackParams(*params)).transact({ 'from': w3.eth.accounts[0], 'gas': gasSupply })
-        txn_receipt = w3.eth.getTransactionReceipt(deploy_txn)
+        Contract = self._w3.eth.contract(abi=abi, bytecode=bytecode)
+        deploy_txn = Contract.constructor(*self.unpackParams(*params)).transact({ 'from': self._w3.eth.accounts[0], 'gas': gasSupply })
+        txn_receipt = self._w3.eth.getTransactionReceipt(deploy_txn)
         return Web3.toJSON(txn_receipt)
     def web3GasEstimate(self, payload):
         input = json.loads(payload)
         bytecode = input['bytecode']
         abi = input['abi']
         params = input['params']
-        Contract = w3.eth.contract(abi=abi, bytecode=bytecode)
+        Contract = self._w3.eth.contract(abi=abi, bytecode=bytecode)
         estimatedGas = Contract.constructor(*self.unpackParams(*params)).estimateGas()
         return Web3.toJSON(estimatedGas)
     def web3CallMethods(self, payload):
@@ -86,31 +100,31 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         abi = input['abi']
         params = input['params']
         contractAddress = input['address']
-        Contract = w3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
+        Contract = self._w3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
         method_to_call = getattr(Contract.functions, methodName)
         for i in abi:
             if i['name'] == methodName:
                 if i['constant'] == False or i['payable'] == True:
                     txHash = method_to_call(*self.unpackParams(*params)).transact({ 'from': input['deployAccount'] })
-                    callResult = w3.eth.waitForTransactionReceipt(txHash)
+                    callResult = self._w3.eth.waitForTransactionReceipt(txHash)
                     break
                 else:
                     callResult = method_to_call(*self.unpackParams(*params)).call()
                     break
         return Web3.toJSON(callResult)
     def web3getAccounts(self):
-        accounts = w3.eth.accounts
-        balance = w3.eth.getBalance(accounts[0])
+        accounts = self._w3.eth.accounts
+        balance = self._w3.eth.getBalance(accounts[0])
         return accounts, balance
     def web3getAccBalance(self, account):
-        balance = w3.eth.getBalance(account)
+        balance = self._w3.eth.getBalance(account)
         return Web3.toJSON(balance)
     def web3Transactions(self, transactionInfo):
         transaction_Info = json.loads(transactionInfo)
         toAddress = transaction_Info['toAddress']
         fromAddress = transaction_Info['fromAddress']
         amount = transaction_Info['amount']
-        transaction = w3.eth.sendTransaction({ 'to': toAddress, 'from': fromAddress, 'value': amount })
+        transaction = self._w3.eth.sendTransaction({ 'to': toAddress, 'from': fromAddress, 'value': amount })
         return Web3.toJSON(transaction)
   
 def serve():

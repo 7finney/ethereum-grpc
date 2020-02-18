@@ -28,20 +28,37 @@ console.log('Server running at 0.0.0.0:50052');
 rxDbgServer.start();
 
 // remix-debug code
-const web3 = new Web3('http://ganache:8545');
-const ethdebugger = new EthDebugger({ web3 });
 function debug(call: any) {
     let result = new DebugResponse();
-    console.log(call.request);
     const txHash: string = call.request.debugInterface.payload;
-    web3.eth.getTransaction(txHash, (error: Error, tx: any) => {
-        if (error)
-            throw error;
-        console.log(tx);
+    const testnetId: string = call.request.debugInterface.testnetId;
+    var url: string = "http://115.187.58.4:";
+    var port: string = "754"
+    switch (testnetId) {
+        case "5":
+            url += port + "5";
+            break;
+        case "3":
+            url += port + "6";
+            break;
+        case "4":
+            url += port + "7";
+            break;
+        case "ganache":
+            url = "http://ganache:8545";
+            break;
+        default:
+            url = "http://ganache:8545";
+    }
+    const web3 = new Web3(url);
+    const ethdebugger = new EthDebugger({ web3 });
+    web3.eth.getTransaction(txHash).then((tx: any) => {
         ethdebugger.event.register('newTraceLoaded', (trace: any) => {
-            console.log(trace);
             call.write({ result: JSON.stringify(trace) });
         });
         ethdebugger.debug(tx);
-    })
+
+    }).catch((error: any) => {
+        throw error;
+    });
 }
