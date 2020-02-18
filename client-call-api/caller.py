@@ -29,7 +29,7 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         return params
     def RunDeploy(self, request, context):
         id = request.callInterface.testnetId
-        self.url = "http://172.26.84.11:"
+        self.url = "http://115.187.58.4:"
         self.port = "754"
         if(id == "5"):
             self.url += self.port + "5"
