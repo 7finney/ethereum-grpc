@@ -3,6 +3,23 @@
 version: "3"
 
 services:
+    # main network
+    ethereum:
+        image: ethereum/client-go
+        restart: always
+        command:
+            - "--syncmode=full"
+            - "--rpc"
+            - "--rpccorsdomain='*''"
+            - "--rpcaddr=0.0.0.0"
+            - "--cache=512"
+            - "--rpcapi=eth,web3,personal,debug"
+            - "--gcmode=archive"
+        ports: 
+            - 8545:8545
+            - 30303:30303
+        volumes: 
+            - /storage/ethereum_data:/root/.ethereum/
 
     # Goerli Test Network
     goerli:
