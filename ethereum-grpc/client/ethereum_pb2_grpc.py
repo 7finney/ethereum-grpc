@@ -29,6 +29,16 @@ class ProtoEthServiceStub(object):
         request_serializer=ethereum__pb2.TxHash.SerializeToString,
         response_deserializer=ethereum__pb2.TransactionInfo.FromString,
         )
+    self.CreateRawTransaction = channel.unary_unary(
+        '/protoeth.ProtoEthService/CreateRawTransaction',
+        request_serializer=ethereum__pb2.CreateRawTransactionReq.SerializeToString,
+        response_deserializer=ethereum__pb2.CreateRawTransactionResp.FromString,
+        )
+    self.DeploySignedTransaction = channel.unary_unary(
+        '/protoeth.ProtoEthService/DeploySignedTransaction',
+        request_serializer=ethereum__pb2.DeploySignedTransactionReq.SerializeToString,
+        response_deserializer=ethereum__pb2.DeploySignedTransactionResp.FromString,
+        )
     self.SendRawTransactions = channel.unary_stream(
         '/protoeth.ProtoEthService/SendRawTransactions',
         request_serializer=ethereum__pb2.RawTxRequest.SerializeToString,
@@ -61,6 +71,20 @@ class ProtoEthServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def CreateRawTransaction(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def DeploySignedTransaction(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def SendRawTransactions(self, request, context):
     """eth_sendRawTransaction should have simple requests but stream of responses
     """
@@ -85,6 +109,16 @@ def add_ProtoEthServiceServicer_to_server(servicer, server):
           servicer.GetTransaction,
           request_deserializer=ethereum__pb2.TxHash.FromString,
           response_serializer=ethereum__pb2.TransactionInfo.SerializeToString,
+      ),
+      'CreateRawTransaction': grpc.unary_unary_rpc_method_handler(
+          servicer.CreateRawTransaction,
+          request_deserializer=ethereum__pb2.CreateRawTransactionReq.FromString,
+          response_serializer=ethereum__pb2.CreateRawTransactionResp.SerializeToString,
+      ),
+      'DeploySignedTransaction': grpc.unary_unary_rpc_method_handler(
+          servicer.DeploySignedTransaction,
+          request_deserializer=ethereum__pb2.DeploySignedTransactionReq.FromString,
+          response_serializer=ethereum__pb2.DeploySignedTransactionResp.SerializeToString,
       ),
       'SendRawTransactions': grpc.unary_stream_rpc_method_handler(
           servicer.SendRawTransactions,

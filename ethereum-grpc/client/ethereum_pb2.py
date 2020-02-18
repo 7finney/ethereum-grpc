@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='protoeth',
   syntax='proto3',
   serialized_options=_b('Z\010protoeth'),
-  serialized_pb=_b('\n\x0e\x65thereum.proto\x12\x08protoeth\"\x10\n\x0eGetAccountsReq\"#\n\x0fGetAccountsResp\x12\x10\n\x08\x61\x63\x63ounts\x18\x01 \x03(\t\" \n\rGetBalanceReq\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\"!\n\x0eGetBalanceResp\x12\x0f\n\x07\x62\x61lance\x18\x01 \x01(\t\"\x18\n\x06TxHash\x12\x0e\n\x06txhash\x18\x01 \x01(\t\"&\n\x0fTransactionInfo\x12\x13\n\x0btransaction\x18\x01 \x01(\t\"\x1a\n\x0cRawTxRequest\x12\n\n\x02tx\x18\x01 \x01(\t\"\x1c\n\nTxResponse\x12\x0e\n\x06txData\x18\x01 \x01(\t2\xa4\x02\n\x0fProtoEthService\x12\x44\n\x0bGetAccounts\x12\x18.protoeth.GetAccountsReq\x1a\x19.protoeth.GetAccountsResp\"\x00\x12\x41\n\nGetBalance\x12\x17.protoeth.GetBalanceReq\x1a\x18.protoeth.GetBalanceResp\"\x00\x12?\n\x0eGetTransaction\x12\x10.protoeth.TxHash\x1a\x19.protoeth.TransactionInfo\"\x00\x12G\n\x13SendRawTransactions\x12\x16.protoeth.RawTxRequest\x1a\x14.protoeth.TxResponse\"\x00\x30\x01\x42\nZ\x08protoethb\x06proto3')
+  serialized_pb=_b('\n\x0e\x65thereum.proto\x12\x08protoeth\"\x10\n\x0eGetAccountsReq\"#\n\x0fGetAccountsResp\x12\x10\n\x08\x61\x63\x63ounts\x18\x01 \x03(\t\" \n\rGetBalanceReq\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\"!\n\x0eGetBalanceResp\x12\x0f\n\x07\x62\x61lance\x18\x01 \x01(\t\"O\n\x17\x43reateRawTransactionReq\x12\n\n\x02to\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\t\x12\x0b\n\x03gas\x18\x03 \x01(\r\x12\r\n\x05value\x18\x04 \x01(\r\")\n\x18\x43reateRawTransactionResp\x12\r\n\x05rawTX\x18\x01 \x01(\t\".\n\x1a\x44\x65ploySignedTransactionReq\x12\x10\n\x08signedTX\x18\x01 \x01(\t\"0\n\x1b\x44\x65ploySignedTransactionResp\x12\x11\n\ttxReciept\x18\x01 \x01(\t\"\x18\n\x06TxHash\x12\x0e\n\x06txhash\x18\x01 \x01(\t\"&\n\x0fTransactionInfo\x12\x13\n\x0btransaction\x18\x01 \x01(\t\"\x1a\n\x0cRawTxRequest\x12\n\n\x02tx\x18\x01 \x01(\t\"\x1c\n\nTxResponse\x12\x0e\n\x06txData\x18\x01 \x01(\t2\xef\x03\n\x0fProtoEthService\x12\x44\n\x0bGetAccounts\x12\x18.protoeth.GetAccountsReq\x1a\x19.protoeth.GetAccountsResp\"\x00\x12\x41\n\nGetBalance\x12\x17.protoeth.GetBalanceReq\x1a\x18.protoeth.GetBalanceResp\"\x00\x12?\n\x0eGetTransaction\x12\x10.protoeth.TxHash\x1a\x19.protoeth.TransactionInfo\"\x00\x12_\n\x14\x43reateRawTransaction\x12!.protoeth.CreateRawTransactionReq\x1a\".protoeth.CreateRawTransactionResp\"\x00\x12h\n\x17\x44\x65ploySignedTransaction\x12$.protoeth.DeploySignedTransactionReq\x1a%.protoeth.DeploySignedTransactionResp\"\x00\x12G\n\x13SendRawTransactions\x12\x16.protoeth.RawTxRequest\x1a\x14.protoeth.TxResponse\"\x00\x30\x01\x42\nZ\x08protoethb\x06proto3')
 )
 
 
@@ -143,6 +143,151 @@ _GETBALANCERESP = _descriptor.Descriptor(
 )
 
 
+_CREATERAWTRANSACTIONREQ = _descriptor.Descriptor(
+  name='CreateRawTransactionReq',
+  full_name='protoeth.CreateRawTransactionReq',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='to', full_name='protoeth.CreateRawTransactionReq.to', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='data', full_name='protoeth.CreateRawTransactionReq.data', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='gas', full_name='protoeth.CreateRawTransactionReq.gas', index=2,
+      number=3, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='protoeth.CreateRawTransactionReq.value', index=3,
+      number=4, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=152,
+  serialized_end=231,
+)
+
+
+_CREATERAWTRANSACTIONRESP = _descriptor.Descriptor(
+  name='CreateRawTransactionResp',
+  full_name='protoeth.CreateRawTransactionResp',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='rawTX', full_name='protoeth.CreateRawTransactionResp.rawTX', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=233,
+  serialized_end=274,
+)
+
+
+_DEPLOYSIGNEDTRANSACTIONREQ = _descriptor.Descriptor(
+  name='DeploySignedTransactionReq',
+  full_name='protoeth.DeploySignedTransactionReq',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='signedTX', full_name='protoeth.DeploySignedTransactionReq.signedTX', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=276,
+  serialized_end=322,
+)
+
+
+_DEPLOYSIGNEDTRANSACTIONRESP = _descriptor.Descriptor(
+  name='DeploySignedTransactionResp',
+  full_name='protoeth.DeploySignedTransactionResp',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='txReciept', full_name='protoeth.DeploySignedTransactionResp.txReciept', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=324,
+  serialized_end=372,
+)
+
+
 _TXHASH = _descriptor.Descriptor(
   name='TxHash',
   full_name='protoeth.TxHash',
@@ -169,8 +314,8 @@ _TXHASH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=152,
-  serialized_end=176,
+  serialized_start=374,
+  serialized_end=398,
 )
 
 
@@ -200,8 +345,8 @@ _TRANSACTIONINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=178,
-  serialized_end=216,
+  serialized_start=400,
+  serialized_end=438,
 )
 
 
@@ -231,8 +376,8 @@ _RAWTXREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=218,
-  serialized_end=244,
+  serialized_start=440,
+  serialized_end=466,
 )
 
 
@@ -262,14 +407,18 @@ _TXRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=246,
-  serialized_end=274,
+  serialized_start=468,
+  serialized_end=496,
 )
 
 DESCRIPTOR.message_types_by_name['GetAccountsReq'] = _GETACCOUNTSREQ
 DESCRIPTOR.message_types_by_name['GetAccountsResp'] = _GETACCOUNTSRESP
 DESCRIPTOR.message_types_by_name['GetBalanceReq'] = _GETBALANCEREQ
 DESCRIPTOR.message_types_by_name['GetBalanceResp'] = _GETBALANCERESP
+DESCRIPTOR.message_types_by_name['CreateRawTransactionReq'] = _CREATERAWTRANSACTIONREQ
+DESCRIPTOR.message_types_by_name['CreateRawTransactionResp'] = _CREATERAWTRANSACTIONRESP
+DESCRIPTOR.message_types_by_name['DeploySignedTransactionReq'] = _DEPLOYSIGNEDTRANSACTIONREQ
+DESCRIPTOR.message_types_by_name['DeploySignedTransactionResp'] = _DEPLOYSIGNEDTRANSACTIONRESP
 DESCRIPTOR.message_types_by_name['TxHash'] = _TXHASH
 DESCRIPTOR.message_types_by_name['TransactionInfo'] = _TRANSACTIONINFO
 DESCRIPTOR.message_types_by_name['RawTxRequest'] = _RAWTXREQUEST
@@ -303,6 +452,34 @@ GetBalanceResp = _reflection.GeneratedProtocolMessageType('GetBalanceResp', (_me
   # @@protoc_insertion_point(class_scope:protoeth.GetBalanceResp)
   })
 _sym_db.RegisterMessage(GetBalanceResp)
+
+CreateRawTransactionReq = _reflection.GeneratedProtocolMessageType('CreateRawTransactionReq', (_message.Message,), {
+  'DESCRIPTOR' : _CREATERAWTRANSACTIONREQ,
+  '__module__' : 'ethereum_pb2'
+  # @@protoc_insertion_point(class_scope:protoeth.CreateRawTransactionReq)
+  })
+_sym_db.RegisterMessage(CreateRawTransactionReq)
+
+CreateRawTransactionResp = _reflection.GeneratedProtocolMessageType('CreateRawTransactionResp', (_message.Message,), {
+  'DESCRIPTOR' : _CREATERAWTRANSACTIONRESP,
+  '__module__' : 'ethereum_pb2'
+  # @@protoc_insertion_point(class_scope:protoeth.CreateRawTransactionResp)
+  })
+_sym_db.RegisterMessage(CreateRawTransactionResp)
+
+DeploySignedTransactionReq = _reflection.GeneratedProtocolMessageType('DeploySignedTransactionReq', (_message.Message,), {
+  'DESCRIPTOR' : _DEPLOYSIGNEDTRANSACTIONREQ,
+  '__module__' : 'ethereum_pb2'
+  # @@protoc_insertion_point(class_scope:protoeth.DeploySignedTransactionReq)
+  })
+_sym_db.RegisterMessage(DeploySignedTransactionReq)
+
+DeploySignedTransactionResp = _reflection.GeneratedProtocolMessageType('DeploySignedTransactionResp', (_message.Message,), {
+  'DESCRIPTOR' : _DEPLOYSIGNEDTRANSACTIONRESP,
+  '__module__' : 'ethereum_pb2'
+  # @@protoc_insertion_point(class_scope:protoeth.DeploySignedTransactionResp)
+  })
+_sym_db.RegisterMessage(DeploySignedTransactionResp)
 
 TxHash = _reflection.GeneratedProtocolMessageType('TxHash', (_message.Message,), {
   'DESCRIPTOR' : _TXHASH,
@@ -341,8 +518,8 @@ _PROTOETHSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=277,
-  serialized_end=569,
+  serialized_start=499,
+  serialized_end=994,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetAccounts',
@@ -372,9 +549,27 @@ _PROTOETHSERVICE = _descriptor.ServiceDescriptor(
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(
+    name='CreateRawTransaction',
+    full_name='protoeth.ProtoEthService.CreateRawTransaction',
+    index=3,
+    containing_service=None,
+    input_type=_CREATERAWTRANSACTIONREQ,
+    output_type=_CREATERAWTRANSACTIONRESP,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='DeploySignedTransaction',
+    full_name='protoeth.ProtoEthService.DeploySignedTransaction',
+    index=4,
+    containing_service=None,
+    input_type=_DEPLOYSIGNEDTRANSACTIONREQ,
+    output_type=_DEPLOYSIGNEDTRANSACTIONRESP,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
     name='SendRawTransactions',
     full_name='protoeth.ProtoEthService.SendRawTransactions',
-    index=3,
+    index=5,
     containing_service=None,
     input_type=_RAWTXREQUEST,
     output_type=_TXRESPONSE,
