@@ -32,7 +32,7 @@ function debug(call: any) {
     let result = new DebugResponse();
     const txHash: string = call.request.debugInterface.payload;
     const testnetId: string = call.request.debugInterface.testnetId;
-    var url: string = "http://172.26.84.11:";
+    var url: string = "http://115.187.58.4:";
     var port: string = "754"
     switch (testnetId) {
         case "5":
