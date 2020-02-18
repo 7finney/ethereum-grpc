@@ -17,7 +17,7 @@ services:
             - "--gcmode=archive"
         ports: 
             - 8545:8545
-            - 30303:30303
+            - 30302:30303
         volumes: 
             - /storage/ethereum_data:/root/.ethereum/
 
