@@ -83,6 +83,19 @@ services:
       - "traefik.http.services.client-call-api.loadbalancer.server.scheme=h2c"
       - "traefik.http.services.client-call-api.loadbalancer.server.port=50053"
 
+  #Ethereum GRPC API
+  ethereum-grpc-api:
+    restart: always
+    build: ethereum-grpc/
+    networks: 
+      - inbound
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ethereum-grpc-api.rule=Host(`${ETH_GRPC_API}`)"
+      - "traefik.http.routers.ethereum-grpc-api.entrypoints=eth-port"
+      - "traefik.http.services.ethereum-grpc-api.loadbalancer.server.scheme=h2c"
+      - "traefik.http.services.ethereum-grpc-api.loadbalancer.server.port=50054"
+
   ## ganache
   ganache:
     image: trufflesuite/ganache-cli

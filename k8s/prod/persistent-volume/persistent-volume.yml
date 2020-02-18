@@ -1,0 +1,14 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: monitoring-pv
+  labels:
+    type: local
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 50M
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/data"

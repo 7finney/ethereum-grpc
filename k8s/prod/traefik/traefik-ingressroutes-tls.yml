@@ -9,7 +9,7 @@ spec:
     - web-secure
 
   routes:
-  - match: Host(`trf.ethco.de`) && PathPrefix(`/`)
+  - match: Host(`traefik.ethco.de`) && PathPrefix(`/`)
     kind: Rule
     middlewares:
       - name: basic-auth
@@ -24,14 +24,12 @@ spec:
     services:
     - name: auth-api-cluster-ip-svc
       port: 4040
-    middlewares:
-      - name: https-redirectscheme
-  - match: Host(`graf.ethco.de`) && PathPrefix(`/`)
+  - match: Host(`grafana.ethco.de`) && PathPrefix(`/`)
     kind: Rule
     services:
     - name: grafana-cluster-ip-svc
       port: 3000
-  - match: Host(`prom.ethco.de`) && PathPrefix(`/`)
+  - match: Host(`prometheus.ethco.de`) && PathPrefix(`/`)
     kind: Rule
     middlewares:
       - name: basic-auth

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ethereum-grpc-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      backend: ethereum-grpc-api
+  template:
+    metadata:
+      labels:
+        backend: ethereum-grpc-api
+    spec:
+      containers:
+        - name: ethereum-grpc-api
+          image: gcr.io/eth-devtools-api-dev/ethereum-grpc-api:0.1
+          ports:
+            - containerPort: 50054
+      restartPolicy: Always
