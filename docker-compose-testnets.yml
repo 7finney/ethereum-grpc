@@ -79,13 +79,13 @@ services:
             - /storage/ethereum_data:/root/.ethereum/
 
     # Ethereum 2.0 Test Network Prysm Sapphire
-    prysm-sapphire:
-        image: gcr.io/prysmaticlabs/prysm/beacon-chain:latest
-        restart: always
-        command:
-            - "--datadir=/data/.ethereum"
-        ports:
-            - 7548:4000
-            - 13000:13000
-        volumes:
-            - /storage/ethereum_data:/data/
+    # prysm-sapphire:
+    #     image: gcr.io/prysmaticlabs/prysm/beacon-chain:latest
+    #     restart: always
+    #     command:
+    #         - "--datadir=/data/.ethereum"
+    #     ports:
+    #         - 7548:4000
+    #         - 13000:13000
+    #     volumes:
+    #         - /storage/ethereum_data:/data/
