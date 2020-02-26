@@ -59,6 +59,6 @@ function debug(call: any) {
         ethdebugger.debug(tx);
 
     }).catch((error: any) => {
-        throw error;
+        call.write({ result: error });
     });
 }
