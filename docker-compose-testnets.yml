@@ -15,7 +15,7 @@ services:
             - "--cache=2048"
             - "--rpcapi=eth,web3,personal,debug"
             - "--gcmode=archive"
-        ports: 
+        ports:
             - 8545:8545
             - 30302:30303
         volumes: 
@@ -34,7 +34,7 @@ services:
             - "--cache=2048"
             - "--rpcapi=eth,web3,personal,debug"
             - "--gcmode=archive"
-        ports: 
+        ports:
             - 7545:8545
             - 30303:30303
         volumes: 
@@ -53,7 +53,7 @@ services:
             - "--cache=2048"
             - "--rpcapi=eth,web3,personal,debug"
             - "--gcmode=archive"
-        ports: 
+        ports:
             - 7546:8545
             - 30304:30303
         volumes: 
@@ -72,7 +72,7 @@ services:
             - "--cache=2048"
             - "--rpcapi=eth,web3,personal,debug"
             - "--gcmode=archive"
-        ports: 
+        ports:
             - 7547:8545
             - 30305:30303
         volumes: 
