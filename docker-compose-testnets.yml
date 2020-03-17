@@ -10,9 +10,9 @@ services:
         command:
             - "--syncmode=full"
             - "--rpc"
-            - "--rpccorsdomain='*''"
             - "--rpcaddr=0.0.0.0"
-            - "--cache=512"
+            - "--rpcvhosts='*.ethco.de'"
+            - "--cache=2048"
             - "--rpcapi=eth,web3,personal,debug"
             - "--gcmode=archive"
         ports: 
@@ -29,9 +29,9 @@ services:
             - "--syncmode=full"
             - "--goerli"
             - "--rpc"
-            - "--rpccorsdomain='*''"
             - "--rpcaddr=0.0.0.0"
-            - "--cache=512"
+            - "--rpcvhosts='*.ethco.de'"
+            - "--cache=2048"
             - "--rpcapi=eth,web3,personal,debug"
             - "--gcmode=archive"
         ports: 
@@ -48,9 +48,9 @@ services:
             - "--syncmode=full"
             - "--testnet"
             - "--rpc"
-            - "--rpccorsdomain='*''"
             - "--rpcaddr=0.0.0.0"
-            - "--cache=512"
+            - "--rpcvhosts='*.ethco.de'"
+            - "--cache=2048"
             - "--rpcapi=eth,web3,personal,debug"
             - "--gcmode=archive"
         ports: 
@@ -67,9 +67,9 @@ services:
             - "--syncmode=full"
             - "--rinkeby"
             - "--rpc"
-            - "--rpccorsdomain='*''"
             - "--rpcaddr=0.0.0.0"
-            - "--cache=512"
+            - "--rpcvhosts='*.ethco.de'"
+            - "--cache=2048"
             - "--rpcapi=eth,web3,personal,debug"
             - "--gcmode=archive"
         ports: 
