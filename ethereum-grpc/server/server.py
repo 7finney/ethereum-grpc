@@ -21,13 +21,13 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
         print("id: ", id, "\n")
         self._url = "http://115.187.58.4:"
         self._port = "754"
-        if(id == "5"):
+        if(id == 5):
             self._url += self._port + "5"
-        elif(id == "4"):
+        elif(id == 4):
             self._url += self._port + "7"
-        elif(id == "3"):
+        elif(id == 3):
             self._url += self._port + "6"
-        elif(id == "ganache"):
+        elif(id == 10):
             self._url = "http://ganache:8545"
         else:
             self._url = "http://ganache:8545"
