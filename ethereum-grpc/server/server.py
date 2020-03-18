@@ -14,15 +14,26 @@ from web3 import Web3
 
 class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
     _w3: tuple
+    _url: str
+    _port: str
     def SetTestnet(self, request, context):
         id = request.id
         print("id: ", id, "\n")
-        if(id == 0 ):
-            self._w3 = Web3(Web3.HTTPProvider("http://172.26.84.11:7545"))
-            print("if: \n")
+        self._url = "http://115.187.58.4:"
+        self._port = "754"
+        if(id == "5"):
+            self._url += self._port + "5"
+        elif(id == "4"):
+            self._url += self._port + "7"
+        elif(id == "3"):
+            self._url += self._port + "6"
+        elif(id == "ganache"):
+            self._url = "http://ganache:8545"
         else:
-            self._w3 = Web3(Web3.HTTPProvider("http://172.26.84.11:7547"))
-            print("else: \n")
+            self._url = "http://ganache:8545"
+        self._w3 = Web3(Web3.HTTPProvider(self._url))
+        # self._w3.eth.setGasPriceStrategy(medium_gas_price_strategy)
+        # self._w3.middleware_onion.inject(geth_poa_middleware, layer=0)
         return ethereum_pb2.google_dot_protobuf_dot_empty__pb2.Empty()
     def GetAccounts(self, request, context):
         print("Running getAccounts....")
