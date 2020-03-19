@@ -27,7 +27,7 @@ class ProtoEthServiceStub(object):
         )
     self.GetTransaction = channel.unary_unary(
         '/protoeth.ProtoEthService/GetTransaction',
-        request_serializer=ethereum__pb2.TxHash.SerializeToString,
+        request_serializer=ethereum__pb2.GetTxReq.SerializeToString,
         response_deserializer=ethereum__pb2.TransactionInfo.FromString,
         )
     self.SendRawTransactions = channel.unary_stream(
@@ -181,7 +181,7 @@ def add_ProtoEthServiceServicer_to_server(servicer, server):
       ),
       'GetTransaction': grpc.unary_unary_rpc_method_handler(
           servicer.GetTransaction,
-          request_deserializer=ethereum__pb2.TxHash.FromString,
+          request_deserializer=ethereum__pb2.GetTxReq.FromString,
           response_serializer=ethereum__pb2.TransactionInfo.SerializeToString,
       ),
       'SendRawTransactions': grpc.unary_stream_rpc_method_handler(

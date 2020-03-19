@@ -1,3 +1,4 @@
+import multiprocessing
 import json
 import logging
 import grpc
@@ -5,6 +6,10 @@ import ethereum_pb2
 import ethereum_pb2_grpc
 from concurrent import futures
 from google.protobuf.json_format import MessageToJson
+from grpc_status import rpc_status
+from google.protobuf import any_pb2
+from google.rpc import code_pb2, status_pb2, error_details_pb2
+
 import re
 import requests
 from web3 import Web3
@@ -13,78 +18,96 @@ from web3 import Web3
 # w3 = Web3(Web3.HTTPProvider("http://localhost:8545"))
 
 class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
-    _w3: tuple
-    _url: str
-    _port: str
-    def SetTestnet(self, request, context):
-        id = request.id
-        print("id: ", id, "\n")
-        self._url = "http://115.187.58.4:"
-        self._port = "754"
-        if(id == 5):
-            self._url += self._port + "5"
-        elif(id == 4):
-            self._url += self._port + "7"
-        elif(id == 3):
-            self._url += self._port + "6"
-        elif(id == 10):
-            self._url = "http://ganache:8545"
+    def getWeb3Url(self, ntwrkId):
+        url = "http://115.187.58.4:"
+        port = "754"
+        if(ntwrkId == 5):
+            url += port + "5"
+        elif(ntwrkId == 4):
+            url += port + "7"
+        elif(ntwrkId == 3):
+            url += port + "6"
         else:
-            self._url = "http://ganache:8545"
-        self._w3 = Web3(Web3.HTTPProvider(self._url))
-        # self._w3.eth.setGasPriceStrategy(medium_gas_price_strategy)
-        # self._w3.middleware_onion.inject(geth_poa_middleware, layer=0)
-        return ethereum_pb2.google_dot_protobuf_dot_empty__pb2.Empty()
-    def GetAccounts(self, request, context):
-        print("Running getAccounts....")
-        accounts = self._w3.eth.accounts
-        return ethereum_pb2.GetAccountsResp(accounts=accounts)
-    def GetBalance(self, request, context):
-        print("Running getBalance....")
-        balance = self._w3.eth.getBalance(request.address)
-        return ethereum_pb2.GetBalanceResp(balance=json.dumps(balance))
+            url = "http://115.187.58.4:7545"
+        return url
+    def web3Task(self, request, method):
+        print("Perform web3 task here")
+        print(request)
+        url = self.getWeb3Url(request.networkid)
+        print(url)
+        web3 = Web3(Web3.HTTPProvider(url))
+        if(method == 'get_Transaction'):
+            print("getting transaction data from blockchain....")
+            try:
+                tx = web3.eth.getTransaction(request.txhash)
+                return tx
+            except Exception as e:
+                raise Exception(e)
+        else:
+            raise Exception("Error: No method specified!")
+    # def GetAccounts(self, request, context):
+    #     print("Running getAccounts....")
+    #     accounts = self._w3.eth.accounts
+    #     return ethereum_pb2.GetAccountsResp(accounts=accounts)
+    # def GetBalance(self, request, context):
+    #     print("Running getBalance....")
+    #     balance = self._w3.eth.getBalance(request.address)
+    #     return ethereum_pb2.GetBalanceResp(balance=json.dumps(balance))
     def GetTransaction(self, request, context):
         print("Running getTransaction...")
-        tx = self._w3.eth.getTransaction(request.txhash)
-        return ethereum_pb2.TransactionInfo(transaction=Web3.toJSON(tx))
-    def GetTransactionReceipt(self, request, context):
-        print("Running getTransactionReceipt...")
-        receipt = self._w3.eth.getTransactionReceipt(request.txhash)
-        print(Web3.toJSON(receipt))
-        return ethereum_pb2.TxReceipt(txReceipt=Web3.toJSON(receipt))
-    def GetBlockNumber(self, request, context):
-        print("Running getBlockNumber...")
-        blockNumber = self._w3.eth.blockNumber
-        return ethereum_pb2.BlockNumber(blocknum=blockNumber)
-    def GetBlockTransactionCount(self, request, context):
-        print("Running getBlockTransactionCount...")
-        if(request.reqString) :
-            count = self._w3.eth.getBlockTransactionCount(request.reqString)
-        else:
-            count = self._w3.eth.getBlockTransactionCount(request.reqNum)
-        return ethereum_pb2.CountResp(count=count)
-    def GetBlock(self, request, context):
-        print("Running getBlock...")
-        if(request.reqString) :
-            resp = self._w3.eth.getBlock(request.reqString)
-        else:
-            resp = self._w3.eth.getBlock(request.reqNum)
-        return ethereum_pb2.ObjResp(respObj=resp)
-    def GetTransactionFromBlock(self, request, context):
-        print("Running getTransactionFromBlock...")
-        if(request.req.reqString):
-            resp = self._w3.eth.getTransactionFromBlock(request.req.reqString, request.index)
-        else:
-            resp = self._w3.eth.getTransactionFromBlock(request.req.reqNum, request.index)
-        return ethereum_pb2.ObjResp(respObj=resp)
-    def GetHashrate(self, request, context):
-        print("Running getHashRate...")
-        resp = self._w3.eth.hashrate
-        return ethereum_pb2.NumResult(resultNum=resp)
-    def GetGasPrice(self, request, context):
-        print("Running getGasPrice...")
-        resp = self._w3.eth.gasPrice
-        return ethereum_pb2.NumResult(resultNum=resp)
+        executor = futures.ProcessPoolExecutor(max_workers=1)
+        try:
+            task = executor.submit(self.web3Task, request, 'get_Transaction')
+            tx = task.result()
+            print(tx)
+            return ethereum_pb2.TransactionInfo(transaction=Web3.toJSON(tx))
+        except Exception as exc:
+            print("EXCEPTION: ", exc)
+            detail = any_pb2.Any()
+            rich_status = rpc_status.status_pb2.Status(
+                code=code_pb2.INVALID_ARGUMENT,
+                message='Transaction not found',
+                details=[detail]
+                )
+            context.abort_with_status(rpc_status.to_status(rich_status))
+    # def GetTransactionReceipt(self, request, context):
+    #     print("Running getTransactionReceipt...")
+    #     receipt = self._w3.eth.getTransactionReceipt(request.txhash)
+    #     print(Web3.toJSON(receipt))
+    #     return ethereum_pb2.TxReceipt(txReceipt=Web3.toJSON(receipt))
+    # def GetBlockNumber(self, request, context):
+    #     print("Running getBlockNumber...")
+    #     blockNumber = self._w3.eth.blockNumber
+    #     return ethereum_pb2.BlockNumber(blocknum=blockNumber)
+    # def GetBlockTransactionCount(self, request, context):
+    #     print("Running getBlockTransactionCount...")
+    #     if(request.reqString) :
+    #         count = self._w3.eth.getBlockTransactionCount(request.reqString)
+    #     else:
+    #         count = self._w3.eth.getBlockTransactionCount(request.reqNum)
+    #     return ethereum_pb2.CountResp(count=count)
+    # def GetBlock(self, request, context):
+    #     print("Running getBlock...")
+    #     if(request.reqString) :
+    #         resp = self._w3.eth.getBlock(request.reqString)
+    #     else:
+    #         resp = self._w3.eth.getBlock(request.reqNum)
+    #     return ethereum_pb2.ObjResp(respObj=resp)
+    # def GetTransactionFromBlock(self, request, context):
+    #     print("Running getTransactionFromBlock...")
+    #     if(request.req.reqString):
+    #         resp = self._w3.eth.getTransactionFromBlock(request.req.reqString, request.index)
+    #     else:
+    #         resp = self._w3.eth.getTransactionFromBlock(request.req.reqNum, request.index)
+    #     return ethereum_pb2.ObjResp(respObj=resp)
+    # def GetHashrate(self, request, context):
+    #     print("Running getHashRate...")
+    #     resp = self._w3.eth.hashrate
+    #     return ethereum_pb2.NumResult(resultNum=resp)
+    # def GetGasPrice(self, request, context):
+    #     print("Running getGasPrice...")
+    #     resp = self._w3.eth.gasPrice
+    #     return ethereum_pb2.NumResult(resultNum=resp)
         
   
 def serve():

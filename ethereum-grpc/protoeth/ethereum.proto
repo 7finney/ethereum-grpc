@@ -69,10 +69,15 @@ message NumResult {
     uint64 resultNum = 1;
 }
 
+message GetTxReq {
+    uint32 networkid = 1;
+    string txhash = 2;
+}
+
 service ProtoEthService {
     rpc GetAccounts(GetAccountsReq) returns (GetAccountsResp) {};
     rpc GetBalance(GetBalanceReq) returns (GetBalanceResp) {};
-    rpc GetTransaction(TxHash) returns (TransactionInfo) {};
+    rpc GetTransaction(GetTxReq) returns (TransactionInfo) {};
     // eth_sendRawTransaction should have simple requests but stream of responses
     rpc SendRawTransactions(RawTxRequest) returns (stream TxResponse) {};
     rpc GetTransactionReceipt(TxHash) returns (TxReceipt) {};
