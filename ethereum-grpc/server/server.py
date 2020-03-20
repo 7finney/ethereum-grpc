@@ -55,7 +55,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
     #     return ethereum_pb2.GetBalanceResp(balance=json.dumps(balance))
     def GetTransaction(self, request, context):
         print("Running getTransaction...")
-        executor = futures.ProcessPoolExecutor(max_workers=1)
+        executor = futures.ProcessPoolExecutor(max_workers=3)
         try:
             task = executor.submit(self.web3Task, request, 'get_Transaction')
             tx = task.result()
