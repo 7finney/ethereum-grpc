@@ -9,11 +9,11 @@ from google.protobuf.json_format import MessageToJson
 from grpc_status import rpc_status
 from google.protobuf import any_pb2
 from google.rpc import code_pb2, status_pb2, error_details_pb2
-
 import re
 import requests
+from datetime import datetime
 from web3 import Web3
-
+import os
 
 # w3 = Web3(Web3.HTTPProvider("http://localhost:8545"))
 
@@ -30,11 +30,12 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
         else:
             url = "http://115.187.58.4:7545"
         return url
+
     def web3Task(self, request, method):
-        print("Perform web3 task here")
-        print(request)
+        print("web3 subprocess started at ", datetime.now().isoformat(timespec='milliseconds'))
+        print('[pid:%s] performing calculation on network ID: %s' % (os.getpid(), request))
         url = self.getWeb3Url(request.networkid)
-        print(url)
+        # print(url)
         web3 = Web3(Web3.HTTPProvider(url))
         if(method == 'get_Transaction'):
             print("getting transaction data from blockchain....")
@@ -53,25 +54,25 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
     #     print("Running getBalance....")
     #     balance = self._w3.eth.getBalance(request.address)
     #     return ethereum_pb2.GetBalanceResp(balance=json.dumps(balance))
+    # def killTask(self, tasks):
+    #     for 
+    #     task.cancel
     def GetTransaction(self, request, context):
-        print("Running getTransaction...")
-        executor = futures.ProcessPoolExecutor(max_workers=2)
-        try:
+        with futures.ProcessPoolExecutor(max_workers=1) as executor:
             task = executor.submit(self.web3Task, request, 'get_Transaction')
-            tx = task.result()
-            print(tx)
-            return ethereum_pb2.TransactionInfo(transaction=Web3.toJSON(tx))
-
-        except Exception as exc:
-            print("EXCEPTION: ", exc)
-            detail = any_pb2.Any()
-            rich_status = rpc_status.status_pb2.Status(
-                code=code_pb2.NOT_FOUND,
-                # message='Transaction not found',
-                message=str(exc),
-                details=[detail]
+            try:
+                tx = task.result(timeout=30)
+                print(tx)
+                return ethereum_pb2.TransactionInfo(transaction=Web3.toJSON(tx))
+            except Exception as exc:
+                print("EXCEPTION: ", exc)
+                detail = any_pb2.Any()
+                rich_status = rpc_status.status_pb2.Status(
+                    code=code_pb2.NOT_FOUND,
+                    message=str(exc),
+                    details=[detail]
                 )
-            context.abort_with_status(rpc_status.to_status(rich_status))
+                context.abort_with_status(rpc_status.to_status(rich_status))
 
     # def GetTransactionReceipt(self, request, context):
     #     print("Running getTransactionReceipt...")
@@ -114,12 +115,13 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
         
   
 def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
-    ethereum_pb2_grpc.add_ProtoEthServiceServicer_to_server(ProtoEth(), server)
-    server.add_insecure_port('[::]:50053')
-    server.start()
-    print("gRPC server listening on port 50053")
-    server.wait_for_termination()
+    with futures.ThreadPoolExecutor(max_workers=5) as executor:
+        server = grpc.server(executor)
+        ethereum_pb2_grpc.add_ProtoEthServiceServicer_to_server(ProtoEth(), server)
+        server.add_insecure_port('[::]:50053')
+        server.start()
+        print("gRPC server listening on port 50053")
+        server.wait_for_termination()
 if __name__ == '__main__':
     logging.basicConfig()
     serve()
