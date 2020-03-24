@@ -55,21 +55,24 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
     #     return ethereum_pb2.GetBalanceResp(balance=json.dumps(balance))
     def GetTransaction(self, request, context):
         print("Running getTransaction...")
-        executor = futures.ProcessPoolExecutor(max_workers=3)
+        executor = futures.ThreadPoolExecutor(max_workers=1)
         try:
             task = executor.submit(self.web3Task, request, 'get_Transaction')
             tx = task.result()
             print(tx)
             return ethereum_pb2.TransactionInfo(transaction=Web3.toJSON(tx))
+
         except Exception as exc:
             print("EXCEPTION: ", exc)
             detail = any_pb2.Any()
             rich_status = rpc_status.status_pb2.Status(
                 code=code_pb2.INVALID_ARGUMENT,
-                message='Transaction not found',
+                # message='Transaction not found',
+                message=str(exc),
                 details=[detail]
                 )
             context.abort_with_status(rpc_status.to_status(rich_status))
+
     # def GetTransactionReceipt(self, request, context):
     #     print("Running getTransactionReceipt...")
     #     receipt = self._w3.eth.getTransactionReceipt(request.txhash)
@@ -111,7 +114,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
         
   
 def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     ethereum_pb2_grpc.add_ProtoEthServiceServicer_to_server(ProtoEth(), server)
     server.add_insecure_port('[::]:50053')
     server.start()
