@@ -38,9 +38,9 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         elif(id == "3"):
             self.url += self.port + "6"
         elif(id == "ganache"):
-            self.url = "http://ganache:8545"
+            self.url = "http://localhost:8545"
         else:
-            self.url = "http://ganache:8545"
+            self.url = "http://localhost:8545"
         self._w3 = Web3(Web3.HTTPProvider(self.url))
         print("Running command: ", request.callInterface.command)
         if request.callInterface.command == "deploy-contract":
@@ -53,10 +53,7 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             yield resp
         if request.callInterface.command == "get-accounts":
             accounts, balance = self.web3getAccounts()
-            result = json.dumps({
-                "accounts": accounts,
-                "balance": balance
-            })
+            result = json.dumps({ "accounts": accounts, "balance": balance})
             resp = client_call_pb2.ClientCallResponse(result=result)
             yield resp
         if request.callInterface.command == "get-balance":
@@ -71,6 +68,11 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         if request.callInterface.command == "contract-method-call":
             callResponse = self.web3CallMethods(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=callResponse)
+            yield resp
+        if request.callInterface.command == "build-rawtx":
+            print("Build raw tx")
+            rawTx = self.web3BuildTxn(request.callInterface.payload)
+            resp = client_call_pb2.ClientCallResponse(result=rawTx)
             yield resp
         else:
             return
@@ -125,6 +127,18 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         fromAddress = transaction_Info['fromAddress']
         amount = transaction_Info['amount']
         transaction = self._w3.eth.sendTransaction({ 'to': toAddress, 'from': fromAddress, 'value': amount })
+        return Web3.toJSON(transaction)
+    def web3BuildTxn(self, payload):
+        input = json.loads(payload)
+        bytecode = input['bytecode']
+        abi = input['abi']
+        params = input['params']
+        gasSupply = input['gasSupply']
+        Contract = self._w3.eth.contract(abi=abi, bytecode=bytecode)
+        nonce = self._w3.eth.getTransactionCount(self._w3.toChecksumAddress(input['from']), "pending")
+        transaction = Contract.constructor(*self.unpackParams(*params)).buildTransaction({ 'nonce': nonce, 'gas': gasSupply })
+        del transaction['to']
+        # print("del txn: \n", txn)
         return Web3.toJSON(transaction)
   
 def serve():
