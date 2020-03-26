@@ -74,6 +74,12 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             rawTx = self.web3BuildTxn(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=rawTx)
             yield resp
+        if request.callInterface.command == "deploy-signed-tx":
+            print("deploying signed transaction")
+            tx = self.web3DeploySignedTransaction(request.callInterface.signedTX)
+            resp = client_call_pb2.ClientCallResponse(result=tx)
+            print(tx)
+            yield resp
         else:
             return
     def web3Deploy(self, payload):
@@ -140,7 +146,10 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         del transaction['to']
         # print("del txn: \n", txn)
         return Web3.toJSON(transaction)
-  
+    def web3DeploySignedTransaction(self, rawTransaction):
+        print("Running Signed deploy Transaction...", rawTransaction)
+        resp = self._w3.eth.sendRawTransaction(rawTransaction)
+        return resp
 def serve():
     header_validator = RequestHeaderValidatorInterceptor(grpc.StatusCode.UNAUTHENTICATED, 'Access denied!')
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), interceptors=(header_validator,))
