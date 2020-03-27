@@ -57,8 +57,10 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             resp = client_call_pb2.ClientCallResponse(result=result)
             yield resp
         if request.callInterface.command == "get-balance":
-            print(request.callInterface)
-            balance = self.web3getAccBalance(request.callInterface.payload)
+            # TODO: check for proper hash address before proceeding
+            hashAddr = request.callInterface.payload
+            print(hashAddr)
+            balance = self.web3getAccBalance(hashAddr)
             resp = client_call_pb2.ClientCallResponse(result=balance)
             yield resp
         if request.callInterface.command == "send-ether":
@@ -91,7 +93,7 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         params = input['params']
         gasSupply = input['gasSupply']
         Contract = self._w3.eth.contract(abi=abi, bytecode=bytecode)
-        deploy_txn = Contract.constructor(*self.unpackParams(*params)).transact({ 'from': self._w3.eth.accounts[0], 'gas': gasSupply })
+        deploy_txn = Contract.constructor(*self.unpackParams(*params)).transact({ 'from': Web3.toChecksumAddress(self._w3.eth.accounts[0]), 'gas': gasSupply })
         txn_receipt = self._w3.eth.getTransactionReceipt(deploy_txn)
         return Web3.toJSON(txn_receipt)
     def web3GasEstimate(self, payload):
@@ -113,7 +115,7 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         for i in abi:
             if i['name'] == methodName:
                 if i['constant'] == False or i['payable'] == True:
-                    txHash = method_to_call(*self.unpackParams(*params)).transact({ 'from': input['deployAccount'] })
+                    txHash = method_to_call(*self.unpackParams(*params)).transact({ 'from': Web3.toChecksumAddress(input['deployAccount']) })
                     callResult = self._w3.eth.waitForTransactionReceipt(txHash)
                     break
                 else:
@@ -122,15 +124,15 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         return Web3.toJSON(callResult)
     def web3getAccounts(self):
         accounts = self._w3.eth.accounts
-        balance = self._w3.eth.getBalance(accounts[0])
+        balance = self._w3.eth.getBalance(Web3.toChecksumAddress(accounts[0]))
         return accounts, balance
-    def web3getAccBalance(self, account):
-        balance = self._w3.eth.getBalance(account)
+    def web3getAccBalance(self, hashAddr):
+        balance = self._w3.eth.getBalance(Web3.toChecksumAddress(hashAddr))
         return Web3.toJSON(balance)
     def web3Transactions(self, transactionInfo):
         transaction_Info = json.loads(transactionInfo)
-        toAddress = transaction_Info['toAddress']
-        fromAddress = transaction_Info['fromAddress']
+        toAddress = Web3.toChecksumAddress(transaction_Info['toAddress'])
+        fromAddress = Web3.toChecksumAddress(transaction_Info['fromAddress'])
         amount = transaction_Info['amount']
         transaction = self._w3.eth.sendTransaction({ 'to': toAddress, 'from': fromAddress, 'value': amount })
         return Web3.toJSON(transaction)
@@ -141,10 +143,9 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         params = input['params']
         gasSupply = input['gasSupply']
         Contract = self._w3.eth.contract(abi=abi, bytecode=bytecode)
-        nonce = self._w3.eth.getTransactionCount(self._w3.toChecksumAddress(input['from']), "pending")
+        nonce = self._w3.eth.getTransactionCount(Web3.toChecksumAddress(input['from']), "pending")
         transaction = Contract.constructor(*self.unpackParams(*params)).buildTransaction({ 'nonce': nonce, 'gas': gasSupply })
         del transaction['to']
-        # print("del txn: \n", txn)
         return Web3.toJSON(transaction)
     def web3DeploySignedTransaction(self, rawTransaction):
         print("Running Signed deploy Transaction...", rawTransaction)
