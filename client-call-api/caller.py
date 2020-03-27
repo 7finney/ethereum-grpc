@@ -75,8 +75,8 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             resp = client_call_pb2.ClientCallResponse(result=rawTx)
             yield resp
         if request.callInterface.command == "deploy-signed-tx":
-            print("deploying signed transaction")
-            tx = self.web3DeploySignedTransaction(request.callInterface.signedTX)
+            print("deploying signed transaction: ", request.callInterface.payload)
+            tx = self.web3DeploySignedTransaction(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=tx)
             print(tx)
             yield resp
