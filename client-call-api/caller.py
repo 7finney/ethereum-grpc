@@ -42,7 +42,7 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         else:
             self.url = "http://localhost:8545"
         self._w3 = Web3(Web3.HTTPProvider(self.url))
-        print("Running command: ", request.callInterface.command)
+        print("Running command " + request.callInterface.command + " on testnetId " + request.callInterface.testnetId)
         if request.callInterface.command == "deploy-contract":
             txRecipt = self.web3Deploy(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=txRecipt)
@@ -77,7 +77,6 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             resp = client_call_pb2.ClientCallResponse(result=rawTx)
             yield resp
         if request.callInterface.command == "deploy-signed-tx":
-            print("deploying signed transaction: ", request.callInterface.payload)
             tx = self.web3DeploySignedTransaction(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=tx)
             print(tx)
@@ -144,11 +143,12 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         gasSupply = input['gasSupply']
         Contract = self._w3.eth.contract(abi=abi, bytecode=bytecode)
         nonce = self._w3.eth.getTransactionCount(Web3.toChecksumAddress(input['from']), "pending")
-        transaction = Contract.constructor(*self.unpackParams(*params)).buildTransaction({ 'nonce': nonce, 'gas': gasSupply })
+        transaction = Contract.constructor(*self.unpackParams(*params)).buildTransaction({ 'from': Web3.toChecksumAddress(input['from']), 'nonce': nonce, 'gas': gasSupply })
         del transaction['to']
         return Web3.toJSON(transaction)
     def web3DeploySignedTransaction(self, rawTransaction):
-        print("Running Signed deploy Transaction...", rawTransaction)
+        print("Running Signed deploy Transaction...")
+        print(rawTransaction)
         resp = self._w3.eth.sendRawTransaction(rawTransaction)
         return resp
 def serve():
