@@ -150,8 +150,7 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             to=Web3.toChecksumAddress(input['to']),
             value=int(input['value']),
             nonce=self._w3.eth.getTransactionCount(Web3.toChecksumAddress(input['from']), "pending"),
-            gasPrice=self._w3.eth.gasPrice,
-            data=input['data']
+            gasPrice=self._w3.eth.gasPrice
         )
         transaction['from'] = Web3.toChecksumAddress(input['from'])
         estimatedGas = self._w3.eth.estimateGas(transaction)
@@ -173,8 +172,6 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         del transaction['to']
         return Web3.toJSON(transaction)
     def web3DeploySignedTransaction(self, rawTransaction):
-        print("Running Signed deploy Transaction...")
-        print(rawTransaction)
         resp = self._w3.eth.sendRawTransaction(rawTransaction)
         return resp.hex()
 def serve():
