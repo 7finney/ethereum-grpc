@@ -22,6 +22,11 @@ spec:
     services:
     - name: auth-api-cluster-ip-svc
       port: 4040
+  - match: Host(`etherscanner.staging.ethco.de`) && PathPrefix(`/`)
+    kind: Rule
+    services:
+      - name: etherscanner-backend-cluster-svc
+        port: 4545
   # - match: Host(`graf.ethco.de`) && PathPrefix(`/`)
   #   kind: Rule
   #   services:
