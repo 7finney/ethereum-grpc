@@ -14,6 +14,8 @@ import requests
 from datetime import datetime
 from web3 import Web3
 import os
+from request_header_validator_interceptor import RequestHeaderValidatorInterceptor
+
 
 # w3 = Web3(Web3.HTTPProvider("http://localhost:8545"))
 
@@ -21,11 +23,11 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
     def getWeb3Url(self, ntwrkId):
         url = "http://115.187.58.4:"
         port = "754"
-        if(ntwrkId == 5):
+        if (ntwrkId == 5):
             url += port + "5"
-        elif(ntwrkId == 4):
+        elif (ntwrkId == 4):
             url += port + "7"
-        elif(ntwrkId == 3):
+        elif (ntwrkId == 3):
             url += port + "6"
         else:
             url = "http://115.187.58.4:7545"
@@ -37,7 +39,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
         url = self.getWeb3Url(request.networkid)
         # print(url)
         web3 = Web3(Web3.HTTPProvider(url))
-        if(method == 'get_Transaction'):
+        if (method == 'get_Transaction'):
             print("getting transaction data from blockchain....")
             try:
                 tx = web3.eth.getTransaction(request.txhash)
@@ -46,6 +48,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 raise Exception(e)
         else:
             raise Exception("Error: No method specified!")
+
     # def GetAccounts(self, request, context):
     #     print("Running getAccounts....")
     #     accounts = self._w3.eth.accounts
@@ -112,16 +115,20 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
     #     print("Running getGasPrice...")
     #     resp = self._w3.eth.gasPrice
     #     return ethereum_pb2.NumResult(resultNum=resp)
-        
-  
+
+
 def serve():
+    header_validator = RequestHeaderValidatorInterceptor(grpc.StatusCode.UNAUTHENTICATED,
+                                                         'Access denied!')
     with futures.ThreadPoolExecutor(max_workers=5) as executor:
-        server = grpc.server(executor)
+        server = grpc.server(executor, interceptors=(header_validator,))
         ethereum_pb2_grpc.add_ProtoEthServiceServicer_to_server(ProtoEth(), server)
         server.add_insecure_port('[::]:50054')
         server.start()
         print("gRPC server listening on port 50054")
         server.wait_for_termination()
+
+
 if __name__ == '__main__':
     logging.basicConfig()
     serve()
