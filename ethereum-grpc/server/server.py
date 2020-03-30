@@ -118,9 +118,9 @@ def serve():
     with futures.ThreadPoolExecutor(max_workers=5) as executor:
         server = grpc.server(executor)
         ethereum_pb2_grpc.add_ProtoEthServiceServicer_to_server(ProtoEth(), server)
-        server.add_insecure_port('[::]:50053')
+        server.add_insecure_port('[::]:50054')
         server.start()
-        print("gRPC server listening on port 50053")
+        print("gRPC server listening on port 50054")
         server.wait_for_termination()
 if __name__ == '__main__':
     logging.basicConfig()
