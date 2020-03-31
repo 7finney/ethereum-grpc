@@ -66,7 +66,6 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         if request.callInterface.command == "get-balance":
             # TODO: check for proper hash address before proceeding
             hashAddr = request.callInterface.payload
-            print(hashAddr)
             balance = self.web3getAccBalance(hashAddr)
             resp = client_call_pb2.ClientCallResponse(result=balance)
             yield resp
@@ -79,7 +78,6 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             resp = client_call_pb2.ClientCallResponse(result=callResponse)
             yield resp
         if request.callInterface.command == "build-rawtx":
-            print("Build raw tx")
             rawTx = self.web3BuildTxn(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=rawTx)
             yield resp
@@ -154,7 +152,7 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         )
         transaction['from'] = Web3.toChecksumAddress(input['from'])
         estimatedGas = self._w3.eth.estimateGas(transaction)
-        transaction['gas'] = int(estimatedGas*10)
+        transaction['gas'] = int(estimatedGas)
         return Web3.toJSON(transaction)
     def web3BuildTxn(self, payload):
         input = json.loads(payload)
