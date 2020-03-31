@@ -16,3 +16,8 @@ All variations of ethereum networks (including testnetworks) running in Math & C
     ]
 }
 ```
+
+### Run networks
+```
+sudo docker-compose -f networks/docker-compose-testnets.yml up -d
+```
