@@ -20,7 +20,23 @@ services:
             - 30302:30303
         volumes: 
             - /storage/ethereum_data:/root/.ethereum/
-
+    # main network syncmode light
+    ethereum-light:
+        image: ethereum/client-go
+        restart: always
+        command:
+            - "--syncmode=light"
+            - "--rpc"
+            - "--rpcaddr=0.0.0.0"
+            - "--rpcvhosts='*.ethco.de'"
+            - "--cache=2048"
+            - "--rpcapi=eth,web3,personal,debug"
+            - "--gcmode=archive"
+        ports:
+            - 8546:8545
+            - 30302:30303
+        volumes: 
+            - /storage/ethereum_data:/root/.ethereum/geth_light
     # Goerli Test Network
     goerli:
         image: ethereum/client-go
