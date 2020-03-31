@@ -34,7 +34,7 @@ services:
             - "--gcmode=archive"
         ports:
             - 8546:8545
-            - 30302:30303
+            - 30303:30303
         volumes: 
             - /storage/ethereum_data:/root/.ethereum/geth_light
     # Goerli Test Network
@@ -52,7 +52,7 @@ services:
             - "--gcmode=archive"
         ports:
             - 7545:8545
-            - 30303:30303
+            - 30304:30303
         volumes: 
             - /storage/ethereum_data:/root/.ethereum/
 
@@ -71,7 +71,7 @@ services:
             - "--gcmode=archive"
         ports:
             - 7546:8545
-            - 30304:30303
+            - 30305:30303
         volumes: 
             - /storage/ethereum_data:/root/.ethereum/
 
@@ -90,7 +90,7 @@ services:
             - "--gcmode=archive"
         ports:
             - 7547:8545
-            - 30305:30303
+            - 30306:30303
         volumes: 
             - /storage/ethereum_data:/root/.ethereum/
 
