@@ -9,7 +9,7 @@ spec:
       backend: ethereum-grpc-api
   template:
     metadata:
-      labels:
+      wlabels:
         backend: ethereum-grpc-api
     spec:
       containers:
