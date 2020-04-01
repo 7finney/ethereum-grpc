@@ -10,17 +10,33 @@ services:
         command:
             - "--syncmode=full"
             - "--rpc"
-            - "--rpccorsdomain='*''"
             - "--rpcaddr=0.0.0.0"
-            - "--cache=512"
+            - "--rpcvhosts='*.ethco.de'"
+            - "--cache=2048"
             - "--rpcapi=eth,web3,personal,debug"
             - "--gcmode=archive"
-        ports: 
+        ports:
             - 8545:8545
             - 30302:30303
         volumes: 
             - /storage/ethereum_data:/root/.ethereum/
-
+    # main network syncmode light
+    ethereum-light:
+        image: ethereum/client-go
+        restart: always
+        command:
+            - "--syncmode=light"
+            - "--rpc"
+            - "--rpcaddr=0.0.0.0"
+            - "--rpcvhosts='*.ethco.de'"
+            - "--cache=2048"
+            - "--rpcapi=eth,web3,personal,debug"
+            - "--gcmode=archive"
+        ports:
+            - 8546:8545
+            - 30303:30303
+        volumes: 
+            - /storage/ethereum_data:/root/.ethereum/geth_light
     # Goerli Test Network
     goerli:
         image: ethereum/client-go
@@ -29,14 +45,14 @@ services:
             - "--syncmode=full"
             - "--goerli"
             - "--rpc"
-            - "--rpccorsdomain='*''"
             - "--rpcaddr=0.0.0.0"
-            - "--cache=512"
+            - "--rpcvhosts='*.ethco.de'"
+            - "--cache=2048"
             - "--rpcapi=eth,web3,personal,debug"
             - "--gcmode=archive"
-        ports: 
+        ports:
             - 7545:8545
-            - 30303:30303
+            - 30304:30303
         volumes: 
             - /storage/ethereum_data:/root/.ethereum/
 
@@ -48,14 +64,14 @@ services:
             - "--syncmode=full"
             - "--testnet"
             - "--rpc"
-            - "--rpccorsdomain='*''"
             - "--rpcaddr=0.0.0.0"
-            - "--cache=512"
+            - "--rpcvhosts='*.ethco.de'"
+            - "--cache=2048"
             - "--rpcapi=eth,web3,personal,debug"
             - "--gcmode=archive"
-        ports: 
+        ports:
             - 7546:8545
-            - 30304:30303
+            - 30305:30303
         volumes: 
             - /storage/ethereum_data:/root/.ethereum/
 
@@ -67,14 +83,14 @@ services:
             - "--syncmode=full"
             - "--rinkeby"
             - "--rpc"
-            - "--rpccorsdomain='*''"
             - "--rpcaddr=0.0.0.0"
-            - "--cache=512"
+            - "--rpcvhosts='*.ethco.de'"
+            - "--cache=2048"
             - "--rpcapi=eth,web3,personal,debug"
             - "--gcmode=archive"
-        ports: 
+        ports:
             - 7547:8545
-            - 30305:30303
+            - 30306:30303
         volumes: 
             - /storage/ethereum_data:/root/.ethereum/
 
