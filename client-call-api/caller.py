@@ -43,9 +43,9 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             # Ropsten
             self.url += self.port + "6"
         elif(id == "ganache"):
-            self.url = "http://localhost:8545"
+            self.url = "http://ganache:8545"
         else:
-            self.url = "http://localhost:8545"
+            self.url = "http://ganache:8545"
         self._w3 = Web3(Web3.HTTPProvider(self.url))
         if(id == "5" or id == "4"):
             self._w3.middleware_onion.inject(geth_poa_middleware, layer=0)
