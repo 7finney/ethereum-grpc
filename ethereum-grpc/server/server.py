@@ -29,6 +29,8 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
             url += port + "7"
         elif (ntwrkId == 3):
             url += port + "6"
+        elif (ntwrkId == 2):
+            url = "http://115.187.58.4:8546"
         else:
             url = "http://115.187.58.4:7545"
         return url
