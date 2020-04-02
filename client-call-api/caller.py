@@ -73,7 +73,7 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             transaction = self.web3Transactions(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=transaction)
             yield resp
-        if request.callInterface.command == "contract-method-call":
+        if request.callInterface.command == "ganache-contract-method-call":
             callResponse = self.web3CallMethods(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=callResponse)
             yield resp
@@ -83,6 +83,10 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             yield resp
         if request.callInterface.command == "build-raw-eth-tx":
             rawTx = self.web3BuildRawTxn(request.callInterface.payload, id)
+            resp = client_call_pb2.ClientCallResponse(result=rawTx)
+            yield resp
+        if request.callInterface.command == "contract-method-call":
+            rawTx = self.web3CustomCallMethods(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=rawTx)
             yield resp
         if request.callInterface.command == "deploy-signed-tx":
@@ -172,6 +176,26 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
     def web3DeploySignedTransaction(self, rawTransaction):
         resp = self._w3.eth.sendRawTransaction(rawTransaction)
         return resp.hex()
+    def web3CustomCallMethods(self, payload):
+        input = json.loads(payload)
+        methodName = input['methodName']
+        abi = input['abi']
+        params = input['params']
+        contractAddress = input['address']
+        gasSupply = input['gasSupply']
+        Contract = self._w3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
+        method_to_call = getattr(Contract.functions, methodName)
+        nonce = self._w3.eth.getTransactionCount(self._w3.toChecksumAddress(input['deployAccount']), "pending")
+        for i in abi:
+            if i['name'] == methodName:
+                if i['constant'] == False or i['payable'] == True:
+                    txHash = method_to_call(*self.unpackParams(*params)).buildTransaction({ 'nonce': nonce, 'gas': gasSupply })
+                    callResult = self._w3.eth.waitForTransactionReceipt(txHash)
+                    break
+                else:
+                    callResult = method_to_call(*self.unpackParams(*params)).call()
+                    break
+        return Web3.toJSON(callResult)
 def serve():
     header_validator = RequestHeaderValidatorInterceptor(grpc.StatusCode.UNAUTHENTICATED, 'Access denied!')
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), interceptors=(header_validator,))
