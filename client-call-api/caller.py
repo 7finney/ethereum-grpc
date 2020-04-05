@@ -19,7 +19,6 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
     url: str
     port: str
     def unpackParams(self, *args):
-        print("unpacking")
         params = []
         regExp = r'\w+(?=\[\d*\])'
         for i in range(0, len(args)):
@@ -45,9 +44,9 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             # Ropsten
             self.url += self.port + "6"
         elif(id == "ganache"):
-            self.url = "http://localhost:8545"
+            self.url = "http://ganache:8545"
         else:
-            self.url = "http://localhost:8545"
+            self.url = "http://ganache:8545"
         self._w3 = Web3(Web3.HTTPProvider(self.url))
         if(id == "5" or id == "4"):
             self._w3.middleware_onion.inject(geth_poa_middleware, layer=0)
@@ -140,17 +139,24 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         input = json.loads(payload)
         methodName = input['methodName']
         abi = input['abi']
+        fromAddress = Web3.toChecksumAddress(input['from'])
         params = input['params']
         contractAddress = input['address']
         gasSupply = input['gasSupply']
         Contract = self._w3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
         method_to_call = getattr(Contract.functions, methodName)
-        nonce = self._w3.eth.getTransactionCount(self._w3.toChecksumAddress(input['deployAccount']), "pending")
+        nonce = self._w3.eth.getTransactionCount(Web3.toChecksumAddress(input['deployAccount']), "pending")
         for i in abi:
             if 'name' in i.keys() and i['name'] == methodName:
                 if ('constant' in i.keys() and i['constant'] == False) or ('payable' in i.keys() and i['payable'] == True):
                     txHash = method_to_call(*self.unpackParams(*params)).buildTransaction({ 'nonce': nonce, 'gas': gasSupply })
                     callResult = self._w3.eth.waitForTransactionReceipt(txHash)
+                    break
+                elif 'stateMutability' in i.keys() and i['stateMutability'] != 'view' and i['stateMutability'] != 'pure':
+                    transaction = method_to_call(*self.unpackParams(*params)).buildTransaction({ 'from': fromAddress, 'nonce': nonce })
+                    estimatedGas = self._w3.eth.estimateGas(transaction)
+                    transaction['gas'] = estimatedGas
+                    callResult = transaction
                     break
                 else:
                     callResult = method_to_call(*self.unpackParams(*params)).call()
