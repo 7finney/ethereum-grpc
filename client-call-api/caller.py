@@ -31,6 +31,7 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         return params
     def RunDeploy(self, request, context):
         id = request.callInterface.testnetId
+        # TODO: use config file to get URL configurations
         self.url = "http://115.187.58.4:"
         self.port = "754"
         if(id == "5"):
@@ -43,9 +44,9 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             # Ropsten
             self.url += self.port + "6"
         elif(id == "ganache"):
-            self.url = "http://localhost:8545"
+            self.url = "http://ganache:8545"
         else:
-            self.url = "http://localhost:8545"
+            self.url = "http://ganache:8545"
         self._w3 = Web3(Web3.HTTPProvider(self.url))
         if(id == "5" or id == "4"):
             self._w3.middleware_onion.inject(geth_poa_middleware, layer=0)
