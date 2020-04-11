@@ -41,7 +41,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
         url = self.getWeb3Url(request.networkid)
         # print(url)
         web3 = Web3(Web3.HTTPProvider(url))
-        if (method == 'get_Transaction'):
+        if(method == 'eth_getTransaction'):
             print("getting transaction data from blockchain....")
             try:
                 tx = web3.eth.getTransaction(request.txhash)
@@ -50,7 +50,15 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 raise Exception(e)
         else:
             raise Exception("Error: No method specified!")
-
+        if(method == 'eth_sendRawTransaction'):
+            print("deploying contract to blockchain....")
+            try:
+                tx = web3.eth.sendRawTransaction(request.txhash)
+                return tx
+            except Exception as e:
+                raise Exception(e)
+        else:
+            raise Exception("Error: No method specified!")
     # def GetAccounts(self, request, context):
     #     print("Running getAccounts....")
     #     accounts = self._w3.eth.accounts
@@ -64,7 +72,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
     #     task.cancel
     def GetTransaction(self, request, context):
         with futures.ProcessPoolExecutor(max_workers=1) as executor:
-            task = executor.submit(self.web3Task, request, 'get_Transaction')
+            task = executor.submit(self.web3Task, request, 'eth_getTransaction')
             try:
                 tx = task.result(timeout=30)
                 print(tx)
@@ -79,6 +87,22 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 )
                 context.abort_with_status(rpc_status.to_status(rich_status))
 
+    def SendRawTransactions(self, request, context):
+        with futures.ProcessPoolExecutor(max_workers=1) as executor:
+            task = executor.submit(self.web3Task, request, 'eth_sendRawTransaction')
+            try:
+                tx = task.result(timeout=30)
+                print(tx)
+                return ethereum_pb2.TransactionInfo(transaction=Web3.toJSON(tx))
+            except Exception as exc:
+                print("EXCEPTION: ", exc)
+                detail = any_pb2.Any()
+                rich_status = rpc_status.status_pb2.Status(
+                    code=code_pb2.NOT_FOUND,
+                    message=str(exc),
+                    details=[detail]
+                )
+                context.abort_with_status(rpc_status.to_status(rich_status))
     # def GetTransactionReceipt(self, request, context):
     #     print("Running getTransactionReceipt...")
     #     receipt = self._w3.eth.getTransactionReceipt(request.txhash)
