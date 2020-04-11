@@ -5,3 +5,4 @@ logs/
 grafana_data/
 .vscode/
 ethereum_data/
+.idea/
