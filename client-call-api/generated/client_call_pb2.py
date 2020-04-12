@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='eth_client_call',
   syntax='proto3',
   serialized_options=_b('Z\017eth_client_call'),
-  serialized_pb=_b('\n\x11\x63lient-call.proto\x12\x0f\x65th_client_call\"7\n\x13\x43lientCallInterface\x12\x0f\n\x07\x63ommand\x18\x01 \x01(\t\x12\x0f\n\x07payload\x18\x02 \x01(\t\"P\n\x11\x43lientCallRequest\x12;\n\rcallInterface\x18\x01 \x01(\x0b\x32$.eth_client_call.ClientCallInterface\"$\n\x12\x43lientCallResponse\x12\x0e\n\x06result\x18\x01 \x01(\t2m\n\x11\x43lientCallService\x12X\n\tRunDeploy\x12\".eth_client_call.ClientCallRequest\x1a#.eth_client_call.ClientCallResponse\"\x00\x30\x01\x42\x11Z\x0f\x65th_client_callb\x06proto3')
+  serialized_pb=_b('\n\x11\x63lient-call.proto\x12\x0f\x65th_client_call\"J\n\x13\x43lientCallInterface\x12\x0f\n\x07\x63ommand\x18\x01 \x01(\t\x12\x0f\n\x07payload\x18\x02 \x01(\t\x12\x11\n\ttestnetId\x18\x03 \x01(\t\"P\n\x11\x43lientCallRequest\x12;\n\rcallInterface\x18\x01 \x01(\x0b\x32$.eth_client_call.ClientCallInterface\"$\n\x12\x43lientCallResponse\x12\x0e\n\x06result\x18\x01 \x01(\t2m\n\x11\x43lientCallService\x12X\n\tRunDeploy\x12\".eth_client_call.ClientCallRequest\x1a#.eth_client_call.ClientCallResponse\"\x00\x30\x01\x42\x11Z\x0f\x65th_client_callb\x06proto3')
 )
 
 
@@ -47,6 +47,13 @@ _CLIENTCALLINTERFACE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='testnetId', full_name='eth_client_call.ClientCallInterface.testnetId', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -60,7 +67,7 @@ _CLIENTCALLINTERFACE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=38,
-  serialized_end=93,
+  serialized_end=112,
 )
 
 
@@ -90,8 +97,8 @@ _CLIENTCALLREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=95,
-  serialized_end=175,
+  serialized_start=114,
+  serialized_end=194,
 )
 
 
@@ -121,8 +128,8 @@ _CLIENTCALLRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=177,
-  serialized_end=213,
+  serialized_start=196,
+  serialized_end=232,
 )
 
 _CLIENTCALLREQUEST.fields_by_name['callInterface'].message_type = _CLIENTCALLINTERFACE
@@ -161,8 +168,8 @@ _CLIENTCALLSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=215,
-  serialized_end=324,
+  serialized_start=234,
+  serialized_end=343,
   methods=[
   _descriptor.MethodDescriptor(
     name='RunDeploy',

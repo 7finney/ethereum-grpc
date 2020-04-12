@@ -9,12 +9,15 @@ from concurrent import futures
 from google.protobuf.json_format import MessageToJson
 import re
 import requests
-from web3 import Web3
+from web3 import Web3, middleware
 from request_header_validator_interceptor import RequestHeaderValidatorInterceptor
-
-w3 = Web3(Web3.HTTPProvider("http://ganache:8545"))
+from web3.middleware import geth_poa_middleware
+from web3.gas_strategies.time_based import medium_gas_price_strategy
 
 class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
+    _w3: any
+    url: str
+    port: str
     def unpackParams(self, *args):
         params = []
         regExp = r'\w+(?=\[\d*\])'
@@ -27,7 +30,27 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
                 params.append(args[i]['value'])
         return params
     def RunDeploy(self, request, context):
-        print("Running command: ", request.callInterface.command)
+        id = request.callInterface.testnetId
+        # TODO: use config file to get URL configurations
+        self.url = "http://115.187.58.4:"
+        self.port = "754"
+        if(id == "5"):
+            # Görli
+            self.url += self.port + "5"
+        elif(id == "4"):
+            # Rinkeby
+            self.url += self.port + "7"
+        elif(id == "3"):
+            # Ropsten
+            self.url += self.port + "6"
+        elif(id == "ganache"):
+            self.url = "http://ganache:8545"
+        else:
+            self.url = "http://ganache:8545"
+        self._w3 = Web3(Web3.HTTPProvider(self.url))
+        if(id == "5" or id == "4"):
+            self._w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+        print("Running command " + request.callInterface.command + " with testnetId " + id)
         if request.callInterface.command == "deploy-contract":
             txRecipt = self.web3Deploy(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=txRecipt)
@@ -38,81 +61,154 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             yield resp
         if request.callInterface.command == "get-accounts":
             accounts, balance = self.web3getAccounts()
-            result = json.dumps({
-                "accounts": accounts,
-                "balance": balance
-            })
+            result = json.dumps({ "accounts": accounts, "balance": balance})
             resp = client_call_pb2.ClientCallResponse(result=result)
             yield resp
         if request.callInterface.command == "get-balance":
-            print(request.callInterface)
-            balance = self.web3getAccBalance(request.callInterface.payload)
+            # TODO: check for proper hash address before proceeding
+            hashAddr = request.callInterface.payload
+            balance = self.web3getAccBalance(hashAddr)
             resp = client_call_pb2.ClientCallResponse(result=balance)
             yield resp
         if request.callInterface.command == "send-ether":
             transaction = self.web3Transactions(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=transaction)
             yield resp
-        if request.callInterface.command == "contract-method-call":
-            callResponse = self.web3CallMethods(request.callInterface.payload)
+        if request.callInterface.command == "ganache-contract-method-call":
+            callResponse = self.web3GanacheCallMethods(request.callInterface.payload)
             resp = client_call_pb2.ClientCallResponse(result=callResponse)
+            yield resp
+        if request.callInterface.command == "build-rawtx":
+            rawTx = self.web3BuildTxn(request.callInterface.payload)
+            resp = client_call_pb2.ClientCallResponse(result=rawTx)
+            yield resp
+        if request.callInterface.command == "build-raw-eth-tx":
+            rawTx = self.web3BuildRawTxn(request.callInterface.payload, id)
+            resp = client_call_pb2.ClientCallResponse(result=rawTx)
+            yield resp
+        if request.callInterface.command == "contract-method-call":
+            rawTx = self.web3CallMethods(request.callInterface.payload)
+            resp = client_call_pb2.ClientCallResponse(result=rawTx)
+            yield resp
+        if request.callInterface.command == "deploy-signed-tx":
+            tx = self.web3DeploySignedTransaction(request.callInterface.payload)
+            resp = client_call_pb2.ClientCallResponse(result=tx)
             yield resp
         else:
             return
     def web3Deploy(self, payload):
         input = json.loads(payload)
-        # bytecode = "608060405234801561001057600080fd5b506040516103c03803806103c08339818101604052602081101561003357600080fd5b810190808051604051939291908464010000000082111561005357600080fd5b90830190602082018581111561006857600080fd5b825164010000000081118282018810171561008257600080fd5b82525081516020918201929091019080838360005b838110156100af578181015183820152602001610097565b50505050905090810190601f1680156100dc5780820380516001836020036101000a031916815260200191505b50604052505081516100f6915060019060208401906100fd565b5050610198565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061013e57805160ff191683800117855561016b565b8280016001018555821561016b579182015b8281111561016b578251825591602001919060010190610150565b5061017792915061017b565b5090565b61019591905b808211156101775760008155600101610181565b90565b610219806101a76000396000f3fe608060405234801561001057600080fd5b506004361061005d577c0100000000000000000000000000000000000000000000000000000000600035046341c0e1b58114610062578063cfae32171461006c578063f1eae25c146100e9575b600080fd5b61006a6100f1565b005b61007461012e565b6040805160208082528351818301528351919283929083019185019080838360005b838110156100ae578181015183820152602001610096565b50505050905090810190601f1680156100db5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b61006a6101c3565b60005473ffffffffffffffffffffffffffffffffffffffff1633141561012c5760005473ffffffffffffffffffffffffffffffffffffffff16ff5b565b60018054604080516020601f600260001961010087891615020190951694909404938401819004810282018101909252828152606093909290918301828280156101b95780601f1061018e576101008083540402835291602001916101b9565b820191906000526020600020905b81548152906001019060200180831161019c57829003601f168201915b5050505050905090565b6000805473ffffffffffffffffffffffffffffffffffffffff19163317905556fea265627a7a723158205667d7defdcb9d2af78ea9111648fff00e87480f5152da9170bc07a8817701c464736f6c634300050b0032"
-        # abi = json.loads('[{"constant":false,"inputs":[],"name":"kill","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function","signature":"0x41c0e1b5"},{"constant":true,"inputs":[],"name":"greet","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function","signature":"0xcfae3217"},{"constant":false,"inputs":[],"name":"mortal","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function","signature":"0xf1eae25c"},{"inputs":[{"internalType":"string","name":"_greeting","type":"string","value":"Hello"}],"payable":false,"stateMutability":"nonpayable","type":"constructor","signature":"constructor"}]')
         bytecode = input['bytecode']
         abi = input['abi']
         params = input['params']
         gasSupply = input['gasSupply']
-        Contract = w3.eth.contract(abi=abi, bytecode=bytecode)
-        # TODO: support input args .constructor("Hello")
-        deploy_txn = Contract.constructor(*self.unpackParams(*params)).transact({ 'from': w3.eth.accounts[0], 'gas': gasSupply })
-        txn_receipt = w3.eth.getTransactionReceipt(deploy_txn)
+        Contract = self._w3.eth.contract(abi=abi, bytecode=bytecode)
+        deploy_txn = Contract.constructor(*self.unpackParams(*params)).transact({ 'from': Web3.toChecksumAddress(self._w3.eth.accounts[0]), 'gas': gasSupply })
+        txn_receipt = self._w3.eth.getTransactionReceipt(deploy_txn)
         return Web3.toJSON(txn_receipt)
     def web3GasEstimate(self, payload):
         input = json.loads(payload)
         bytecode = input['bytecode']
         abi = input['abi']
         params = input['params']
-        Contract = w3.eth.contract(abi=abi, bytecode=bytecode)
+        Contract = self._w3.eth.contract(abi=abi, bytecode=bytecode)
         estimatedGas = Contract.constructor(*self.unpackParams(*params)).estimateGas()
         return Web3.toJSON(estimatedGas)
-    def web3CallMethods(self, payload):
+    # contract calls for ganache
+    def web3GanacheCallMethods(self, payload):
         input = json.loads(payload)
         methodName = input['methodName']
+        fromAddress = Web3.toChecksumAddress(input['deployAccount'])
         abi = input['abi']
         params = input['params']
         contractAddress = input['address']
-        Contract = w3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
+        Contract = self._w3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
         method_to_call = getattr(Contract.functions, methodName)
         for i in abi:
-            if i['name'] == methodName:
-                if i['constant'] == False or i['payable'] == True:
-                    txHash = method_to_call(*self.unpackParams(*params)).transact({ 'from': input['deployAccount'] })
-                    callResult = w3.eth.waitForTransactionReceipt(txHash)
+            if 'name' in i.keys() and i['name'] == methodName:
+                if ('stateMutability' in i.keys() and i['stateMutability'] != 'pure' and i['stateMutability'] != 'view') or ('constant' in i.keys() and i['constant'] == False) or ('payable' in i.keys() and i['payable'] == True):
+                    txHash = method_to_call(*self.unpackParams(*params)).transact({ 'from': fromAddress })
+                    callResult = self._w3.eth.waitForTransactionReceipt(txHash)
                     break
                 else:
                     callResult = method_to_call(*self.unpackParams(*params)).call()
                     break
+        print(Web3.toJSON(callResult))
+        return Web3.toJSON(callResult)
+    # contract calls for test networks
+    def web3CallMethods(self, payload):
+        input = json.loads(payload)
+        methodName = input['methodName']
+        abi = input['abi']
+        fromAddress = Web3.toChecksumAddress(input['from'])
+        params = input['params']
+        contractAddress = input['address']
+        gasSupply = input['gasSupply']
+        Contract = self._w3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
+        method_to_call = getattr(Contract.functions, methodName)
+        nonce = self._w3.eth.getTransactionCount(Web3.toChecksumAddress(input['deployAccount']), "pending")
+        for i in abi:
+            if 'name' in i.keys() and i['name'] == methodName:
+                if ('constant' in i.keys() and i['constant'] == False) or ('payable' in i.keys() and i['payable'] == True):
+                    txHash = method_to_call(*self.unpackParams(*params)).buildTransaction({ 'nonce': nonce, 'gas': gasSupply })
+                    callResult = self._w3.eth.waitForTransactionReceipt(txHash)
+                    break
+                elif 'stateMutability' in i.keys() and i['stateMutability'] != 'view' and i['stateMutability'] != 'pure':
+                    transaction = method_to_call(*self.unpackParams(*params)).buildTransaction({ 'from': fromAddress, 'nonce': nonce })
+                    estimatedGas = self._w3.eth.estimateGas(transaction)
+                    transaction['gas'] = estimatedGas
+                    callResult = transaction
+                    break
+                else:
+                    callResult = method_to_call(*self.unpackParams(*params)).call()
+                    break
+        print(Web3.toJSON(callResult))
         return Web3.toJSON(callResult)
     def web3getAccounts(self):
-        accounts = w3.eth.accounts
-        balance = w3.eth.getBalance(accounts[0])
+        accounts = self._w3.eth.accounts
+        balance = self._w3.eth.getBalance(Web3.toChecksumAddress(accounts[0]))
         return accounts, balance
-    def web3getAccBalance(self, account):
-        balance = w3.eth.getBalance(account)
+    def web3getAccBalance(self, hashAddr):
+        balance = self._w3.eth.getBalance(Web3.toChecksumAddress(hashAddr))
         return Web3.toJSON(balance)
     def web3Transactions(self, transactionInfo):
+        # This transaction will only work for ganache
         transaction_Info = json.loads(transactionInfo)
-        toAddress = transaction_Info['toAddress']
-        fromAddress = transaction_Info['fromAddress']
+        toAddress = Web3.toChecksumAddress(transaction_Info['toAddress'])
+        fromAddress = Web3.toChecksumAddress(transaction_Info['fromAddress'])
         amount = transaction_Info['amount']
-        transaction = w3.eth.sendTransaction({ 'to': toAddress, 'from': fromAddress, 'value': amount })
+        transaction = self._w3.eth.sendTransaction({ 'to': toAddress, 'from': fromAddress, 'value': amount })
         return Web3.toJSON(transaction)
-  
+    def web3BuildRawTxn(self, payload, networkId):
+        input = json.loads(payload)
+        transaction = dict(
+            to=Web3.toChecksumAddress(input['to']),
+            value=int(input['value']),
+            nonce=self._w3.eth.getTransactionCount(Web3.toChecksumAddress(input['from']), "pending"),
+            gasPrice=self._w3.eth.gasPrice
+        )
+        transaction['from'] = Web3.toChecksumAddress(input['from'])
+        estimatedGas = self._w3.eth.estimateGas(transaction)
+        transaction['gas'] = int(estimatedGas)
+        return Web3.toJSON(transaction)
+    def web3BuildTxn(self, payload):
+        input = json.loads(payload)
+        bytecode = input['bytecode']
+        abi = input['abi']
+        params = input['params']
+        gasSupply = input['gasSupply']
+        Contract = self._w3.eth.contract(abi=abi, bytecode=bytecode)
+        nonce = self._w3.eth.getTransactionCount(Web3.toChecksumAddress(input['from']), "pending")
+        transaction = Contract.constructor(*self.unpackParams(*params)).buildTransaction({
+            'from': Web3.toChecksumAddress(input['from']),
+            'nonce': nonce,
+            'gas': gasSupply
+        })
+        del transaction['to']
+        return Web3.toJSON(transaction)
+    def web3DeploySignedTransaction(self, rawTransaction):
+        resp = self._w3.eth.sendRawTransaction(rawTransaction)
+        return resp.hex()
 def serve():
     header_validator = RequestHeaderValidatorInterceptor(grpc.StatusCode.UNAUTHENTICATED, 'Access denied!')
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), interceptors=(header_validator,))

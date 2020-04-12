@@ -22,12 +22,17 @@ import grpc
 import ethereum_pb2
 import ethereum_pb2_grpc
 
+# TODO TO be Removed
+from web3 import Web3
+
+w3 = Web3(Web3.HTTPProvider("http://172.26.84.11:7545"))
+
 
 def run():
     # NOTE(gRPC Python Team): .close() is possible on a channel and should be
     # used in circumstances in which the with statement does not fit the needs
     # of the code.
-    with grpc.insecure_channel('localhost:50053') as channel:
+    with grpc.insecure_channel('localhost:50054') as channel:
         ethstub = ethereum_pb2_grpc.ProtoEthServiceStub(channel)
         request = ethereum_pb2.TestnetReq(id=0)
         ethstub.SetTestnet(request)

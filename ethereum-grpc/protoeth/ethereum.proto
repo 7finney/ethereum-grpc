@@ -4,6 +4,8 @@ package protoeth;
 option go_package = "protoeth";
 import "google/protobuf/empty.proto";
 
+// import "google/protobuf/empty.proto";
+
 // GetAccounts
 message GetAccountsReq {}
 
@@ -39,6 +41,25 @@ message GetBalanceReq {
 }
 message GetBalanceResp {
     string balance = 1;
+}
+
+message CreateRawTransactionReq {
+    string to = 1;
+    string data = 2;
+    uint32 gas = 3;
+    uint32 value = 4;   
+}
+
+message CreateRawTransactionResp {
+    string rawTX = 1;
+}
+
+message DeploySignedTransactionReq{
+    string signedTX = 1;
+}
+
+message DeploySignedTransactionResp {
+    string txReciept = 1;
 }
 
 // GetTransaction -> Eth.getTransaction -> eth_getTransactionByHAsh

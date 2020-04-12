@@ -17,8 +17,6 @@ import os
 from request_header_validator_interceptor import RequestHeaderValidatorInterceptor
 
 
-# w3 = Web3(Web3.HTTPProvider("http://localhost:8545"))
-
 class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
     def getWeb3Url(self, ntwrkId):
         url = "http://115.187.58.4:"
