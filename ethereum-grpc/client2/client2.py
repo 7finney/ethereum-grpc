@@ -22,19 +22,14 @@ import grpc
 import ethereum_pb2
 import ethereum_pb2_grpc
 
-# TODO TO be Removed
-from web3 import Web3
-
-w3 = Web3(Web3.HTTPProvider("http://172.26.84.11:7545"))
-
 
 def run():
     # NOTE(gRPC Python Team): .close() is possible on a channel and should be
     # used in circumstances in which the with statement does not fit the needs
     # of the code.
-    with grpc.insecure_channel('localhost:50054') as channel:
+    with grpc.insecure_channel('localhost:50053') as channel:
         ethstub = ethereum_pb2_grpc.ProtoEthServiceStub(channel)
-        request = ethereum_pb2.TestnetReq(id=0)
+        request = ethereum_pb2.TestnetReq(id=1)
         ethstub.SetTestnet(request)
         request = ethereum_pb2.GetAccountsReq()
         result = ethstub.GetAccounts(request)
@@ -45,31 +40,31 @@ def run():
         balance = json.loads(resp.balance)
         print(balance)
         # txHash is of goerli testnet will give error in other testnets
-        request = ethereum_pb2.TxHash(txhash="0xd3c2743bad5cc74d13083da285a9a4c1f9c98aeba215fd661ca682800b3d846a")
+        request = ethereum_pb2.TxHash(txhash="0x59670fc3e54c04006982c609f651266af0221c1d58cc343b1f8b5145a49efc20")
         resp = ethstub.GetTransaction(request)
         tx = json.loads(resp.transaction)
         print("transacion: ", tx)
-        request = ethereum_pb2.TxHash(txhash="0xd3c2743bad5cc74d13083da285a9a4c1f9c98aeba215fd661ca682800b3d846a")
+        request = ethereum_pb2.TxHash(txhash="0x3434df9d7306402770270d3e2268ccfeefe133fcba76331f2cae6502e20d0599")
         resp = ethstub.GetTransactionReceipt(request)
         receipt = resp.txReceipt
         print("receipt: ", receipt)
         request = ethereum_pb2.google_dot_protobuf_dot_empty__pb2.Empty()
         resp = ethstub.GetBlockNumber(request)
         print("GetBlockNumber: ", resp)
-        request1 = ethereum_pb2.HashStringOrNumber(reqString="0xa0d48fafcd9b58772d0e60701e481249c04a75f688017a83e13e65699f712686")
-        request2 = ethereum_pb2.HashStringOrNumber(reqNum=2064230)
+        request1 = ethereum_pb2.HashStringOrNumber(reqString="0x035589cb682982eb269b7b5246e3a75b79d72cb65997dd118b28bf3b6ceda614")
+        request2 = ethereum_pb2.HashStringOrNumber(reqNum=2671241)
         resp1 = ethstub.GetBlockTransactionCount(request1)
         resp2 = ethstub.GetBlockTransactionCount(request2)
         print("GetBlockTransactionCount: ")
         print(resp1)
         print(resp2)
-        # request1 = ethereum_pb2.HashStringOrNumber(reqString="0xa0d48fafcd9b58772d0e60701e481249c04a75f688017a83e13e65699f712686")
-        # request2 = ethereum_pb2.HashStringOrNumber(reqNum=2064230)
-        # resp1 = ethstub.GetBlock(request1)
-        # resp2 = ethstub.GetBlock(request2)
-        # print("GetBlock: ")
-        # print(resp1)
-        # print(resp2)
+        request1 = ethereum_pb2.HashStringOrNumber(reqString="0x035589cb682982eb269b7b5246e3a75b79d72cb65997dd118b28bf3b6ceda614")
+        request2 = ethereum_pb2.HashStringOrNumber(reqNum=1990165)
+        resp1 = ethstub.GetBlock(request1)
+        resp2 = ethstub.GetBlock(request2)
+        print("GetBlock: ")
+        print(resp1)
+        print(resp2)
         # print()
         # req1 = ethereum_pb2.HashStringOrNumber(reqString="0xa0d48fafcd9b58772d0e60701e481249c04a75f688017a83e13e65699f712686")
         # req2 = ethereum_pb2.HashStringOrNumber(reqNum=2064230)

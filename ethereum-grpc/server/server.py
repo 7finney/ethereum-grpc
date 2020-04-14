@@ -1,3 +1,4 @@
+import multiprocessing
 import json
 import logging
 import grpc
@@ -5,58 +6,151 @@ import ethereum_pb2
 import ethereum_pb2_grpc
 from concurrent import futures
 from google.protobuf.json_format import MessageToJson
+from grpc_status import rpc_status
+from google.protobuf import any_pb2
+from google.rpc import code_pb2, status_pb2, error_details_pb2
 import re
 import requests
+from datetime import datetime
 from web3 import Web3
-
-w3 = Web3(Web3.HTTPProvider("http://115.187.58.4:7545"))
-# w3 = Web3(Web3.HTTPProvider("http://172.26.84.11:8545")) # inside local network only
+import os
+from request_header_validator_interceptor import RequestHeaderValidatorInterceptor
 
 
 class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
-    def GetAccounts(self, request, context):
-        print("Running getAccounts....")
-        accounts = w3.eth.accounts
-        return ethereum_pb2.GetAccountsResp(accounts=accounts)
+    def getWeb3Url(self, ntwrkId):
+        url = "http://115.187.58.4:"
+        port = "754"
+        if (ntwrkId == 5):
+            url += port + "5"
+        elif (ntwrkId == 4):
+            url += port + "7"
+        elif (ntwrkId == 3):
+            url += port + "6"
+        elif (ntwrkId == 1):
+            url = "http://115.187.58.4:8546"
+        else:
+            url = "http://115.187.58.4:7545"
+        return url
 
-    def GetBalance(self, request, context):
-        print("Running getBalance....")
-        balance = w3.eth.getBalance(request.address)
-        return ethereum_pb2.GetBalanceResp(balance=json.dumps(balance))
-
+    def web3Task(self, request, method):
+        print("web3 subprocess started at ", datetime.now().isoformat(timespec='milliseconds'))
+        print('[pid:%s] performing calculation on network ID: %s' % (os.getpid(), request))
+        url = self.getWeb3Url(request.networkid)
+        # print(url)
+        web3 = Web3(Web3.HTTPProvider(url))
+        if(method == 'eth_getTransaction'):
+            print("getting transaction data from blockchain....")
+            try:
+                tx = web3.eth.getTransaction(request.txhash)
+                return tx
+            except Exception as e:
+                raise Exception(e)
+        else:
+            raise Exception("Error: No method specified!")
+        if(method == 'eth_sendRawTransaction'):
+            print("deploying contract to blockchain....")
+            try:
+                tx = web3.eth.sendRawTransaction(request.txhash)
+                return tx
+            except Exception as e:
+                raise Exception(e)
+        else:
+            raise Exception("Error: No method specified!")
+    # def GetAccounts(self, request, context):
+    #     print("Running getAccounts....")
+    #     accounts = self._w3.eth.accounts
+    #     return ethereum_pb2.GetAccountsResp(accounts=accounts)
+    # def GetBalance(self, request, context):
+    #     print("Running getBalance....")
+    #     balance = self._w3.eth.getBalance(request.address)
+    #     return ethereum_pb2.GetBalanceResp(balance=json.dumps(balance))
+    # def killTask(self, tasks):
+    #     for 
+    #     task.cancel
     def GetTransaction(self, request, context):
-        print("Running getTransaction...")
-        tx = w3.eth.getTransaction(request.txhash)
-        return ethereum_pb2.TransactionInfo(transaction=Web3.toJSON(tx))
+        with futures.ProcessPoolExecutor(max_workers=1) as executor:
+            task = executor.submit(self.web3Task, request, 'eth_getTransaction')
+            try:
+                tx = task.result(timeout=30)
+                print(tx)
+                return ethereum_pb2.TransactionInfo(transaction=Web3.toJSON(tx))
+            except Exception as exc:
+                print("EXCEPTION: ", exc)
+                detail = any_pb2.Any()
+                rich_status = rpc_status.status_pb2.Status(
+                    code=code_pb2.NOT_FOUND,
+                    message=str(exc),
+                    details=[detail]
+                )
+                context.abort_with_status(rpc_status.to_status(rich_status))
 
-    def CreateRawTransaction(self, request, context):
-        print("Running Create Transaction...", request)
-        rawTX = {
-            "nonce": w3.eth.getTransactionCount(w3.eth.coinbase),
-            "gasPrice": w3.eth.gasPrice,
-            "gas": request.gas,
-            "to": request.to,
-            "value": request.value,
-            "data": request.data
-        }
-        return ethereum_pb2.CreateRawTransactionResp(rawTX=Web3.toJSON(rawTX))
-
-
-    def DeploySignedTransaction(self, request, context):
-        print("Running SIgned Transaction...", request)
-        signedTX = json.loads(request.signedTX)
-        rawTransaction = signedTX["rawTransaction"]
-        resp = w3.eth.sendRawTransaction(rawTransaction)
-        return ethereum_pb2.DeploySignedTransactionResp(txReciept=w3.toJSON(resp))
+    def SendRawTransactions(self, request, context):
+        with futures.ProcessPoolExecutor(max_workers=1) as executor:
+            task = executor.submit(self.web3Task, request, 'eth_sendRawTransaction')
+            try:
+                tx = task.result(timeout=30)
+                print(tx)
+                return ethereum_pb2.TransactionInfo(transaction=Web3.toJSON(tx))
+            except Exception as exc:
+                print("EXCEPTION: ", exc)
+                detail = any_pb2.Any()
+                rich_status = rpc_status.status_pb2.Status(
+                    code=code_pb2.NOT_FOUND,
+                    message=str(exc),
+                    details=[detail]
+                )
+                context.abort_with_status(rpc_status.to_status(rich_status))
+    # def GetTransactionReceipt(self, request, context):
+    #     print("Running getTransactionReceipt...")
+    #     receipt = self._w3.eth.getTransactionReceipt(request.txhash)
+    #     print(Web3.toJSON(receipt))
+    #     return ethereum_pb2.TxReceipt(txReceipt=Web3.toJSON(receipt))
+    # def GetBlockNumber(self, request, context):
+    #     print("Running getBlockNumber...")
+    #     blockNumber = self._w3.eth.blockNumber
+    #     return ethereum_pb2.BlockNumber(blocknum=blockNumber)
+    # def GetBlockTransactionCount(self, request, context):
+    #     print("Running getBlockTransactionCount...")
+    #     if(request.reqString) :
+    #         count = self._w3.eth.getBlockTransactionCount(request.reqString)
+    #     else:
+    #         count = self._w3.eth.getBlockTransactionCount(request.reqNum)
+    #     return ethereum_pb2.CountResp(count=count)
+    # def GetBlock(self, request, context):
+    #     print("Running getBlock...")
+    #     if(request.reqString) :
+    #         resp = self._w3.eth.getBlock(request.reqString)
+    #     else:
+    #         resp = self._w3.eth.getBlock(request.reqNum)
+    #     return ethereum_pb2.ObjResp(respObj=resp)
+    # def GetTransactionFromBlock(self, request, context):
+    #     print("Running getTransactionFromBlock...")
+    #     if(request.req.reqString):
+    #         resp = self._w3.eth.getTransactionFromBlock(request.req.reqString, request.index)
+    #     else:
+    #         resp = self._w3.eth.getTransactionFromBlock(request.req.reqNum, request.index)
+    #     return ethereum_pb2.ObjResp(respObj=resp)
+    # def GetHashrate(self, request, context):
+    #     print("Running getHashRate...")
+    #     resp = self._w3.eth.hashrate
+    #     return ethereum_pb2.NumResult(resultNum=resp)
+    # def GetGasPrice(self, request, context):
+    #     print("Running getGasPrice...")
+    #     resp = self._w3.eth.gasPrice
+    #     return ethereum_pb2.NumResult(resultNum=resp)
 
 
 def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    ethereum_pb2_grpc.add_ProtoEthServiceServicer_to_server(ProtoEth(), server)
-    server.add_insecure_port('[::]:50054')
-    server.start()
-    print("gRPC server listening on port 50054")
-    server.wait_for_termination()
+    header_validator = RequestHeaderValidatorInterceptor(grpc.StatusCode.UNAUTHENTICATED,
+                                                         'Access denied!')
+    with futures.ThreadPoolExecutor(max_workers=5) as executor:
+        server = grpc.server(executor, interceptors=(header_validator,))
+        ethereum_pb2_grpc.add_ProtoEthServiceServicer_to_server(ProtoEth(), server)
+        server.add_insecure_port('[::]:50054')
+        server.start()
+        print("gRPC server listening on port 50054")
+        server.wait_for_termination()
 
 
 if __name__ == '__main__':
