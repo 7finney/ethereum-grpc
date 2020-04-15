@@ -30,7 +30,8 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
         elif (ntwrkId == 1):
             url = "http://115.187.58.4:8546"
         else:
-            url = "http://115.187.58.4:7545"
+            # url = "http://ganache:7545"
+            url = "http://localhost:7545"
         return url
 
     def web3Task(self, request, method):
@@ -46,8 +47,6 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 return tx
             except Exception as e:
                 raise Exception(e)
-        else:
-            raise Exception("Error: No method specified!")
         if(method == 'eth_sendRawTransaction'):
             print("deploying contract to blockchain....")
             try:
@@ -55,12 +54,22 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 return tx
             except Exception as e:
                 raise Exception(e)
+        if(method == 'eth_call'):
+            print("calling contract method without modyifing blockchain state")
+            try:
+                methodName = request.fn
+                abi = request.abi
+                params = request.params
+                contractAddress = request.address
+                Contract = web3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
+                method_to_call = getattr(Contract.functions, methodName)
+                callResult = method_to_call(*self.unpackParams(*params)).call()
+                print(Web3.toJSON(callResult))
+                return Web3.toJSON(callResult)
+            except Exception as e:
+                raise Exception(e)
         else:
             raise Exception("Error: No method specified!")
-    # def GetAccounts(self, request, context):
-    #     print("Running getAccounts....")
-    #     accounts = self._w3.eth.accounts
-    #     return ethereum_pb2.GetAccountsResp(accounts=accounts)
     # def GetBalance(self, request, context):
     #     print("Running getBalance....")
     #     balance = self._w3.eth.getBalance(request.address)
@@ -101,6 +110,33 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                     details=[detail]
                 )
                 context.abort_with_status(rpc_status.to_status(rich_status))
+    def ContractCall(self, request, context):
+        with futures.ProcessPoolExecutor(max_workers=1) as executor:
+            task = executor.submit(self.web3Task, request, 'eth_call')
+            try:
+                res = task.result(timeout=30)
+                print(res)
+                return ethereum_pb2.CallResponse(result=Web3.toJSON(res))
+            except Exception as exc:
+                print("EXCEPTION: ", exc)
+                detail = any_pb2.Any()
+                rich_status = rpc_status.status_pb2.Status(
+                    code=code_pb2.NOT_FOUND,
+                    message=str(exc),
+                    details=[detail]
+                )
+                context.abort_with_status(rpc_status.to_status(rich_status))
+    def unpackParams(self, *args):
+        params = []
+        regExp = r'\w+(?=\[\d*\])'
+        for i in range(0, len(args)):
+            if(re.match(regExp, args[i]['type']) or str.__contains__(args[i]['type'], 'tuple')):
+                params.append(json.loads(args[i]['value']))
+            elif(str.__contains__(args[i]['type'], 'int')):
+                params.append(int(args[i]['value']))
+            else:
+                params.append(args[i]['value'])
+        return params
     # def GetTransactionReceipt(self, request, context):
     #     print("Running getTransactionReceipt...")
     #     receipt = self._w3.eth.getTransactionReceipt(request.txhash)
