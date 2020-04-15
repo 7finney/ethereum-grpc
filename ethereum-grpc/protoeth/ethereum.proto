@@ -2,11 +2,35 @@ syntax = "proto3";
 
 package protoeth;
 option go_package = "protoeth";
+import "google/protobuf/empty.proto";
 
 // import "google/protobuf/empty.proto";
 
 // GetAccounts
 message GetAccountsReq {}
+
+message TestnetReq {
+    uint32 id = 1;
+}
+
+message HashStringOrNumber {
+    string reqString = 1;
+    uint64 reqNum = 2;
+}
+
+message InfoWithIndex {
+    HashStringOrNumber req = 1;
+    uint64 index = 2;
+}
+
+message CountResp {
+    uint64 count = 1;
+}
+
+message ObjResp {
+    string respObj = 1;
+}
+
 message GetAccountsResp {
     repeated string accounts = 1;
 }
@@ -46,22 +70,49 @@ message TransactionInfo {
     string transaction = 1;
 }
 
+message TxReceipt {
+    string txReceipt = 1;
+}
+
 message RawTxRequest {
     string tx = 1;
+}
+
+message BlockNumber {
+    uint64 blocknum = 1;
 }
 
 message TxResponse {
     string txData = 1;
 }
 
+message NumResult {
+    uint64 resultNum = 1;
+}
+
+message GetTxReq {
+    uint32 networkid = 1;
+    string txhash = 2;
+}
+
 service ProtoEthService {
     rpc GetAccounts(GetAccountsReq) returns (GetAccountsResp) {};
     rpc GetBalance(GetBalanceReq) returns (GetBalanceResp) {};
-    rpc GetTransaction(TxHash) returns (TransactionInfo) {};
-    rpc CreateRawTransaction(CreateRawTransactionReq) returns (CreateRawTransactionResp) {};
-    rpc DeploySignedTransaction(DeploySignedTransactionReq) returns (DeploySignedTransactionResp) {};
+    rpc GetTransaction(GetTxReq) returns (TransactionInfo) {};
     // eth_sendRawTransaction should have simple requests but stream of responses
     rpc SendRawTransactions(RawTxRequest) returns (stream TxResponse) {};
+    rpc GetTransactionReceipt(TxHash) returns (TxReceipt) {};
+    // rpc GetProtocolVersion() returns () {};
+    // rpc GetCoinbase() returns () {};
+    rpc GetHashrate(google.protobuf.Empty) returns (NumResult) {};
+    rpc GetGasPrice(google.protobuf.Empty) returns (NumResult) {};
+    rpc GetBlockNumber(google.protobuf.Empty) returns (BlockNumber) {};
+    // rpc GetStorageAt() returns () {};
+    rpc GetBlockTransactionCount(HashStringOrNumber) returns (CountResp) {};
+    // rpc GetCode() returns () {};
+    rpc GetBlock(HashStringOrNumber) returns (ObjResp) {};
+    rpc GetTransactionFromBlock(InfoWithIndex) returns (ObjResp) {};
+    rpc SetTestnet(TestnetReq) returns (google.protobuf.Empty) {};
 }
 
 // ##############################
