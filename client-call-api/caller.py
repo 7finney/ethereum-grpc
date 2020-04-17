@@ -44,9 +44,9 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             # Ropsten
             self.url += self.port + "6"
         elif(id == "ganache"):
-            self.url = "http://ganache:8545"
+            self.url = "http://localhost:8545"
         else:
-            self.url = "http://ganache:8545"
+            self.url = "http://localhost:8545"
         self._w3 = Web3(Web3.HTTPProvider(self.url))
         if(id == "5" or id == "4"):
             self._w3.middleware_onion.inject(geth_poa_middleware, layer=0)
@@ -122,12 +122,13 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         abi = input['abi']
         params = input['params']
         contractAddress = input['address']
+        value = input['value']
         Contract = self._w3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
         method_to_call = getattr(Contract.functions, methodName)
         for i in abi:
             if 'name' in i.keys() and i['name'] == methodName:
                 if ('stateMutability' in i.keys() and i['stateMutability'] != 'pure' and i['stateMutability'] != 'view') or ('constant' in i.keys() and i['constant'] == False) or ('payable' in i.keys() and i['payable'] == True):
-                    txHash = method_to_call(*self.unpackParams(*params)).transact({ 'from': fromAddress })
+                    txHash = method_to_call(*self.unpackParams(*params)).transact({ 'from': fromAddress, 'value': value })
                     callResult = self._w3.eth.waitForTransactionReceipt(txHash)
                     break
                 else:
