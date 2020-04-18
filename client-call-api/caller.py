@@ -160,17 +160,14 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
                     callResult = self._w3.eth.waitForTransactionReceipt(txHash)
                     break
                 elif 'stateMutability' in i.keys() and i['stateMutability'] != 'view' and i['stateMutability'] != 'pure':
-                    print("stateMutability")
-                    transaction = method_to_call(*self.unpackParams(*params)).buildTransaction({ 'from': fromAddress, 'nonce': nonce, 'gas': gasSupply, 'value': value })
+                    transaction = method_to_call(*self.unpackParams(*params)).buildTransaction({ 'from': fromAddress, 'nonce': nonce, 'value': value })
                     estimatedGas = self._w3.eth.estimateGas(transaction)
                     transaction['gas'] = estimatedGas
-                    print(transaction)
                     callResult = transaction
                     break
                 else:
                     callResult = method_to_call(*self.unpackParams(*params)).call()
                     break
-        print(callResult)
         print(Web3.toJSON(callResult))
         return Web3.toJSON(callResult)
     def web3getAccounts(self):
