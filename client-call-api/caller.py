@@ -26,6 +26,8 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
                 params.append(json.loads(args[i]['value']))
             elif(str.__contains__(args[i]['type'], 'int')):
                 params.append(int(args[i]['value']))
+            elif(str.__contains__(args[i]['type'], 'address')):
+                params.append(Web3.toChecksumAddress(args[i]['value']))
             else:
                 params.append(args[i]['value'])
         return params
@@ -122,7 +124,8 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
         abi = input['abi']
         params = input['params']
         contractAddress = input['address']
-        value = input['value']
+        value = input['value'] or 0
+        print(value)
         Contract = self._w3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
         method_to_call = getattr(Contract.functions, methodName)
         for i in abi:
@@ -136,33 +139,38 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
                     break
         print(Web3.toJSON(callResult))
         return Web3.toJSON(callResult)
-    # contract calls for test networks
+    # contract calls for ethereum networks
     def web3CallMethods(self, payload):
         input = json.loads(payload)
         methodName = input['methodName']
         abi = input['abi']
         fromAddress = Web3.toChecksumAddress(input['from'])
         params = input['params']
-        contractAddress = input['address']
+        contractAddress = Web3.toChecksumAddress(input['address'])
         gasSupply = input['gasSupply']
-        Contract = self._w3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
+        value = input['value'] or 0
+        Contract = self._w3.eth.contract(address=contractAddress, abi=abi)
         method_to_call = getattr(Contract.functions, methodName)
-        nonce = self._w3.eth.getTransactionCount(Web3.toChecksumAddress(input['deployAccount']), "pending")
+        nonce = self._w3.eth.getTransactionCount(fromAddress, "pending")
         for i in abi:
             if 'name' in i.keys() and i['name'] == methodName:
                 if ('constant' in i.keys() and i['constant'] == False) or ('payable' in i.keys() and i['payable'] == True):
-                    txHash = method_to_call(*self.unpackParams(*params)).buildTransaction({ 'nonce': nonce, 'gas': gasSupply })
+                    print('constant')
+                    txHash = method_to_call(*self.unpackParams(*params)).buildTransaction({ 'from': fromAddress, 'nonce': nonce, 'gas': gasSupply, 'value': value })
                     callResult = self._w3.eth.waitForTransactionReceipt(txHash)
                     break
                 elif 'stateMutability' in i.keys() and i['stateMutability'] != 'view' and i['stateMutability'] != 'pure':
-                    transaction = method_to_call(*self.unpackParams(*params)).buildTransaction({ 'from': fromAddress, 'nonce': nonce })
+                    print("stateMutability")
+                    transaction = method_to_call(*self.unpackParams(*params)).buildTransaction({ 'from': fromAddress, 'nonce': nonce, 'gas': gasSupply, 'value': value })
                     estimatedGas = self._w3.eth.estimateGas(transaction)
                     transaction['gas'] = estimatedGas
+                    print(transaction)
                     callResult = transaction
                     break
                 else:
                     callResult = method_to_call(*self.unpackParams(*params)).call()
                     break
+        print(callResult)
         print(Web3.toJSON(callResult))
         return Web3.toJSON(callResult)
     def web3getAccounts(self):
