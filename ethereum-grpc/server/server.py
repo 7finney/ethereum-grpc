@@ -33,12 +33,20 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
             # url = "http://ganache:7545"
             url = "http://localhost:7545"
         return url
+    def isTransaction(self, abi):
+        if ('constant' in abi.keys() and abi['constant'] == False):
+            return True
+        elif ('payable' in abi.keys() and abi['payable'] == True):
+            return True
+        elif 'stateMutability' in abi.keys() and abi['stateMutability'] != 'view' and abi['stateMutability'] != 'pure':
+            return True
+        else:
+            return False
 
     def web3Task(self, request, method):
         print("web3 subprocess started at ", datetime.now().isoformat(timespec='milliseconds'))
-        print('[pid:%s] performing calculation on network ID: %s' % (os.getpid(), request))
+        print('[pid:%s] performing calculation on network ID: %s' % (os.getpid(), request.networkid))
         url = self.getWeb3Url(request.networkid)
-        # print(url)
         web3 = Web3(Web3.HTTPProvider(url))
         if(method == 'eth_getTransaction'):
             print("getting transaction data from blockchain....")
@@ -55,15 +63,31 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
             except Exception as e:
                 raise Exception(e)
         if(method == 'eth_call'):
-            print("calling contract method without modyifing blockchain state")
+            print("calling contract methods")
             try:
                 methodName = request.fn
-                abi = request.abi
-                params = request.params
-                contractAddress = request.address
+                abi = json.loads(request.abi)
+                params = json.loads(request.params)
+                contractAddress = Web3.toChecksumAddress(request.address)
+                fromAddress = Web3.toChecksumAddress(request.fromAddress)
                 Contract = web3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
+                nonce = web3.eth.getTransactionCount(Web3.toChecksumAddress(fromAddress), "pending")
+                # find matching method with name
                 method_to_call = getattr(Contract.functions, methodName)
-                callResult = method_to_call(*self.unpackParams(*params)).call()
+                for i in abi:
+                    if 'name' in i.keys() and i['name'] == methodName:
+                        if(self.isTransaction(i)):
+                            print("is a transaction")
+                            transaction = method_to_call(*self.unpackParams(params)).buildTransaction({ 'from': fromAddress, 'nonce': nonce })
+                            print(transaction)
+                            estimatedGas = web3.eth.estimateGas(transaction)
+                            transaction['gas'] = estimatedGas
+                            callResult = transaction
+                            print(transaction)
+                            break
+                        else:
+                            callResult = method_to_call(*self.unpackParams(params)).call()
+                            break
                 print(Web3.toJSON(callResult))
                 return Web3.toJSON(callResult)
             except Exception as e:
@@ -115,7 +139,6 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
             task = executor.submit(self.web3Task, request, 'eth_call')
             try:
                 res = task.result(timeout=30)
-                print(res)
                 return ethereum_pb2.CallResponse(result=Web3.toJSON(res))
             except Exception as exc:
                 print("EXCEPTION: ", exc)
@@ -127,6 +150,8 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 )
                 context.abort_with_status(rpc_status.to_status(rich_status))
     def unpackParams(self, *args):
+        print("unpacking..")
+        print(args)
         params = []
         regExp = r'\w+(?=\[\d*\])'
         for i in range(0, len(args)):
@@ -134,8 +159,11 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 params.append(json.loads(args[i]['value']))
             elif(str.__contains__(args[i]['type'], 'int')):
                 params.append(int(args[i]['value']))
+            elif(str.__contains__(args[i]['type'], 'address')):
+                params.append(Web3.toChecksumAddress(args[i]['value']))
             else:
                 params.append(args[i]['value'])
+        print("unpacked")
         return params
     # def GetTransactionReceipt(self, request, context):
     #     print("Running getTransactionReceipt...")
