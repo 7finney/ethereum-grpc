@@ -99,6 +99,8 @@ message CallRequest {
     string params = 3;
     string abi = 4;
     string address = 5;
+    string fromAddress = 6; // python will not allow .from so it has to be fromAddress
+    string value = 7;
 }
 
 message CallResponse {
