@@ -30,8 +30,8 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
         elif (ntwrkId == 1):
             url = "http://115.187.58.4:8546"
         else:
-            # url = "http://ganache:7545"
-            url = "http://localhost:7545"
+            # url = "http://ganache:8545"
+            url = "http://localhost:8545"
         return url
     def isTransaction(self, abi):
         if ('constant' in abi.keys() and abi['constant'] == False):
@@ -206,10 +206,10 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
 
 
 def serve():
-    header_validator = RequestHeaderValidatorInterceptor(grpc.StatusCode.UNAUTHENTICATED,
-                                                         'Access denied!')
+    # header_validator = RequestHeaderValidatorInterceptor(grpc.StatusCode.UNAUTHENTICATED, 'Access denied!')
     with futures.ThreadPoolExecutor(max_workers=5) as executor:
-        server = grpc.server(executor, interceptors=(header_validator,))
+        # server = grpc.server(executor, interceptors=(header_validator,))
+        server = grpc.server(executor,)
         ethereum_pb2_grpc.add_ProtoEthServiceServicer_to_server(ProtoEth(), server)
         server.add_insecure_port('[::]:50054')
         server.start()

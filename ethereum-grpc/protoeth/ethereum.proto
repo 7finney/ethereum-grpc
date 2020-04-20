@@ -4,9 +4,7 @@ package protoeth;
 option go_package = "protoeth";
 import "google/protobuf/empty.proto";
 
-// import "google/protobuf/empty.proto";
-
-// GetAccounts
+// GetAccounts only for ganache
 message GetAccountsReq {}
 
 message TestnetReq {
@@ -35,7 +33,7 @@ message GetAccountsResp {
     repeated string accounts = 1;
 }
 
-// GetBalance -> Eth.getBalance -> eth_getBalance
+// GetBalance -> eth.getBalance -> eth_getBalance
 message GetBalanceReq {
     string address = 1;
 }
