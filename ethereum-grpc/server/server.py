@@ -70,6 +70,8 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 params = json.loads(request.params)
                 contractAddress = Web3.toChecksumAddress(request.address)
                 fromAddress = Web3.toChecksumAddress(request.fromAddress)
+                gasSupply = request.gasSupply
+                # create contract instance
                 Contract = web3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
                 nonce = web3.eth.getTransactionCount(Web3.toChecksumAddress(fromAddress), "pending")
                 # find matching method with name
@@ -78,12 +80,13 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                     if 'name' in i.keys() and i['name'] == methodName:
                         if(self.isTransaction(i)):
                             print("is a transaction")
-                            transaction = method_to_call(*self.unpackParams(params)).buildTransaction({ 'from': fromAddress, 'nonce': nonce })
-                            print(transaction)
-                            estimatedGas = web3.eth.estimateGas(transaction)
-                            transaction['gas'] = estimatedGas
+                            transaction = method_to_call(*self.unpackParams(params)).buildTransaction({ 'from': fromAddress, 'gas': 0, 'nonce': nonce })
+                            try:
+                                estimatedGas = web3.eth.estimateGas(transaction)
+                                transaction['gas'] = estimatedGas
+                            except:
+                                transaction['gas'] = gasSupply
                             callResult = transaction
-                            print(transaction)
                             break
                         else:
                             callResult = method_to_call(*self.unpackParams(params)).call()
