@@ -30,8 +30,8 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
         elif (ntwrkId == 1):
             url = "http://115.187.58.4:8546"
         else:
-            # url = "http://ganache:8545"
-            url = "http://localhost:8545"
+            url = "http://ganache:8545"
+            # url = "http://localhost:8545"
         return url
     def isTransaction(self, abi):
         if ('constant' in abi.keys() and abi['constant'] == False):
@@ -71,6 +71,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 contractAddress = Web3.toChecksumAddress(request.address)
                 fromAddress = Web3.toChecksumAddress(request.fromAddress)
                 gasSupply = request.gasSupply
+                value = request.value or 0
                 # create contract instance
                 Contract = web3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
                 nonce = web3.eth.getTransactionCount(Web3.toChecksumAddress(fromAddress), "pending")
@@ -80,7 +81,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                     if 'name' in i.keys() and i['name'] == methodName:
                         if(self.isTransaction(i)):
                             print("is a transaction")
-                            transaction = method_to_call(*self.unpackParams(params)).buildTransaction({ 'from': fromAddress, 'gas': 0, 'nonce': nonce })
+                            transaction = method_to_call(*self.unpackParams(params)).buildTransaction({ 'from': fromAddress, 'gas': 0, 'nonce': nonce, 'value': value })
                             try:
                                 estimatedGas = web3.eth.estimateGas(transaction)
                                 transaction['gas'] = estimatedGas
@@ -153,8 +154,6 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 )
                 context.abort_with_status(rpc_status.to_status(rich_status))
     def unpackParams(self, *args):
-        print("unpacking..")
-        print(args)
         params = []
         regExp = r'\w+(?=\[\d*\])'
         for i in range(0, len(args)):
@@ -166,7 +165,6 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 params.append(Web3.toChecksumAddress(args[i]['value']))
             else:
                 params.append(args[i]['value'])
-        print("unpacked")
         return params
     # def GetTransactionReceipt(self, request, context):
     #     print("Running getTransactionReceipt...")
