@@ -64,17 +64,18 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 raise Exception(e)
         if(method == 'eth_call'):
             print("calling contract methods")
+            print(request)
             try:
                 methodName = request.fn
                 abi = json.loads(request.abi)
                 params = json.loads(request.params)
                 contractAddress = Web3.toChecksumAddress(request.address)
                 fromAddress = Web3.toChecksumAddress(request.fromAddress)
-                gasSupply = request.gasSupply
+                gasSupply = request.gasSupply or 0
                 value = request.value or 0
                 # create contract instance
-                Contract = web3.eth.contract(address=Web3.toChecksumAddress(contractAddress), abi=abi)
-                nonce = web3.eth.getTransactionCount(Web3.toChecksumAddress(fromAddress), "pending")
+                Contract = web3.eth.contract(address=contractAddress, abi=abi)
+                nonce = web3.eth.getTransactionCount(fromAddress, "pending")
                 # find matching method with name
                 method_to_call = getattr(Contract.functions, methodName)
                 for i in abi:
@@ -113,7 +114,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 print(tx)
                 return ethereum_pb2.TransactionInfo(transaction=Web3.toJSON(tx))
             except Exception as exc:
-                print("EXCEPTION: ", exc)
+                print("Exception: ", exc)
                 detail = any_pb2.Any()
                 rich_status = rpc_status.status_pb2.Status(
                     code=code_pb2.NOT_FOUND,
@@ -130,7 +131,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 print(tx)
                 return ethereum_pb2.TransactionInfo(transaction=Web3.toJSON(tx))
             except Exception as exc:
-                print("EXCEPTION: ", exc)
+                print("Exception: ", exc)
                 detail = any_pb2.Any()
                 rich_status = rpc_status.status_pb2.Status(
                     code=code_pb2.NOT_FOUND,
@@ -145,7 +146,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 res = task.result(timeout=30)
                 return ethereum_pb2.CallResponse(result=Web3.toJSON(res))
             except Exception as exc:
-                print("EXCEPTION: ", exc)
+                print("Exception: ", exc)
                 detail = any_pb2.Any()
                 rich_status = rpc_status.status_pb2.Status(
                     code=code_pb2.NOT_FOUND,
