@@ -2,13 +2,15 @@ FROM python:3.7
 
 WORKDIR /usr/src/app
 
-RUN pip install pipenv
+COPY requirements.txt .
 
-COPY Pipfile* ./
+# RUN pip install pipenv
 
-RUN pipenv lock --requirements > requirements.txt
+# COPY Pipfile* ./
 
-RUN pipenv install grpcio
+# RUN pipenv lock --requirements > requirements.txt
+
+RUN pip install grpcio
 
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -16,4 +18,4 @@ COPY . .
 
 EXPOSE 50053
 
-CMD [ "pipenv", "run", "python", "-u", "server.py" ]
+CMD [ "python", "-u", "server.py" ]
