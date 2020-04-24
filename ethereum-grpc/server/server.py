@@ -15,24 +15,16 @@ from datetime import datetime
 from web3 import Web3
 import os
 from request_header_validator_interceptor import RequestHeaderValidatorInterceptor
+import yaml
+import numpy as np
 
 
 class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
     def getWeb3Url(self, ntwrkId):
-        url = "http://115.187.58.4:"
-        port = "754"
-        if (ntwrkId == 5):
-            url += port + "5"
-        elif (ntwrkId == 4):
-            url += port + "7"
-        elif (ntwrkId == 3):
-            url += port + "6"
-        elif (ntwrkId == 1):
-            url = "http://115.187.58.4:8546"
-        else:
-            url = "http://ganache:8545"
-            # url = "http://localhost:8545"
-        return url
+        with open("config.yml", "r") as ymlfile:
+            cfg = yaml.load(ymlfile, Loader=yaml.BaseLoader)
+        url = [cfg["networks"][n]["url"] for n in cfg["networks"] if np.uint8(cfg["networks"][n]["id"]) == ntwrkId]
+        return url[0]
     def isTransaction(self, abi):
         if ('constant' in abi.keys() and abi['constant'] == False):
             return True
@@ -49,22 +41,18 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
         url = self.getWeb3Url(request.networkid)
         web3 = Web3(Web3.HTTPProvider(url))
         if(method == 'eth_getTransaction'):
-            print("getting transaction data from blockchain....")
             try:
                 tx = web3.eth.getTransaction(request.txhash)
                 return tx
             except Exception as e:
                 raise Exception(e)
         if(method == 'eth_sendRawTransaction'):
-            print("deploying contract to blockchain....")
             try:
                 tx = web3.eth.sendRawTransaction(request.txhash)
                 return tx
             except Exception as e:
                 raise Exception(e)
         if(method == 'eth_call'):
-            print("calling contract methods")
-            print(request)
             try:
                 methodName = request.fn
                 abi = json.loads(request.abi)
