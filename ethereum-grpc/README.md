@@ -26,3 +26,8 @@
 | `eth_getTransactionByBlockNumberAndIndex`  | `web3.eth.getTransactionFromBlock(hashStringOrNumber, indexNumber [, callback])`  | `GetTransactionFromBlock()`  | <ul><li>[ ] None</li></ul> |
 | [`eth_getTransactionReceipt`](https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_gettransactionreceipt)  | [`web3.eth.getTransactionReceipt(hash [, callback])`](https://web3js.readthedocs.io/en/v1.2.0/web3-eth.html#gettransactionreceipt)  | `GetTransactionReceipt()`  | <ul><li>[ ] None</li></ul> |
 | [`eth_sendRawTransaction`](https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sendrawtransaction)  | [`web3.eth.sendSignedTransaction(signedTransactionData [, callback])`](https://web3js.readthedocs.io/en/v1.2.0/web3-eth.html#sendsignedtransaction)  | `SendSignedTransaction()`  | <ul><li>[ ] None</li></ul> |
+
+# Generate protobuf
+```
+python3 -m grpc_tools.protoc -I./protoeth --python_out=./server/ --grpc_python_out=./server/ ./protoeth/ethereum.proto
+```

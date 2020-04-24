@@ -4,9 +4,7 @@ package protoeth;
 option go_package = "protoeth";
 import "google/protobuf/empty.proto";
 
-// import "google/protobuf/empty.proto";
-
-// GetAccounts
+// GetAccounts only for ganache
 message GetAccountsReq {}
 
 message TestnetReq {
@@ -35,7 +33,7 @@ message GetAccountsResp {
     repeated string accounts = 1;
 }
 
-// GetBalance -> Eth.getBalance -> eth_getBalance
+// GetBalance -> eth.getBalance -> eth_getBalance
 message GetBalanceReq {
     string address = 1;
 }
@@ -95,24 +93,34 @@ message GetTxReq {
     string txhash = 2;
 }
 
+message CallRequest {
+    uint32 networkid = 1;
+    string fn = 2;
+    string params = 3;
+    string abi = 4;
+    string address = 5;
+    string fromAddress = 6; // python will not allow .from so it has to be fromAddress
+    uint64 value = 7;
+    uint64 gasSupply = 8;
+}
+
+message CallResponse {
+    string result = 1;
+}
+
 service ProtoEthService {
-    rpc GetAccounts(GetAccountsReq) returns (GetAccountsResp) {};
     rpc GetBalance(GetBalanceReq) returns (GetBalanceResp) {};
     rpc GetTransaction(GetTxReq) returns (TransactionInfo) {};
-    // eth_sendRawTransaction should have simple requests but stream of responses
-    rpc SendRawTransactions(RawTxRequest) returns (stream TxResponse) {};
     rpc GetTransactionReceipt(TxHash) returns (TxReceipt) {};
-    // rpc GetProtocolVersion() returns () {};
-    // rpc GetCoinbase() returns () {};
+    rpc ContractCall(CallRequest) returns (CallResponse) {};
     rpc GetHashrate(google.protobuf.Empty) returns (NumResult) {};
     rpc GetGasPrice(google.protobuf.Empty) returns (NumResult) {};
     rpc GetBlockNumber(google.protobuf.Empty) returns (BlockNumber) {};
-    // rpc GetStorageAt() returns () {};
     rpc GetBlockTransactionCount(HashStringOrNumber) returns (CountResp) {};
-    // rpc GetCode() returns () {};
     rpc GetBlock(HashStringOrNumber) returns (ObjResp) {};
     rpc GetTransactionFromBlock(InfoWithIndex) returns (ObjResp) {};
-    rpc SetTestnet(TestnetReq) returns (google.protobuf.Empty) {};
+    // eth_sendRawTransaction should have simple requests but stream of responses
+    rpc SendRawTransactions(RawTxRequest) returns (stream TxResponse) {};
 }
 
 // ##############################
