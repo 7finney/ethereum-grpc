@@ -73,8 +73,8 @@ message TxReceipt {
 }
 
 message RawTxRequest {
-    string tx = 1;
-    uint32 networkid = 2;
+    uint32 networkid = 1;
+    string tx = 2;
 }
 
 message BlockNumber {
@@ -121,7 +121,7 @@ service ProtoEthService {
     rpc GetBlock(HashStringOrNumber) returns (ObjResp) {};
     rpc GetTransactionFromBlock(InfoWithIndex) returns (ObjResp) {};
     // eth_sendRawTransaction should have simple requests but stream of responses
-    rpc SendRawTransactions(RawTxRequest) returns (stream TxResponse) {};
+    rpc SendRawTransactions(RawTxRequest) returns (TxResponse) {};
 }
 
 // ##############################
