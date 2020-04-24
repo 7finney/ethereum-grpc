@@ -48,7 +48,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 raise Exception(e)
         if(method == 'eth_sendRawTransaction'):
             try:
-                tx = web3.eth.sendRawTransaction(request.txhash)
+                tx = web3.eth.sendRawTransaction(request.tx)
                 return tx
             except Exception as e:
                 raise Exception(e)

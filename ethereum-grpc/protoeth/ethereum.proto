@@ -74,6 +74,7 @@ message TxReceipt {
 
 message RawTxRequest {
     string tx = 1;
+    uint32 networkid = 2;
 }
 
 message BlockNumber {
