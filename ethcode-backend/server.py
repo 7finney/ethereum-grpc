@@ -13,6 +13,7 @@ from web3 import Web3, middleware
 from request_header_validator_interceptor import RequestHeaderValidatorInterceptor
 from web3.middleware import geth_poa_middleware
 from web3.gas_strategies.time_based import medium_gas_price_strategy
+import yaml
 
 class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
     _w3: any
@@ -42,22 +43,14 @@ class Deploy(client_call_pb2_grpc.ClientCallServiceServicer):
             return False
     def RunDeploy(self, request, context):
         id = request.callInterface.testnetId
-        # TODO: use config file to get URL configurations
-        self.url = "http://115.187.58.4:"
-        self.port = "754"
-        if(id == "5"):
-            # Görli
-            self.url += self.port + "5"
-        elif(id == "4"):
-            # Rinkeby
-            self.url += self.port + "7"
-        elif(id == "3"):
-            # Ropsten
-            self.url += self.port + "6"
-        elif(id == "ganache"):
-            self.url = "http://localhost:8545"
-        else:
-            self.url = "http://localhost:8545"
+        with open("config.yml", "r") as ymlfile:
+            cfg = yaml.load(ymlfile, Loader=yaml.BaseLoader)
+        for n in cfg["networks"]:
+            network = cfg["networks"][n]
+            if(id == network["id"]):
+                self.url = network["url"]
+            else:
+                self.url = cfg["networks"]["ganache"]["url"]
         self._w3 = Web3(Web3.HTTPProvider(self.url))
         if(id == "5" or id == "4"):
             self._w3.middleware_onion.inject(geth_poa_middleware, layer=0)

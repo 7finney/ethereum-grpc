@@ -30,8 +30,8 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
         elif (ntwrkId == 1):
             url = "http://115.187.58.4:8546"
         else:
-            url = "http://ganache:8545"
-            # url = "http://localhost:8545"
+            # url = "http://ganache:8545"
+            url = "http://localhost:8545"
         return url
     def isTransaction(self, abi):
         if ('constant' in abi.keys() and abi['constant'] == False):
