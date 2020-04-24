@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: client-call-api
-          image: gcr.io/eth-devtools-api-dev/staging/client-call-api:0.10
+          image: gcr.io/eth-devtools-api-dev/staging/client-call-api:0.10.1
           imagePullPolicy: Always
           ports:
             - containerPort: 50053
