@@ -65,7 +65,7 @@ class ProtoEthServiceStub(object):
         request_serializer=ethereum__pb2.InfoWithIndex.SerializeToString,
         response_deserializer=ethereum__pb2.ObjResp.FromString,
         )
-    self.SendRawTransactions = channel.unary_stream(
+    self.SendRawTransactions = channel.unary_unary(
         '/protoeth.ProtoEthService/SendRawTransactions',
         request_serializer=ethereum__pb2.RawTxRequest.SerializeToString,
         response_deserializer=ethereum__pb2.TxResponse.FromString,
@@ -206,7 +206,7 @@ def add_ProtoEthServiceServicer_to_server(servicer, server):
           request_deserializer=ethereum__pb2.InfoWithIndex.FromString,
           response_serializer=ethereum__pb2.ObjResp.SerializeToString,
       ),
-      'SendRawTransactions': grpc.unary_stream_rpc_method_handler(
+      'SendRawTransactions': grpc.unary_unary_rpc_method_handler(
           servicer.SendRawTransactions,
           request_deserializer=ethereum__pb2.RawTxRequest.FromString,
           response_serializer=ethereum__pb2.TxResponse.SerializeToString,
