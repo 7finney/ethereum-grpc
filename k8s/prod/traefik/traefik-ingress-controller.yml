@@ -56,3 +56,5 @@ spec:
               containerPort: 50052
             - name: cc-port
               containerPort: 50053
+            - name: eth-port
+              containerPort: 50054

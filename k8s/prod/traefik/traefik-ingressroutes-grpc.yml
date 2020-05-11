@@ -8,6 +8,7 @@ spec:
     - rt-port
     - rd-port
     - cc-port
+    - eth-port
   routes:
     - match: Host(`rt.ethco.de`) && PathPrefix(`/`)
       kind: Rule

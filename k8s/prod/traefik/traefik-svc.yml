@@ -23,6 +23,9 @@ spec:
     - protocol: TCP
       name: rt-port
       port: 50051
+    - protocol: TCP
+      name: eth-port
+      port: 50054
   selector:
     app: traefik
   type: LoadBalancer
