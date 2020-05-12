@@ -27,6 +27,16 @@ spec:
       services:
         - name: etherscanner-backend-cluster-svc
           port: 4545
+    - match: Host(`wallet.staging.ethco.de`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: wallet-backend-ip-svc
+          port: 4550
+    - match: Host(`dapp.staging.ethco.de`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: dapp-backend-ip-svc
+          port: 4551
   # - match: Host(`graf.ethco.de`) && PathPrefix(`/`)
   #   kind: Rule
   #   services:
