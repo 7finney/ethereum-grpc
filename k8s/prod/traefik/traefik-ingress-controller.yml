@@ -33,6 +33,7 @@ spec:
             - --accesslog
             - --entrypoints.web.address=:80
             - --entrypoints.web-secure.address=:443
+            - --entrypoints.eth-port.address=:50054
             - --entrypoints.cc-port.address=:50053
             - --entrypoints.rd-port.address=:50052
             - --entrypoints.rt-port.address=:50051

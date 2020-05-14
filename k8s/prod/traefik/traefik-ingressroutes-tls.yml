@@ -54,7 +54,7 @@ spec:
     - web
 
   routes:
-    - match: Host(`trf.ethco.de`) && PathPrefix(`/`)
+    - match: Host(`traefik.ethco.de`) && PathPrefix(`/`)
       kind: Rule
       middlewares:
         - name: https-redirectscheme
@@ -76,14 +76,14 @@ spec:
           port: 4545
       middlewares:
         - name: https-redirectscheme
-    - match: Host(`graf.ethco.de`) && PathPrefix(`/`)
+    - match: Host(`grafana.ethco.de`) && PathPrefix(`/`)
       kind: Rule
       services:
         - name: grafana-cluster-ip-svc
           port: 3000
       middlewares:
         - name: https-redirectscheme
-    - match: Host(`prom.ethco.de`) && PathPrefix(`/`)
+    - match: Host(`prometheus.ethco.de`) && PathPrefix(`/`)
       kind: Rule
       middlewares:
         - name: basic-auth

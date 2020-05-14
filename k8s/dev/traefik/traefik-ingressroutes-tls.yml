@@ -14,14 +14,14 @@ spec:
       middlewares:
         - name: basic-auth
       services:
-        - name: traefik
+        - name: api@internal
           kind: TraefikService
           port: 8080
-    - match: Host(`auth.staging.ethco.de`) && PathPrefix(`/`)
-      kind: Rule
-      services:
-        - name: auth-api-cluster-ip-svc
-          port: 4040
+    # - match: Host(`auth.staging.ethco.de`) && PathPrefix(`/`)
+    #   kind: Rule
+    #   services:
+    #     - name: auth-api-cluster-ip-svc
+    #       port: 4040
     - match: Host(`etherscanner.staging.ethco.de`) && PathPrefix(`/`)
       kind: Rule
       services:
