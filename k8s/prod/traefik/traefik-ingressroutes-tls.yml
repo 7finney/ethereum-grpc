@@ -13,7 +13,7 @@ spec:
       middlewares:
         - name: basic-auth
       services:
-        - name: traefik
+        - name: api@internal
           kind: TraefikService
           port: 8080
     - match: Host(`auth.ethco.de`) && PathPrefix(`/`)
@@ -59,7 +59,7 @@ spec:
       middlewares:
         - name: https-redirectscheme
       services:
-        - name: traefik
+        - name: api@internal
           kind: TraefikService
           port: 8080
     - match: Host(`auth.ethco.de`) && PathPrefix(`/`)

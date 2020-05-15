@@ -15,6 +15,7 @@ spec:
       containers:
         - name: ganache
           image: gcr.io/eth-devtools-api-dev/ganache:0.1
+          imagePullPolicy: Always
           ports:
             - containerPort: 8545
       restartPolicy: Always

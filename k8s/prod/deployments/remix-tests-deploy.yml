@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: remix-tests-api
-          image: gcr.io/eth-devtools-api-dev/remix-tests:0.1
+          image: gcr.io/eth-devtools-api-dev/remix-tests:production
+          imagePullPolicy: Always
           ports:
             - containerPort: 50051
       restartPolicy: Always
