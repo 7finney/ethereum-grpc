@@ -41,7 +41,8 @@ spec:
           # scheme: https
 
   tls:
-    certResolver: default
+    store:
+      name: default
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
