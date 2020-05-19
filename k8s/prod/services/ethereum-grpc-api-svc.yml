@@ -10,4 +10,3 @@ spec:
     - name: ethereum-grpc-api
       port: 50054
       targetPort: 50054
-    #   nodePort: 31515

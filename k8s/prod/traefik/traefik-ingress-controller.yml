@@ -26,13 +26,14 @@ spec:
       serviceAccountName: traefik-ingress-controller
       containers:
         - name: traefik
-          image: traefik:v2.0.5
+          image: traefik:v2.2.1
           args:
             - --api.insecure=true
             - --api.dashboard=true
             - --accesslog
             - --entrypoints.web.address=:80
             - --entrypoints.web-secure.address=:443
+            - --entrypoints.eth-port.address=:50054
             - --entrypoints.cc-port.address=:50053
             - --entrypoints.rd-port.address=:50052
             - --entrypoints.rt-port.address=:50051
@@ -40,10 +41,10 @@ spec:
             - --log.level=DEBUG
             - --metrics.prometheus=true
             # - --certificatesresolvers.default.acme.httpchallenge=true
-            - --certificatesresolvers.default.acme.tlschallenge
+            # - --certificatesresolvers.default.acme.tlschallenge
             # - --certificatesresolvers.default.acme.httpchallenge.entrypoint=web-secure
-            - --certificatesresolvers.default.acme.email=0mkar@protonmail.com
-            - --certificatesresolvers.default.acme.storage=acme.json
+            # - --certificatesresolvers.default.acme.email=0mkar@protonmail.com
+            # - --certificatesresolvers.default.acme.storage=acme.json
             # - --certificatesresolvers.default.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
           ports:
             - name: web
@@ -56,3 +57,5 @@ spec:
               containerPort: 50052
             - name: cc-port
               containerPort: 50053
+            - name: eth-port
+              containerPort: 50054

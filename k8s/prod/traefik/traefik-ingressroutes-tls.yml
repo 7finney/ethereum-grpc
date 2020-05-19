@@ -5,41 +5,44 @@ metadata:
   namespace: default
 spec:
   entryPoints:
-    # - web
     - web-secure
 
   routes:
-  - match: Host(`traefik.ethco.de`) && PathPrefix(`/`)
-    kind: Rule
-    middlewares:
-      - name: basic-auth
-      # - name: https-redirectscheme
-    services:
-      - name: traefik
-        kind: TraefikService
-        port: 8080
-        # scheme: https
-  - match: Host(`auth.ethco.de`) && PathPrefix(`/`)
-    kind: Rule
-    services:
-    - name: auth-api-cluster-ip-svc
-      port: 4040
-  - match: Host(`grafana.ethco.de`) && PathPrefix(`/`)
-    kind: Rule
-    services:
-    - name: grafana-cluster-ip-svc
-      port: 3000
-  - match: Host(`prometheus.ethco.de`) && PathPrefix(`/`)
-    kind: Rule
-    middlewares:
-      - name: basic-auth
-    services:
-    - name: prometheus-cluster-ip-svc
-      port: 9090
-      # scheme: https
+    - match: Host(`traefik.ethco.de`) && PathPrefix(`/`)
+      kind: Rule
+      middlewares:
+        - name: basic-auth
+      services:
+        - name: api@internal
+          kind: TraefikService
+          port: 8080
+    - match: Host(`auth.ethco.de`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: auth-api-cluster-ip-svc
+          port: 4040
+    - match: Host(`etherscanner.ethco.de`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: etherscanner-backend-cluster-svc
+          port: 4545
+    - match: Host(`grafana.ethco.de`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: grafana-cluster-ip-svc
+          port: 3000
+    - match: Host(`prometheus.ethco.de`) && PathPrefix(`/`)
+      kind: Rule
+      middlewares:
+        - name: basic-auth
+      services:
+        - name: prometheus-cluster-ip-svc
+          port: 9090
+          # scheme: https
 
   tls:
-    certResolver: default
+    store:
+      name: default
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
@@ -52,33 +55,40 @@ spec:
     - web
 
   routes:
-  - match: Host(`trf.ethco.de`) && PathPrefix(`/`)
-    kind: Rule
-    middlewares:
-      - name: https-redirectscheme
-    services:
-      - name: traefik
-        kind: TraefikService
-        port: 8080
-  - match: Host(`auth.ethco.de`) && PathPrefix(`/`)
-    kind: Rule
-    services:
-    - name: auth-api-cluster-ip-svc
-      port: 4040
-    middlewares:
-      - name: https-redirectscheme
-  - match: Host(`graf.ethco.de`) && PathPrefix(`/`)
-    kind: Rule
-    services:
-    - name: grafana-cluster-ip-svc
-      port: 3000
-    middlewares:
-      - name: https-redirectscheme
-  - match: Host(`prom.ethco.de`) && PathPrefix(`/`)
-    kind: Rule
-    middlewares:
-      - name: basic-auth
-      - name: https-redirectscheme
-    services:
-    - name: prometheus-cluster-ip-svc
-      port: 9090
+    - match: Host(`traefik.ethco.de`) && PathPrefix(`/`)
+      kind: Rule
+      middlewares:
+        - name: https-redirectscheme
+      services:
+        - name: api@internal
+          kind: TraefikService
+          port: 8080
+    - match: Host(`auth.ethco.de`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: auth-api-cluster-ip-svc
+          port: 4040
+      middlewares:
+        - name: https-redirectscheme
+    - match: Host(`etherscanner.ethco.de`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: etherscanner-backend-cluster-svc
+          port: 4545
+      middlewares:
+        - name: https-redirectscheme
+    - match: Host(`grafana.ethco.de`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: grafana-cluster-ip-svc
+          port: 3000
+      middlewares:
+        - name: https-redirectscheme
+    - match: Host(`prometheus.ethco.de`) && PathPrefix(`/`)
+      kind: Rule
+      middlewares:
+        - name: basic-auth
+        - name: https-redirectscheme
+      services:
+        - name: prometheus-cluster-ip-svc
+          port: 9090

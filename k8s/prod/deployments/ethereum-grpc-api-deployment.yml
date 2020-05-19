@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: ethereum-grpc-api
-          image: gcr.io/eth-devtools-api-dev/ethereum-grpc-api:0.1
+          image: gcr.io/eth-devtools-api-dev/ethereum-grpc-api:production
+          imagePullPolicy: Always
           ports:
             - containerPort: 50054
       restartPolicy: Always

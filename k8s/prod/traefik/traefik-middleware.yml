@@ -16,3 +16,13 @@ metadata:
 
 data:
   users: YWRtaW46JGFwcjEkUjZCY05DekYkUVZJRU1zTU1TZjE5THZRNmJ4NURULgoK
+
+---
+# Disable auto-detection
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: autodetect
+spec:
+  contentType:
+    autoDetect: false
