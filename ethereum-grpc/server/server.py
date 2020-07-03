@@ -69,12 +69,12 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 for i in abi:
                     if 'name' in i.keys() and i['name'] == methodName:
                         if(self.isTransaction(i)):
-                            print("is a transaction")
                             transaction = method_to_call(*self.unpackParams(params)).buildTransaction({ 'from': fromAddress, 'gas': 0, 'nonce': nonce, 'value': value })
                             try:
                                 estimatedGas = web3.eth.estimateGas(transaction)
                                 transaction['gas'] = estimatedGas
-                            except:
+                            except Exception as e:
+                                print(e)
                                 transaction['gas'] = gasSupply
                             callResult = transaction
                             break
@@ -155,44 +155,6 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
             else:
                 params.append(args[i]['value'])
         return params
-    # def GetTransactionReceipt(self, request, context):
-    #     print("Running getTransactionReceipt...")
-    #     receipt = self._w3.eth.getTransactionReceipt(request.txhash)
-    #     print(Web3.toJSON(receipt))
-    #     return ethereum_pb2.TxReceipt(txReceipt=Web3.toJSON(receipt))
-    # def GetBlockNumber(self, request, context):
-    #     print("Running getBlockNumber...")
-    #     blockNumber = self._w3.eth.blockNumber
-    #     return ethereum_pb2.BlockNumber(blocknum=blockNumber)
-    # def GetBlockTransactionCount(self, request, context):
-    #     print("Running getBlockTransactionCount...")
-    #     if(request.reqString) :
-    #         count = self._w3.eth.getBlockTransactionCount(request.reqString)
-    #     else:
-    #         count = self._w3.eth.getBlockTransactionCount(request.reqNum)
-    #     return ethereum_pb2.CountResp(count=count)
-    # def GetBlock(self, request, context):
-    #     print("Running getBlock...")
-    #     if(request.reqString) :
-    #         resp = self._w3.eth.getBlock(request.reqString)
-    #     else:
-    #         resp = self._w3.eth.getBlock(request.reqNum)
-    #     return ethereum_pb2.ObjResp(respObj=resp)
-    # def GetTransactionFromBlock(self, request, context):
-    #     print("Running getTransactionFromBlock...")
-    #     if(request.req.reqString):
-    #         resp = self._w3.eth.getTransactionFromBlock(request.req.reqString, request.index)
-    #     else:
-    #         resp = self._w3.eth.getTransactionFromBlock(request.req.reqNum, request.index)
-    #     return ethereum_pb2.ObjResp(respObj=resp)
-    # def GetHashrate(self, request, context):
-    #     print("Running getHashRate...")
-    #     resp = self._w3.eth.hashrate
-    #     return ethereum_pb2.NumResult(resultNum=resp)
-    # def GetGasPrice(self, request, context):
-    #     print("Running getGasPrice...")
-    #     resp = self._w3.eth.gasPrice
-    #     return ethereum_pb2.NumResult(resultNum=resp)
 
 
 def serve():
