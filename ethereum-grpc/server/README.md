@@ -1,8 +1,8 @@
 # Getting started
 ```
+cd ethereum-grpc/server/
 python3 -m virtualenv venv
 source venv/bin/activate
-cd server/
 pip install -r requirements.txt
 pip freeze > requirements.txt
 ```
