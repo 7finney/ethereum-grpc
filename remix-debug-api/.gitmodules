@@ -1,4 +1,0 @@
-[submodule "packages/remix"]
-	path = packages/remix
-	url = git@github.com:quantanet/remix.git
-	branch = update-web3-remix-debug

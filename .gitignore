@@ -8,3 +8,5 @@ ethereum_data/
 .idea/
 build/
 .idea/
+__pycache__/
+venv/
