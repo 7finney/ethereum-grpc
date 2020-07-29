@@ -56,7 +56,10 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
             try:
                 methodName = request.fn
                 abi = json.loads(request.abi)
-                params = json.loads(request.params)
+                if len(request.params) > 0:
+                    params = json.loads(request.params)
+                else:
+                    params = None
                 contractAddress = Web3.toChecksumAddress(request.address)
                 fromAddress = Web3.toChecksumAddress(request.fromAddress)
                 gasSupply = request.gasSupply or 0
@@ -142,9 +145,11 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                     details=[detail]
                 )
                 context.abort_with_status(rpc_status.to_status(rich_status))
-    def unpackParams(self, *args):
+    def unpackParams(self, args):
         params = []
         regExp = r'\w+(?=\[\d*\])'
+        if args == None:
+            return params
         for i in range(0, len(args)):
             if(re.match(regExp, args[i]['type']) or str.__contains__(args[i]['type'], 'tuple')):
                 params.append(json.loads(args[i]['value']))
