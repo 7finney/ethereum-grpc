@@ -79,6 +79,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                             except Exception as e:
                                 print(e)
                                 transaction['gas'] = gasSupply
+                            # assign transaction as call result
                             callResult = transaction
                             break
                         else:
