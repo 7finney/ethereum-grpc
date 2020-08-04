@@ -1,17 +1,17 @@
 networks:
-    ganache:
-        id: 0
-        # url: "http://127.0.0.1:8545"
-        url: "http://ganache:8545"
-    main:
-        id: 1
-        url: "http://115.187.58.4:8546"
-    ropsten:
-        id: 3
-        url: "http://115.187.58.4:7546"
-    rinkeby:
-        id: 4
-        url: "http://115.187.58.4:7547"
-    görli:
-        id: 5
-        url: "http://115.187.58.4:7545"
+  ganache:
+    id: 0
+    url: "http://ganache:8545"
+    # url: "http://127.0.0.1:8545"
+  main:
+    id: 1
+    url: "http://networks.ethco.de/light"
+  ropsten:
+    id: 3
+    url: "http://networks.ethco.de/ropsten"
+  rinkeby:
+    id: 4
+    url: "http://networks.ethco.de/rinkeby"
+  görli:
+    id: 5
+    url: "http://networks.ethco.de/goerli"
