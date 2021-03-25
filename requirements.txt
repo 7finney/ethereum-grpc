@@ -38,7 +38,7 @@ protobuf==3.11.1
 pycryptodome==3.9.4
 pylint==2.4.4
 pyrsistent==0.15.6
-PyYAML==5.3.1
+PyYAML==5.4
 requests==2.22.0
 rlp==1.2.0
 six==1.13.0
