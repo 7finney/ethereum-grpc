@@ -41,7 +41,7 @@ six==1.13.0
 toolz==0.10.0
 typed-ast==1.4.1
 typing-extensions==3.7.4.1
-urllib3==1.25.7
+urllib3==1.26.5
 varint==1.0.2
 virtualenv==16.7.9
 virtualenv-clone==0.5.3
