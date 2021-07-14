@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='protoeth',
   syntax='proto3',
   serialized_options=_b('Z\010protoeth'),
-  serialized_pb=_b('\n\x0e\x65thereum.proto\x12\x08protoeth\x1a\x1bgoogle/protobuf/empty.proto\"\x10\n\x0eGetAccountsReq\"\x18\n\nTestnetReq\x12\n\n\x02id\x18\x01 \x01(\r\"7\n\x12HashStringOrNumber\x12\x11\n\treqString\x18\x01 \x01(\t\x12\x0e\n\x06reqNum\x18\x02 \x01(\x04\"I\n\rInfoWithIndex\x12)\n\x03req\x18\x01 \x01(\x0b\x32\x1c.protoeth.HashStringOrNumber\x12\r\n\x05index\x18\x02 \x01(\x04\"\x1a\n\tCountResp\x12\r\n\x05\x63ount\x18\x01 \x01(\x04\"\x1a\n\x07ObjResp\x12\x0f\n\x07respObj\x18\x01 \x01(\t\"#\n\x0fGetAccountsResp\x12\x10\n\x08\x61\x63\x63ounts\x18\x01 \x03(\t\" \n\rGetBalanceReq\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\"!\n\x0eGetBalanceResp\x12\x0f\n\x07\x62\x61lance\x18\x01 \x01(\t\"O\n\x17\x43reateRawTransactionReq\x12\n\n\x02to\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\t\x12\x0b\n\x03gas\x18\x03 \x01(\r\x12\r\n\x05value\x18\x04 \x01(\r\")\n\x18\x43reateRawTransactionResp\x12\r\n\x05rawTX\x18\x01 \x01(\t\".\n\x1a\x44\x65ploySignedTransactionReq\x12\x10\n\x08signedTX\x18\x01 \x01(\t\"0\n\x1b\x44\x65ploySignedTransactionResp\x12\x11\n\ttxReciept\x18\x01 \x01(\t\"\x18\n\x06TxHash\x12\x0e\n\x06txhash\x18\x01 \x01(\t\"&\n\x0fTransactionInfo\x12\x13\n\x0btransaction\x18\x01 \x01(\t\"\x1e\n\tTxReceipt\x12\x11\n\ttxReceipt\x18\x01 \x01(\t\"-\n\x0cRawTxRequest\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\n\n\x02tx\x18\x02 \x01(\t\"\x1f\n\x0b\x42lockNumber\x12\x10\n\x08\x62locknum\x18\x01 \x01(\x04\"\x1c\n\nTxResponse\x12\x0e\n\x06txData\x18\x01 \x01(\t\"\x1e\n\tNumResult\x12\x11\n\tresultNum\x18\x01 \x01(\x04\"-\n\x08GetTxReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0e\n\x06txhash\x18\x02 \x01(\t\"\x91\x01\n\x0b\x43\x61llRequest\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\n\n\x02\x66n\x18\x02 \x01(\t\x12\x0e\n\x06params\x18\x03 \x01(\t\x12\x0b\n\x03\x61\x62i\x18\x04 \x01(\t\x12\x0f\n\x07\x61\x64\x64ress\x18\x05 \x01(\t\x12\x13\n\x0b\x66romAddress\x18\x06 \x01(\t\x12\r\n\x05value\x18\x07 \x01(\x04\x12\x11\n\tgasSupply\x18\x08 \x01(\x04\"\x1e\n\x0c\x43\x61llResponse\x12\x0e\n\x06result\x18\x01 \x01(\t2\xf9\x05\n\x0fProtoEthService\x12\x41\n\nGetBalance\x12\x17.protoeth.GetBalanceReq\x1a\x18.protoeth.GetBalanceResp\"\x00\x12\x41\n\x0eGetTransaction\x12\x12.protoeth.GetTxReq\x1a\x19.protoeth.TransactionInfo\"\x00\x12@\n\x15GetTransactionReceipt\x12\x10.protoeth.TxHash\x1a\x13.protoeth.TxReceipt\"\x00\x12?\n\x0c\x43ontractCall\x12\x15.protoeth.CallRequest\x1a\x16.protoeth.CallResponse\"\x00\x12<\n\x0bGetHashrate\x12\x16.google.protobuf.Empty\x1a\x13.protoeth.NumResult\"\x00\x12<\n\x0bGetGasPrice\x12\x16.google.protobuf.Empty\x1a\x13.protoeth.NumResult\"\x00\x12\x41\n\x0eGetBlockNumber\x12\x16.google.protobuf.Empty\x1a\x15.protoeth.BlockNumber\"\x00\x12O\n\x18GetBlockTransactionCount\x12\x1c.protoeth.HashStringOrNumber\x1a\x13.protoeth.CountResp\"\x00\x12=\n\x08GetBlock\x12\x1c.protoeth.HashStringOrNumber\x1a\x11.protoeth.ObjResp\"\x00\x12G\n\x17GetTransactionFromBlock\x12\x17.protoeth.InfoWithIndex\x1a\x11.protoeth.ObjResp\"\x00\x12\x45\n\x13SendRawTransactions\x12\x16.protoeth.RawTxRequest\x1a\x14.protoeth.TxResponse\"\x00\x42\nZ\x08protoethb\x06proto3')
+  serialized_pb=_b('\n\x0e\x65thereum.proto\x12\x08protoeth\x1a\x1bgoogle/protobuf/empty.proto\"\x10\n\x0eGetAccountsReq\"\x18\n\nTestnetReq\x12\n\n\x02id\x18\x01 \x01(\r\"7\n\x12HashStringOrNumber\x12\x11\n\treqString\x18\x01 \x01(\t\x12\x0e\n\x06reqNum\x18\x02 \x01(\x04\"I\n\rInfoWithIndex\x12)\n\x03req\x18\x01 \x01(\x0b\x32\x1c.protoeth.HashStringOrNumber\x12\r\n\x05index\x18\x02 \x01(\x04\"\x1a\n\tCountResp\x12\r\n\x05\x63ount\x18\x01 \x01(\x04\"\x1a\n\x07ObjResp\x12\x0f\n\x07respObj\x18\x01 \x01(\t\"#\n\x0fGetAccountsResp\x12\x10\n\x08\x61\x63\x63ounts\x18\x01 \x03(\t\" \n\rGetBalanceReq\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\"!\n\x0eGetBalanceResp\x12\x0f\n\x07\x62\x61lance\x18\x01 \x01(\t\"O\n\x17\x43reateRawTransactionReq\x12\n\n\x02to\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\t\x12\x0b\n\x03gas\x18\x03 \x01(\r\x12\r\n\x05value\x18\x04 \x01(\r\")\n\x18\x43reateRawTransactionResp\x12\r\n\x05rawTX\x18\x01 \x01(\t\".\n\x1a\x44\x65ploySignedTransactionReq\x12\x10\n\x08signedTX\x18\x01 \x01(\t\"0\n\x1b\x44\x65ploySignedTransactionResp\x12\x11\n\ttxReciept\x18\x01 \x01(\t\"\x18\n\x06TxHash\x12\x0e\n\x06txhash\x18\x01 \x01(\t\"&\n\x0fTransactionInfo\x12\x13\n\x0btransaction\x18\x01 \x01(\t\"\x1e\n\tTxReceipt\x12\x11\n\ttxReceipt\x18\x01 \x01(\t\"-\n\x0cRawTxRequest\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\n\n\x02tx\x18\x02 \x01(\t\"\x1f\n\x0b\x42lockNumber\x12\x10\n\x08\x62locknum\x18\x01 \x01(\x04\"\x1c\n\nTxResponse\x12\x0e\n\x06txData\x18\x01 \x01(\t\"\x1e\n\tNumResult\x12\x11\n\tresultNum\x18\x01 \x01(\x04\"-\n\x08GetTxReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0e\n\x06txhash\x18\x02 \x01(\t\"\x91\x01\n\x0b\x43\x61llRequest\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\n\n\x02\x66n\x18\x02 \x01(\t\x12\x0e\n\x06params\x18\x03 \x01(\t\x12\x0b\n\x03\x61\x62i\x18\x04 \x01(\t\x12\x0f\n\x07\x61\x64\x64ress\x18\x05 \x01(\t\x12\x13\n\x0b\x66romAddress\x18\x06 \x01(\t\x12\r\n\x05value\x18\x07 \x01(\x04\x12\x11\n\tgasSupply\x18\x08 \x01(\x04\"\x1e\n\x0c\x43\x61llResponse\x12\x0e\n\x06result\x18\x01 \x01(\t\"\x87\x01\n\x0e\x45stimateGasReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0b\n\x03\x61\x62i\x18\x02 \x01(\t\x12\x10\n\x08\x62ytecode\x18\x03 \x01(\t\x12\x0e\n\x06params\x18\x04 \x01(\t\x12\x0f\n\x07\x61\x64\x64ress\x18\x05 \x01(\t\x12\x13\n\x0b\x66romAddress\x18\x06 \x01(\t\x12\r\n\x05value\x18\x07 \x01(\x04\"!\n\x0f\x45stimateGasResp\x12\x0e\n\x06result\x18\x01 \x01(\t2\xbf\x06\n\x0fProtoEthService\x12\x41\n\nGetBalance\x12\x17.protoeth.GetBalanceReq\x1a\x18.protoeth.GetBalanceResp\"\x00\x12\x41\n\x0eGetTransaction\x12\x12.protoeth.GetTxReq\x1a\x19.protoeth.TransactionInfo\"\x00\x12@\n\x15GetTransactionReceipt\x12\x10.protoeth.TxHash\x1a\x13.protoeth.TxReceipt\"\x00\x12?\n\x0c\x43ontractCall\x12\x15.protoeth.CallRequest\x1a\x16.protoeth.CallResponse\"\x00\x12<\n\x0bGetHashrate\x12\x16.google.protobuf.Empty\x1a\x13.protoeth.NumResult\"\x00\x12<\n\x0bGetGasPrice\x12\x16.google.protobuf.Empty\x1a\x13.protoeth.NumResult\"\x00\x12\x41\n\x0eGetBlockNumber\x12\x16.google.protobuf.Empty\x1a\x15.protoeth.BlockNumber\"\x00\x12O\n\x18GetBlockTransactionCount\x12\x1c.protoeth.HashStringOrNumber\x1a\x13.protoeth.CountResp\"\x00\x12=\n\x08GetBlock\x12\x1c.protoeth.HashStringOrNumber\x1a\x11.protoeth.ObjResp\"\x00\x12G\n\x17GetTransactionFromBlock\x12\x17.protoeth.InfoWithIndex\x1a\x11.protoeth.ObjResp\"\x00\x12\x45\n\x13SendRawTransactions\x12\x16.protoeth.RawTxRequest\x1a\x14.protoeth.TxResponse\"\x00\x12\x44\n\x0b\x45stimateGas\x12\x18.protoeth.EstimateGasReq\x1a\x19.protoeth.EstimateGasResp\"\x00\x42\nZ\x08protoethb\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
@@ -831,6 +831,110 @@ _CALLRESPONSE = _descriptor.Descriptor(
   serialized_end=1082,
 )
 
+
+_ESTIMATEGASREQ = _descriptor.Descriptor(
+  name='EstimateGasReq',
+  full_name='protoeth.EstimateGasReq',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='networkid', full_name='protoeth.EstimateGasReq.networkid', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='abi', full_name='protoeth.EstimateGasReq.abi', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='bytecode', full_name='protoeth.EstimateGasReq.bytecode', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='params', full_name='protoeth.EstimateGasReq.params', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='address', full_name='protoeth.EstimateGasReq.address', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='fromAddress', full_name='protoeth.EstimateGasReq.fromAddress', index=5,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='protoeth.EstimateGasReq.value', index=6,
+      number=7, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1085,
+  serialized_end=1220,
+)
+
+
+_ESTIMATEGASRESP = _descriptor.Descriptor(
+  name='EstimateGasResp',
+  full_name='protoeth.EstimateGasResp',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='result', full_name='protoeth.EstimateGasResp.result', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1222,
+  serialized_end=1255,
+)
+
 _INFOWITHINDEX.fields_by_name['req'].message_type = _HASHSTRINGORNUMBER
 DESCRIPTOR.message_types_by_name['GetAccountsReq'] = _GETACCOUNTSREQ
 DESCRIPTOR.message_types_by_name['TestnetReq'] = _TESTNETREQ
@@ -855,6 +959,8 @@ DESCRIPTOR.message_types_by_name['NumResult'] = _NUMRESULT
 DESCRIPTOR.message_types_by_name['GetTxReq'] = _GETTXREQ
 DESCRIPTOR.message_types_by_name['CallRequest'] = _CALLREQUEST
 DESCRIPTOR.message_types_by_name['CallResponse'] = _CALLRESPONSE
+DESCRIPTOR.message_types_by_name['EstimateGasReq'] = _ESTIMATEGASREQ
+DESCRIPTOR.message_types_by_name['EstimateGasResp'] = _ESTIMATEGASRESP
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 GetAccountsReq = _reflection.GeneratedProtocolMessageType('GetAccountsReq', (_message.Message,), {
@@ -1018,6 +1124,20 @@ CallResponse = _reflection.GeneratedProtocolMessageType('CallResponse', (_messag
   })
 _sym_db.RegisterMessage(CallResponse)
 
+EstimateGasReq = _reflection.GeneratedProtocolMessageType('EstimateGasReq', (_message.Message,), {
+  'DESCRIPTOR' : _ESTIMATEGASREQ,
+  '__module__' : 'ethereum_pb2'
+  # @@protoc_insertion_point(class_scope:protoeth.EstimateGasReq)
+  })
+_sym_db.RegisterMessage(EstimateGasReq)
+
+EstimateGasResp = _reflection.GeneratedProtocolMessageType('EstimateGasResp', (_message.Message,), {
+  'DESCRIPTOR' : _ESTIMATEGASRESP,
+  '__module__' : 'ethereum_pb2'
+  # @@protoc_insertion_point(class_scope:protoeth.EstimateGasResp)
+  })
+_sym_db.RegisterMessage(EstimateGasResp)
+
 
 DESCRIPTOR._options = None
 
@@ -1027,8 +1147,8 @@ _PROTOETHSERVICE = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=1085,
-  serialized_end=1846,
+  serialized_start=1258,
+  serialized_end=2089,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetBalance',
@@ -1127,6 +1247,15 @@ _PROTOETHSERVICE = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_RAWTXREQUEST,
     output_type=_TXRESPONSE,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='EstimateGas',
+    full_name='protoeth.ProtoEthService.EstimateGas',
+    index=11,
+    containing_service=None,
+    input_type=_ESTIMATEGASREQ,
+    output_type=_ESTIMATEGASRESP,
     serialized_options=None,
   ),
 ])

@@ -89,6 +89,20 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 return Web3.toJSON(callResult)
             except Exception as e:
                 raise Exception(e)
+        if(method == 'estimate_gas'):
+            try:
+                bytecode = request.bytecode
+                abi = json.loads(request.abi)
+                if len(request.params) > 0:
+                    params = json.loads(request.params)
+                else:
+                    params = None
+                fromAddress = Web3.toChecksumAddress(request.fromAddress)
+                Contract = web3.eth.contract(abi=abi, bytecode=bytecode)
+                estimatedGas = Contract.constructor(*self.unpackParams(params)).estimateGas({ 'from': fromAddress })
+                return estimatedGas
+            except Exception as e:
+                raise Exception(e)
         else:
             raise Exception("Error: No method specified!")
     # def GetBalance(self, request, context):
@@ -137,6 +151,21 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
             try:
                 res = task.result(timeout=30)
                 return ethereum_pb2.CallResponse(result=Web3.toJSON(res))
+            except Exception as exc:
+                print("Exception: ", exc)
+                detail = any_pb2.Any()
+                rich_status = rpc_status.status_pb2.Status(
+                    code=code_pb2.NOT_FOUND,
+                    message=str(exc),
+                    details=[detail]
+                )
+                context.abort_with_status(rpc_status.to_status(rich_status))
+    def EstimateGas(self, request, context):
+        with futures.ProcessPoolExecutor(max_workers=1) as executor:
+            task = executor.submit(self.web3Task, request, 'estimate_gas')
+            try:
+                res = task.result(timeout=30)
+                return ethereum_pb2.EstimateGasResp(result=Web3.toJSON(res))
             except Exception as exc:
                 print("Exception: ", exc)
                 detail = any_pb2.Any()

@@ -109,6 +109,20 @@ message CallResponse {
     string result = 1;
 }
 
+// Estimate gas
+message EstimateGasReq {
+    uint32 networkid = 1;
+    string abi = 2;
+    string bytecode = 3;
+    string params = 4;
+    string address = 5;
+    string fromAddress = 6;
+    uint64 value = 7;
+}
+message EstimateGasResp {
+    string result = 1;
+}
+
 service ProtoEthService {
     rpc GetBalance(GetBalanceReq) returns (GetBalanceResp) {};
     rpc GetTransaction(GetTxReq) returns (TransactionInfo) {};
@@ -122,6 +136,7 @@ service ProtoEthService {
     rpc GetTransactionFromBlock(InfoWithIndex) returns (ObjResp) {};
     // eth_sendRawTransaction should have simple requests but stream of responses
     rpc SendRawTransactions(RawTxRequest) returns (TxResponse) {};
+    rpc EstimateGas(EstimateGasReq) returns (EstimateGasResp) {};
 }
 
 // ##############################

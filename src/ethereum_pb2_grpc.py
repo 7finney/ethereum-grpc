@@ -70,6 +70,11 @@ class ProtoEthServiceStub(object):
         request_serializer=ethereum__pb2.RawTxRequest.SerializeToString,
         response_deserializer=ethereum__pb2.TxResponse.FromString,
         )
+    self.EstimateGas = channel.unary_unary(
+        '/protoeth.ProtoEthService/EstimateGas',
+        request_serializer=ethereum__pb2.EstimateGasReq.SerializeToString,
+        response_deserializer=ethereum__pb2.EstimateGasResp.FromString,
+        )
 
 
 class ProtoEthServiceServicer(object):
@@ -153,6 +158,13 @@ class ProtoEthServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def EstimateGas(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_ProtoEthServiceServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -210,6 +222,11 @@ def add_ProtoEthServiceServicer_to_server(servicer, server):
           servicer.SendRawTransactions,
           request_deserializer=ethereum__pb2.RawTxRequest.FromString,
           response_serializer=ethereum__pb2.TxResponse.SerializeToString,
+      ),
+      'EstimateGas': grpc.unary_unary_rpc_method_handler(
+          servicer.EstimateGas,
+          request_deserializer=ethereum__pb2.EstimateGasReq.FromString,
+          response_serializer=ethereum__pb2.EstimateGasResp.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
