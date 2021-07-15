@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z\010protoeth',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0e\x65thereum.proto\x12\x08protoeth\x1a\x1bgoogle/protobuf/empty.proto\"\x10\n\x0eGetAccountsReq\"\x18\n\nTestnetReq\x12\n\n\x02id\x18\x01 \x01(\r\"7\n\x12HashStringOrNumber\x12\x11\n\treqString\x18\x01 \x01(\t\x12\x0e\n\x06reqNum\x18\x02 \x01(\x04\"I\n\rInfoWithIndex\x12)\n\x03req\x18\x01 \x01(\x0b\x32\x1c.protoeth.HashStringOrNumber\x12\r\n\x05index\x18\x02 \x01(\x04\"\x1a\n\tCountResp\x12\r\n\x05\x63ount\x18\x01 \x01(\x04\"\x1a\n\x07ObjResp\x12\x0f\n\x07respObj\x18\x01 \x01(\t\"3\n\rGetBalanceReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\"!\n\x0eGetBalanceResp\x12\x0f\n\x07\x62\x61lance\x18\x01 \x01(\t\"O\n\x17\x43reateRawTransactionReq\x12\n\n\x02to\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\t\x12\x0b\n\x03gas\x18\x03 \x01(\r\x12\r\n\x05value\x18\x04 \x01(\r\")\n\x18\x43reateRawTransactionResp\x12\r\n\x05rawTX\x18\x01 \x01(\t\".\n\x1a\x44\x65ploySignedTransactionReq\x12\x10\n\x08signedTX\x18\x01 \x01(\t\"0\n\x1b\x44\x65ploySignedTransactionResp\x12\x11\n\ttxReciept\x18\x01 \x01(\t\"\x18\n\x06TxHash\x12\x0e\n\x06txhash\x18\x01 \x01(\t\"&\n\x0fTransactionInfo\x12\x13\n\x0btransaction\x18\x01 \x01(\t\"\x1e\n\tTxReceipt\x12\x11\n\ttxReceipt\x18\x01 \x01(\t\"-\n\x0cRawTxRequest\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\n\n\x02tx\x18\x02 \x01(\t\"\x1f\n\x0b\x42lockNumber\x12\x10\n\x08\x62locknum\x18\x01 \x01(\x04\"\x1c\n\nTxResponse\x12\x0e\n\x06txData\x18\x01 \x01(\t\"\x1e\n\tNumResult\x12\x11\n\tresultNum\x18\x01 \x01(\x04\"-\n\x08GetTxReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0e\n\x06txhash\x18\x02 \x01(\t\"\x93\x01\n\x0b\x43\x61llRequest\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\n\n\x02\x66n\x18\x02 \x01(\t\x12\x0e\n\x06params\x18\x03 \x01(\t\x12\x0b\n\x03\x61\x62i\x18\x04 \x01(\t\x12\x0f\n\x07\x61\x64\x64ress\x18\x05 \x01(\t\x12\x14\n\x0c\x66rom_address\x18\x06 \x01(\t\x12\r\n\x05value\x18\x07 \x01(\x04\x12\x12\n\ngas_supply\x18\x08 \x01(\x04\"\x1e\n\x0c\x43\x61llResponse\x12\x0e\n\x06result\x18\x01 \x01(\t\"v\n\x0e\x45stimateGasReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0b\n\x03\x61\x62i\x18\x02 \x01(\t\x12\x10\n\x08\x62ytecode\x18\x03 \x01(\t\x12\x0e\n\x06params\x18\x04 \x01(\t\x12\x13\n\x0b\x66romaddress\x18\x05 \x01(\t\x12\r\n\x05value\x18\x06 \x01(\x04\"!\n\x0f\x45stimateGasResp\x12\x0e\n\x06result\x18\x01 \x01(\t\"\"\n\rGanacheAccReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\"2\n\rGanacheAccRsp\x12\x10\n\x08\x61\x63\x63ounts\x18\x01 \x03(\t\x12\x0f\n\x07\x62\x61lance\x18\x02 \x01(\t2\x89\x07\n\x0fProtoEthService\x12\x41\n\nGetBalance\x12\x17.protoeth.GetBalanceReq\x1a\x18.protoeth.GetBalanceResp\"\x00\x12\x41\n\x0eGetTransaction\x12\x12.protoeth.GetTxReq\x1a\x19.protoeth.TransactionInfo\"\x00\x12@\n\x15GetTransactionReceipt\x12\x10.protoeth.TxHash\x1a\x13.protoeth.TxReceipt\"\x00\x12?\n\x0c\x43ontractCall\x12\x15.protoeth.CallRequest\x1a\x16.protoeth.CallResponse\"\x00\x12<\n\x0bGetHashrate\x12\x16.google.protobuf.Empty\x1a\x13.protoeth.NumResult\"\x00\x12<\n\x0bGetGasPrice\x12\x16.google.protobuf.Empty\x1a\x13.protoeth.NumResult\"\x00\x12\x41\n\x0eGetBlockNumber\x12\x16.google.protobuf.Empty\x1a\x15.protoeth.BlockNumber\"\x00\x12O\n\x18GetBlockTransactionCount\x12\x1c.protoeth.HashStringOrNumber\x1a\x13.protoeth.CountResp\"\x00\x12=\n\x08GetBlock\x12\x1c.protoeth.HashStringOrNumber\x1a\x11.protoeth.ObjResp\"\x00\x12G\n\x17GetTransactionFromBlock\x12\x17.protoeth.InfoWithIndex\x1a\x11.protoeth.ObjResp\"\x00\x12\x45\n\x13SendRawTransactions\x12\x16.protoeth.RawTxRequest\x1a\x14.protoeth.TxResponse\"\x00\x12\x44\n\x0b\x45stimateGas\x12\x18.protoeth.EstimateGasReq\x1a\x19.protoeth.EstimateGasResp\"\x00\x12H\n\x12GetGanacheAccounts\x12\x17.protoeth.GanacheAccReq\x1a\x17.protoeth.GanacheAccRsp\"\x00\x42\nZ\x08protoethb\x06proto3'
+  serialized_pb=b'\n\x0e\x65thereum.proto\x12\x08protoeth\x1a\x1bgoogle/protobuf/empty.proto\"\x10\n\x0eGetAccountsReq\"\x18\n\nTestnetReq\x12\n\n\x02id\x18\x01 \x01(\r\"7\n\x12HashStringOrNumber\x12\x11\n\treqString\x18\x01 \x01(\t\x12\x0e\n\x06reqNum\x18\x02 \x01(\x04\"I\n\rInfoWithIndex\x12)\n\x03req\x18\x01 \x01(\x0b\x32\x1c.protoeth.HashStringOrNumber\x12\r\n\x05index\x18\x02 \x01(\x04\"\x1a\n\tCountResp\x12\r\n\x05\x63ount\x18\x01 \x01(\x04\"\x1a\n\x07ObjResp\x12\x0f\n\x07respObj\x18\x01 \x01(\t\"3\n\rGetBalanceReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\"!\n\x0eGetBalanceResp\x12\x0f\n\x07\x62\x61lance\x18\x01 \x01(\t\"O\n\x17\x43reateRawTransactionReq\x12\n\n\x02to\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\t\x12\x0b\n\x03gas\x18\x03 \x01(\r\x12\r\n\x05value\x18\x04 \x01(\r\")\n\x18\x43reateRawTransactionResp\x12\r\n\x05rawTX\x18\x01 \x01(\t\".\n\x1a\x44\x65ploySignedTransactionReq\x12\x10\n\x08signedTX\x18\x01 \x01(\t\"0\n\x1b\x44\x65ploySignedTransactionResp\x12\x11\n\ttxReciept\x18\x01 \x01(\t\"\x83\x01\n\x0e\x42uildTxRequest\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0b\n\x03\x61\x62i\x18\x02 \x01(\t\x12\x10\n\x08\x62ytecode\x18\x03 \x01(\t\x12\x0e\n\x06params\x18\x04 \x01(\t\x12\x13\n\x0b\x66romaddress\x18\x05 \x01(\t\x12\x0b\n\x03gas\x18\x06 \x01(\x04\x12\r\n\x05value\x18\x07 \x01(\x04\".\n\rSendTxRequest\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\n\n\x02tx\x18\x02 \x01(\t\"%\n\x0eRawTransaction\x12\x13\n\x0btransaction\x18\x01 \x01(\t\"\x18\n\x06TxHash\x12\x0e\n\x06txhash\x18\x01 \x01(\t\"&\n\x0fTransactionInfo\x12\x13\n\x0btransaction\x18\x01 \x01(\t\"\x1e\n\tTxReceipt\x12\x11\n\ttxReceipt\x18\x01 \x01(\t\"\x1f\n\x0b\x42lockNumber\x12\x10\n\x08\x62locknum\x18\x01 \x01(\x04\"\x1c\n\nTxResponse\x12\x0e\n\x06txData\x18\x01 \x01(\t\"\x1e\n\tNumResult\x12\x11\n\tresultNum\x18\x01 \x01(\x04\"-\n\x08GetTxReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0e\n\x06txhash\x18\x02 \x01(\t\"\x8c\x01\n\x0b\x43\x61llRequest\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\n\n\x02\x66n\x18\x02 \x01(\t\x12\x0e\n\x06params\x18\x03 \x01(\t\x12\x0b\n\x03\x61\x62i\x18\x04 \x01(\t\x12\x0f\n\x07\x61\x64\x64ress\x18\x05 \x01(\t\x12\x14\n\x0c\x66rom_address\x18\x06 \x01(\t\x12\r\n\x05value\x18\x07 \x01(\x04\x12\x0b\n\x03gas\x18\x08 \x01(\x04\"\x1e\n\x0c\x43\x61llResponse\x12\x0e\n\x06result\x18\x01 \x01(\t\"v\n\x0e\x45stimateGasReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0b\n\x03\x61\x62i\x18\x02 \x01(\t\x12\x10\n\x08\x62ytecode\x18\x03 \x01(\t\x12\x0e\n\x06params\x18\x04 \x01(\t\x12\x13\n\x0b\x66romaddress\x18\x05 \x01(\t\x12\r\n\x05value\x18\x06 \x01(\x04\"!\n\x0f\x45stimateGasResp\x12\x0e\n\x06result\x18\x01 \x01(\t\"\"\n\rGanacheAccReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\"2\n\rGanacheAccRsp\x12\x10\n\x08\x61\x63\x63ounts\x18\x01 \x03(\t\x12\x0f\n\x07\x62\x61lance\x18\x02 \x01(\t2\xd3\x07\n\x0fProtoEthService\x12\x41\n\nGetBalance\x12\x17.protoeth.GetBalanceReq\x1a\x18.protoeth.GetBalanceResp\"\x00\x12\x44\n\x0b\x45stimateGas\x12\x18.protoeth.EstimateGasReq\x1a\x19.protoeth.EstimateGasResp\"\x00\x12H\n\x12GetGanacheAccounts\x12\x17.protoeth.GanacheAccReq\x1a\x17.protoeth.GanacheAccRsp\"\x00\x12K\n\x13\x42uildRawTransaction\x12\x18.protoeth.BuildTxRequest\x1a\x18.protoeth.RawTransaction\"\x00\x12\x42\n\x13SendRawTransactions\x12\x17.protoeth.SendTxRequest\x1a\x10.protoeth.TxHash\"\x00\x12\x41\n\x0eGetTransaction\x12\x12.protoeth.GetTxReq\x1a\x19.protoeth.TransactionInfo\"\x00\x12@\n\x15GetTransactionReceipt\x12\x10.protoeth.TxHash\x1a\x13.protoeth.TxReceipt\"\x00\x12?\n\x0c\x43ontractCall\x12\x15.protoeth.CallRequest\x1a\x16.protoeth.CallResponse\"\x00\x12<\n\x0bGetHashrate\x12\x16.google.protobuf.Empty\x1a\x13.protoeth.NumResult\"\x00\x12<\n\x0bGetGasPrice\x12\x16.google.protobuf.Empty\x1a\x13.protoeth.NumResult\"\x00\x12\x41\n\x0eGetBlockNumber\x12\x16.google.protobuf.Empty\x1a\x15.protoeth.BlockNumber\"\x00\x12O\n\x18GetBlockTransactionCount\x12\x1c.protoeth.HashStringOrNumber\x1a\x13.protoeth.CountResp\"\x00\x12=\n\x08GetBlock\x12\x1c.protoeth.HashStringOrNumber\x1a\x11.protoeth.ObjResp\"\x00\x12G\n\x17GetTransactionFromBlock\x12\x17.protoeth.InfoWithIndex\x1a\x11.protoeth.ObjResp\"\x00\x42\nZ\x08protoethb\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
@@ -446,6 +446,151 @@ _DEPLOYSIGNEDTRANSACTIONRESP = _descriptor.Descriptor(
 )
 
 
+_BUILDTXREQUEST = _descriptor.Descriptor(
+  name='BuildTxRequest',
+  full_name='protoeth.BuildTxRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='networkid', full_name='protoeth.BuildTxRequest.networkid', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='abi', full_name='protoeth.BuildTxRequest.abi', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='bytecode', full_name='protoeth.BuildTxRequest.bytecode', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='params', full_name='protoeth.BuildTxRequest.params', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='fromaddress', full_name='protoeth.BuildTxRequest.fromaddress', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='gas', full_name='protoeth.BuildTxRequest.gas', index=5,
+      number=6, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='protoeth.BuildTxRequest.value', index=6,
+      number=7, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=600,
+  serialized_end=731,
+)
+
+
+_SENDTXREQUEST = _descriptor.Descriptor(
+  name='SendTxRequest',
+  full_name='protoeth.SendTxRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='networkid', full_name='protoeth.SendTxRequest.networkid', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='tx', full_name='protoeth.SendTxRequest.tx', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=733,
+  serialized_end=779,
+)
+
+
+_RAWTRANSACTION = _descriptor.Descriptor(
+  name='RawTransaction',
+  full_name='protoeth.RawTransaction',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='transaction', full_name='protoeth.RawTransaction.transaction', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=781,
+  serialized_end=818,
+)
+
+
 _TXHASH = _descriptor.Descriptor(
   name='TxHash',
   full_name='protoeth.TxHash',
@@ -473,8 +618,8 @@ _TXHASH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=599,
-  serialized_end=623,
+  serialized_start=820,
+  serialized_end=844,
 )
 
 
@@ -505,8 +650,8 @@ _TRANSACTIONINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=625,
-  serialized_end=663,
+  serialized_start=846,
+  serialized_end=884,
 )
 
 
@@ -537,47 +682,8 @@ _TXRECEIPT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=665,
-  serialized_end=695,
-)
-
-
-_RAWTXREQUEST = _descriptor.Descriptor(
-  name='RawTxRequest',
-  full_name='protoeth.RawTxRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='networkid', full_name='protoeth.RawTxRequest.networkid', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='tx', full_name='protoeth.RawTxRequest.tx', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=697,
-  serialized_end=742,
+  serialized_start=886,
+  serialized_end=916,
 )
 
 
@@ -608,8 +714,8 @@ _BLOCKNUMBER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=744,
-  serialized_end=775,
+  serialized_start=918,
+  serialized_end=949,
 )
 
 
@@ -640,8 +746,8 @@ _TXRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=777,
-  serialized_end=805,
+  serialized_start=951,
+  serialized_end=979,
 )
 
 
@@ -672,8 +778,8 @@ _NUMRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=807,
-  serialized_end=837,
+  serialized_start=981,
+  serialized_end=1011,
 )
 
 
@@ -711,8 +817,8 @@ _GETTXREQ = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=839,
-  serialized_end=884,
+  serialized_start=1013,
+  serialized_end=1058,
 )
 
 
@@ -774,7 +880,7 @@ _CALLREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='gas_supply', full_name='protoeth.CallRequest.gas_supply', index=7,
+      name='gas', full_name='protoeth.CallRequest.gas', index=7,
       number=8, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -792,8 +898,8 @@ _CALLREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=887,
-  serialized_end=1034,
+  serialized_start=1061,
+  serialized_end=1201,
 )
 
 
@@ -824,8 +930,8 @@ _CALLRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1036,
-  serialized_end=1066,
+  serialized_start=1203,
+  serialized_end=1233,
 )
 
 
@@ -891,8 +997,8 @@ _ESTIMATEGASREQ = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1068,
-  serialized_end=1186,
+  serialized_start=1235,
+  serialized_end=1353,
 )
 
 
@@ -923,8 +1029,8 @@ _ESTIMATEGASRESP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1188,
-  serialized_end=1221,
+  serialized_start=1355,
+  serialized_end=1388,
 )
 
 
@@ -955,8 +1061,8 @@ _GANACHEACCREQ = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1223,
-  serialized_end=1257,
+  serialized_start=1390,
+  serialized_end=1424,
 )
 
 
@@ -994,8 +1100,8 @@ _GANACHEACCRSP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1259,
-  serialized_end=1309,
+  serialized_start=1426,
+  serialized_end=1476,
 )
 
 _INFOWITHINDEX.fields_by_name['req'].message_type = _HASHSTRINGORNUMBER
@@ -1011,10 +1117,12 @@ DESCRIPTOR.message_types_by_name['CreateRawTransactionReq'] = _CREATERAWTRANSACT
 DESCRIPTOR.message_types_by_name['CreateRawTransactionResp'] = _CREATERAWTRANSACTIONRESP
 DESCRIPTOR.message_types_by_name['DeploySignedTransactionReq'] = _DEPLOYSIGNEDTRANSACTIONREQ
 DESCRIPTOR.message_types_by_name['DeploySignedTransactionResp'] = _DEPLOYSIGNEDTRANSACTIONRESP
+DESCRIPTOR.message_types_by_name['BuildTxRequest'] = _BUILDTXREQUEST
+DESCRIPTOR.message_types_by_name['SendTxRequest'] = _SENDTXREQUEST
+DESCRIPTOR.message_types_by_name['RawTransaction'] = _RAWTRANSACTION
 DESCRIPTOR.message_types_by_name['TxHash'] = _TXHASH
 DESCRIPTOR.message_types_by_name['TransactionInfo'] = _TRANSACTIONINFO
 DESCRIPTOR.message_types_by_name['TxReceipt'] = _TXRECEIPT
-DESCRIPTOR.message_types_by_name['RawTxRequest'] = _RAWTXREQUEST
 DESCRIPTOR.message_types_by_name['BlockNumber'] = _BLOCKNUMBER
 DESCRIPTOR.message_types_by_name['TxResponse'] = _TXRESPONSE
 DESCRIPTOR.message_types_by_name['NumResult'] = _NUMRESULT
@@ -1111,6 +1219,27 @@ DeploySignedTransactionResp = _reflection.GeneratedProtocolMessageType('DeploySi
   })
 _sym_db.RegisterMessage(DeploySignedTransactionResp)
 
+BuildTxRequest = _reflection.GeneratedProtocolMessageType('BuildTxRequest', (_message.Message,), {
+  'DESCRIPTOR' : _BUILDTXREQUEST,
+  '__module__' : 'ethereum_pb2'
+  # @@protoc_insertion_point(class_scope:protoeth.BuildTxRequest)
+  })
+_sym_db.RegisterMessage(BuildTxRequest)
+
+SendTxRequest = _reflection.GeneratedProtocolMessageType('SendTxRequest', (_message.Message,), {
+  'DESCRIPTOR' : _SENDTXREQUEST,
+  '__module__' : 'ethereum_pb2'
+  # @@protoc_insertion_point(class_scope:protoeth.SendTxRequest)
+  })
+_sym_db.RegisterMessage(SendTxRequest)
+
+RawTransaction = _reflection.GeneratedProtocolMessageType('RawTransaction', (_message.Message,), {
+  'DESCRIPTOR' : _RAWTRANSACTION,
+  '__module__' : 'ethereum_pb2'
+  # @@protoc_insertion_point(class_scope:protoeth.RawTransaction)
+  })
+_sym_db.RegisterMessage(RawTransaction)
+
 TxHash = _reflection.GeneratedProtocolMessageType('TxHash', (_message.Message,), {
   'DESCRIPTOR' : _TXHASH,
   '__module__' : 'ethereum_pb2'
@@ -1131,13 +1260,6 @@ TxReceipt = _reflection.GeneratedProtocolMessageType('TxReceipt', (_message.Mess
   # @@protoc_insertion_point(class_scope:protoeth.TxReceipt)
   })
 _sym_db.RegisterMessage(TxReceipt)
-
-RawTxRequest = _reflection.GeneratedProtocolMessageType('RawTxRequest', (_message.Message,), {
-  'DESCRIPTOR' : _RAWTXREQUEST,
-  '__module__' : 'ethereum_pb2'
-  # @@protoc_insertion_point(class_scope:protoeth.RawTxRequest)
-  })
-_sym_db.RegisterMessage(RawTxRequest)
 
 BlockNumber = _reflection.GeneratedProtocolMessageType('BlockNumber', (_message.Message,), {
   'DESCRIPTOR' : _BLOCKNUMBER,
@@ -1219,8 +1341,8 @@ _PROTOETHSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1312,
-  serialized_end=2217,
+  serialized_start=1479,
+  serialized_end=2458,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetBalance',
@@ -1233,109 +1355,9 @@ _PROTOETHSERVICE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='GetTransaction',
-    full_name='protoeth.ProtoEthService.GetTransaction',
-    index=1,
-    containing_service=None,
-    input_type=_GETTXREQ,
-    output_type=_TRANSACTIONINFO,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetTransactionReceipt',
-    full_name='protoeth.ProtoEthService.GetTransactionReceipt',
-    index=2,
-    containing_service=None,
-    input_type=_TXHASH,
-    output_type=_TXRECEIPT,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='ContractCall',
-    full_name='protoeth.ProtoEthService.ContractCall',
-    index=3,
-    containing_service=None,
-    input_type=_CALLREQUEST,
-    output_type=_CALLRESPONSE,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetHashrate',
-    full_name='protoeth.ProtoEthService.GetHashrate',
-    index=4,
-    containing_service=None,
-    input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    output_type=_NUMRESULT,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetGasPrice',
-    full_name='protoeth.ProtoEthService.GetGasPrice',
-    index=5,
-    containing_service=None,
-    input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    output_type=_NUMRESULT,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetBlockNumber',
-    full_name='protoeth.ProtoEthService.GetBlockNumber',
-    index=6,
-    containing_service=None,
-    input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
-    output_type=_BLOCKNUMBER,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetBlockTransactionCount',
-    full_name='protoeth.ProtoEthService.GetBlockTransactionCount',
-    index=7,
-    containing_service=None,
-    input_type=_HASHSTRINGORNUMBER,
-    output_type=_COUNTRESP,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetBlock',
-    full_name='protoeth.ProtoEthService.GetBlock',
-    index=8,
-    containing_service=None,
-    input_type=_HASHSTRINGORNUMBER,
-    output_type=_OBJRESP,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetTransactionFromBlock',
-    full_name='protoeth.ProtoEthService.GetTransactionFromBlock',
-    index=9,
-    containing_service=None,
-    input_type=_INFOWITHINDEX,
-    output_type=_OBJRESP,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='SendRawTransactions',
-    full_name='protoeth.ProtoEthService.SendRawTransactions',
-    index=10,
-    containing_service=None,
-    input_type=_RAWTXREQUEST,
-    output_type=_TXRESPONSE,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
     name='EstimateGas',
     full_name='protoeth.ProtoEthService.EstimateGas',
-    index=11,
+    index=1,
     containing_service=None,
     input_type=_ESTIMATEGASREQ,
     output_type=_ESTIMATEGASRESP,
@@ -1345,10 +1367,120 @@ _PROTOETHSERVICE = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetGanacheAccounts',
     full_name='protoeth.ProtoEthService.GetGanacheAccounts',
-    index=12,
+    index=2,
     containing_service=None,
     input_type=_GANACHEACCREQ,
     output_type=_GANACHEACCRSP,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='BuildRawTransaction',
+    full_name='protoeth.ProtoEthService.BuildRawTransaction',
+    index=3,
+    containing_service=None,
+    input_type=_BUILDTXREQUEST,
+    output_type=_RAWTRANSACTION,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='SendRawTransactions',
+    full_name='protoeth.ProtoEthService.SendRawTransactions',
+    index=4,
+    containing_service=None,
+    input_type=_SENDTXREQUEST,
+    output_type=_TXHASH,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetTransaction',
+    full_name='protoeth.ProtoEthService.GetTransaction',
+    index=5,
+    containing_service=None,
+    input_type=_GETTXREQ,
+    output_type=_TRANSACTIONINFO,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetTransactionReceipt',
+    full_name='protoeth.ProtoEthService.GetTransactionReceipt',
+    index=6,
+    containing_service=None,
+    input_type=_TXHASH,
+    output_type=_TXRECEIPT,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='ContractCall',
+    full_name='protoeth.ProtoEthService.ContractCall',
+    index=7,
+    containing_service=None,
+    input_type=_CALLREQUEST,
+    output_type=_CALLRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetHashrate',
+    full_name='protoeth.ProtoEthService.GetHashrate',
+    index=8,
+    containing_service=None,
+    input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    output_type=_NUMRESULT,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetGasPrice',
+    full_name='protoeth.ProtoEthService.GetGasPrice',
+    index=9,
+    containing_service=None,
+    input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    output_type=_NUMRESULT,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetBlockNumber',
+    full_name='protoeth.ProtoEthService.GetBlockNumber',
+    index=10,
+    containing_service=None,
+    input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    output_type=_BLOCKNUMBER,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetBlockTransactionCount',
+    full_name='protoeth.ProtoEthService.GetBlockTransactionCount',
+    index=11,
+    containing_service=None,
+    input_type=_HASHSTRINGORNUMBER,
+    output_type=_COUNTRESP,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetBlock',
+    full_name='protoeth.ProtoEthService.GetBlock',
+    index=12,
+    containing_service=None,
+    input_type=_HASHSTRINGORNUMBER,
+    output_type=_OBJRESP,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetTransactionFromBlock',
+    full_name='protoeth.ProtoEthService.GetTransactionFromBlock',
+    index=13,
+    containing_service=None,
+    input_type=_INFOWITHINDEX,
+    output_type=_OBJRESP,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),

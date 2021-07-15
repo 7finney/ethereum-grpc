@@ -20,6 +20,26 @@ class ProtoEthServiceStub(object):
                 request_serializer=ethereum__pb2.GetBalanceReq.SerializeToString,
                 response_deserializer=ethereum__pb2.GetBalanceResp.FromString,
                 )
+        self.EstimateGas = channel.unary_unary(
+                '/protoeth.ProtoEthService/EstimateGas',
+                request_serializer=ethereum__pb2.EstimateGasReq.SerializeToString,
+                response_deserializer=ethereum__pb2.EstimateGasResp.FromString,
+                )
+        self.GetGanacheAccounts = channel.unary_unary(
+                '/protoeth.ProtoEthService/GetGanacheAccounts',
+                request_serializer=ethereum__pb2.GanacheAccReq.SerializeToString,
+                response_deserializer=ethereum__pb2.GanacheAccRsp.FromString,
+                )
+        self.BuildRawTransaction = channel.unary_unary(
+                '/protoeth.ProtoEthService/BuildRawTransaction',
+                request_serializer=ethereum__pb2.BuildTxRequest.SerializeToString,
+                response_deserializer=ethereum__pb2.RawTransaction.FromString,
+                )
+        self.SendRawTransactions = channel.unary_unary(
+                '/protoeth.ProtoEthService/SendRawTransactions',
+                request_serializer=ethereum__pb2.SendTxRequest.SerializeToString,
+                response_deserializer=ethereum__pb2.TxHash.FromString,
+                )
         self.GetTransaction = channel.unary_unary(
                 '/protoeth.ProtoEthService/GetTransaction',
                 request_serializer=ethereum__pb2.GetTxReq.SerializeToString,
@@ -65,27 +85,38 @@ class ProtoEthServiceStub(object):
                 request_serializer=ethereum__pb2.InfoWithIndex.SerializeToString,
                 response_deserializer=ethereum__pb2.ObjResp.FromString,
                 )
-        self.SendRawTransactions = channel.unary_unary(
-                '/protoeth.ProtoEthService/SendRawTransactions',
-                request_serializer=ethereum__pb2.RawTxRequest.SerializeToString,
-                response_deserializer=ethereum__pb2.TxResponse.FromString,
-                )
-        self.EstimateGas = channel.unary_unary(
-                '/protoeth.ProtoEthService/EstimateGas',
-                request_serializer=ethereum__pb2.EstimateGasReq.SerializeToString,
-                response_deserializer=ethereum__pb2.EstimateGasResp.FromString,
-                )
-        self.GetGanacheAccounts = channel.unary_unary(
-                '/protoeth.ProtoEthService/GetGanacheAccounts',
-                request_serializer=ethereum__pb2.GanacheAccReq.SerializeToString,
-                response_deserializer=ethereum__pb2.GanacheAccRsp.FromString,
-                )
 
 
 class ProtoEthServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def GetBalance(self, request, context):
+        """Done
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def EstimateGas(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetGanacheAccounts(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def BuildRawTransaction(self, request, context):
+        """TODO
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SendRawTransactions(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -145,24 +176,6 @@ class ProtoEthServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SendRawTransactions(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def EstimateGas(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def GetGanacheAccounts(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_ProtoEthServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -170,6 +183,26 @@ def add_ProtoEthServiceServicer_to_server(servicer, server):
                     servicer.GetBalance,
                     request_deserializer=ethereum__pb2.GetBalanceReq.FromString,
                     response_serializer=ethereum__pb2.GetBalanceResp.SerializeToString,
+            ),
+            'EstimateGas': grpc.unary_unary_rpc_method_handler(
+                    servicer.EstimateGas,
+                    request_deserializer=ethereum__pb2.EstimateGasReq.FromString,
+                    response_serializer=ethereum__pb2.EstimateGasResp.SerializeToString,
+            ),
+            'GetGanacheAccounts': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetGanacheAccounts,
+                    request_deserializer=ethereum__pb2.GanacheAccReq.FromString,
+                    response_serializer=ethereum__pb2.GanacheAccRsp.SerializeToString,
+            ),
+            'BuildRawTransaction': grpc.unary_unary_rpc_method_handler(
+                    servicer.BuildRawTransaction,
+                    request_deserializer=ethereum__pb2.BuildTxRequest.FromString,
+                    response_serializer=ethereum__pb2.RawTransaction.SerializeToString,
+            ),
+            'SendRawTransactions': grpc.unary_unary_rpc_method_handler(
+                    servicer.SendRawTransactions,
+                    request_deserializer=ethereum__pb2.SendTxRequest.FromString,
+                    response_serializer=ethereum__pb2.TxHash.SerializeToString,
             ),
             'GetTransaction': grpc.unary_unary_rpc_method_handler(
                     servicer.GetTransaction,
@@ -216,21 +249,6 @@ def add_ProtoEthServiceServicer_to_server(servicer, server):
                     request_deserializer=ethereum__pb2.InfoWithIndex.FromString,
                     response_serializer=ethereum__pb2.ObjResp.SerializeToString,
             ),
-            'SendRawTransactions': grpc.unary_unary_rpc_method_handler(
-                    servicer.SendRawTransactions,
-                    request_deserializer=ethereum__pb2.RawTxRequest.FromString,
-                    response_serializer=ethereum__pb2.TxResponse.SerializeToString,
-            ),
-            'EstimateGas': grpc.unary_unary_rpc_method_handler(
-                    servicer.EstimateGas,
-                    request_deserializer=ethereum__pb2.EstimateGasReq.FromString,
-                    response_serializer=ethereum__pb2.EstimateGasResp.SerializeToString,
-            ),
-            'GetGanacheAccounts': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetGanacheAccounts,
-                    request_deserializer=ethereum__pb2.GanacheAccReq.FromString,
-                    response_serializer=ethereum__pb2.GanacheAccRsp.SerializeToString,
-            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
             'protoeth.ProtoEthService', rpc_method_handlers)
@@ -255,6 +273,74 @@ class ProtoEthService(object):
         return grpc.experimental.unary_unary(request, target, '/protoeth.ProtoEthService/GetBalance',
             ethereum__pb2.GetBalanceReq.SerializeToString,
             ethereum__pb2.GetBalanceResp.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def EstimateGas(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protoeth.ProtoEthService/EstimateGas',
+            ethereum__pb2.EstimateGasReq.SerializeToString,
+            ethereum__pb2.EstimateGasResp.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetGanacheAccounts(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protoeth.ProtoEthService/GetGanacheAccounts',
+            ethereum__pb2.GanacheAccReq.SerializeToString,
+            ethereum__pb2.GanacheAccRsp.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def BuildRawTransaction(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protoeth.ProtoEthService/BuildRawTransaction',
+            ethereum__pb2.BuildTxRequest.SerializeToString,
+            ethereum__pb2.RawTransaction.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SendRawTransactions(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protoeth.ProtoEthService/SendRawTransactions',
+            ethereum__pb2.SendTxRequest.SerializeToString,
+            ethereum__pb2.TxHash.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -408,56 +494,5 @@ class ProtoEthService(object):
         return grpc.experimental.unary_unary(request, target, '/protoeth.ProtoEthService/GetTransactionFromBlock',
             ethereum__pb2.InfoWithIndex.SerializeToString,
             ethereum__pb2.ObjResp.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def SendRawTransactions(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protoeth.ProtoEthService/SendRawTransactions',
-            ethereum__pb2.RawTxRequest.SerializeToString,
-            ethereum__pb2.TxResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def EstimateGas(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protoeth.ProtoEthService/EstimateGas',
-            ethereum__pb2.EstimateGasReq.SerializeToString,
-            ethereum__pb2.EstimateGasResp.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def GetGanacheAccounts(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protoeth.ProtoEthService/GetGanacheAccounts',
-            ethereum__pb2.GanacheAccReq.SerializeToString,
-            ethereum__pb2.GanacheAccRsp.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
