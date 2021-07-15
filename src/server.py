@@ -1,6 +1,7 @@
 import multiprocessing
 import json
 import logging
+from eth_utils import address
 import grpc
 import ethereum_pb2
 import ethereum_pb2_grpc
@@ -103,15 +104,37 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 return estimatedGas
             except Exception as e:
                 raise Exception(e)
+        if(method == 'eth_getBalance'):
+            try:
+                address = Web3.toChecksumAddress(request.address)
+                balance = web3.eth.getBalance(address)
+                return balance
+            except Exception as e:
+                raise Exception(e)
+        if(method == 'ganache_accounts'):
+            try:
+                accounts = web3.eth.accounts
+                balance = web3.eth.getBalance(Web3.toChecksumAddress(accounts[0]))
+                return accounts, balance
+            except Exception as e:
+                raise Exception(e)
         else:
             raise Exception("Error: No method specified!")
-    # def GetBalance(self, request, context):
-    #     print("Running getBalance....")
-    #     balance = self._w3.eth.getBalance(request.address)
-    #     return ethereum_pb2.GetBalanceResp(balance=json.dumps(balance))
-    # def killTask(self, tasks):
-    #     for 
-    #     task.cancel
+    def GetBalance(self, request, context):
+        with futures.ProcessPoolExecutor(max_workers=1) as executor:
+            task = executor.submit(self.web3Task, request, 'eth_getBalance')
+            try:
+                balance = task.result(timeout=30)
+                return ethereum_pb2.GetBalanceResp(balance=json.dumps(balance))
+            except Exception as exc:
+                print("Exception: ", exc)
+                detail = any_pb2.Any()
+                rich_status = rpc_status.status_pb2.Status(
+                    code=code_pb2.NOT_FOUND,
+                    message=str(exc),
+                    details=[detail]
+                )
+                context.abort_with_status(rpc_status.to_status(rich_status))
     def GetTransaction(self, request, context):
         with futures.ProcessPoolExecutor(max_workers=1) as executor:
             task = executor.submit(self.web3Task, request, 'eth_getTransaction')
@@ -166,6 +189,21 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
             try:
                 res = task.result(timeout=30)
                 return ethereum_pb2.EstimateGasResp(result=Web3.toJSON(res))
+            except Exception as exc:
+                print("Exception: ", exc)
+                detail = any_pb2.Any()
+                rich_status = rpc_status.status_pb2.Status(
+                    code=code_pb2.NOT_FOUND,
+                    message=str(exc),
+                    details=[detail]
+                )
+                context.abort_with_status(rpc_status.to_status(rich_status))
+    def GetGanacheAccounts(self, request, context):
+        with futures.ProcessPoolExecutor(max_workers=1) as executor:
+            task = executor.submit(self.web3Task, request, 'ganache_accounts')
+            try:
+                accounts, balance = task.result(timeout=30)
+                return ethereum_pb2.GanacheAccRsp(accounts=accounts, balance=Web3.toJSON(balance))
             except Exception as exc:
                 print("Exception: ", exc)
                 detail = any_pb2.Any()

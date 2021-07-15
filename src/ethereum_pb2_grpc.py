@@ -75,6 +75,11 @@ class ProtoEthServiceStub(object):
         request_serializer=ethereum__pb2.EstimateGasReq.SerializeToString,
         response_deserializer=ethereum__pb2.EstimateGasResp.FromString,
         )
+    self.GetGanacheAccounts = channel.unary_unary(
+        '/protoeth.ProtoEthService/GetGanacheAccounts',
+        request_serializer=ethereum__pb2.GanacheAccReq.SerializeToString,
+        response_deserializer=ethereum__pb2.GanacheAccRsp.FromString,
+        )
 
 
 class ProtoEthServiceServicer(object):
@@ -165,6 +170,13 @@ class ProtoEthServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def GetGanacheAccounts(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_ProtoEthServiceServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -227,6 +239,11 @@ def add_ProtoEthServiceServicer_to_server(servicer, server):
           servicer.EstimateGas,
           request_deserializer=ethereum__pb2.EstimateGasReq.FromString,
           response_serializer=ethereum__pb2.EstimateGasResp.SerializeToString,
+      ),
+      'GetGanacheAccounts': grpc.unary_unary_rpc_method_handler(
+          servicer.GetGanacheAccounts,
+          request_deserializer=ethereum__pb2.GanacheAccReq.FromString,
+          response_serializer=ethereum__pb2.GanacheAccRsp.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
