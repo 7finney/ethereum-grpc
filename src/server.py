@@ -15,7 +15,6 @@ import requests
 from datetime import datetime
 from web3 import Web3
 import os
-from request_header_validator_interceptor import RequestHeaderValidatorInterceptor
 import yaml
 import numpy as np
 
@@ -91,6 +90,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
             except Exception as e:
                 raise Exception(e)
         if(method == 'estimate_gas'):
+            print(request)
             try:
                 bytecode = request.bytecode
                 abi = json.loads(request.abi)
@@ -98,7 +98,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                     params = json.loads(request.params)
                 else:
                     params = None
-                fromAddress = Web3.toChecksumAddress(request.fromAddress)
+                fromAddress = Web3.toChecksumAddress(request.fromaddress)
                 Contract = web3.eth.contract(abi=abi, bytecode=bytecode)
                 estimatedGas = Contract.constructor(*self.unpackParams(params)).estimateGas({ 'from': fromAddress })
                 return estimatedGas
@@ -231,9 +231,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
 
 
 def serve():
-    # header_validator = RequestHeaderValidatorInterceptor(grpc.StatusCode.UNAUTHENTICATED, 'Access denied!')
     with futures.ThreadPoolExecutor(max_workers=5) as executor:
-        # server = grpc.server(executor, interceptors=(header_validator,))
         server = grpc.server(executor,)
         ethereum_pb2_grpc.add_ProtoEthServiceServicer_to_server(ProtoEth(), server)
         server.add_insecure_port('[::]:50054')
