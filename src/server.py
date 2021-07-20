@@ -74,6 +74,25 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 return transaction
             except Exception as e:
                 raise Exception(e)
+        if(method == 'eth_Transact'):
+            try:
+                bytecode = request.bytecode
+                abi = json.loads(request.abi)
+                if len(request.params) > 0:
+                    params = json.loads(request.params)
+                else:
+                    params = None
+                fromAddress = Web3.toChecksumAddress(request.fromaddress)
+                gasSupply = request.gas or 0
+                value = request.value or 0
+                Contract = web3.eth.contract(abi=abi, bytecode=bytecode)
+                transaction = Contract.constructor(*self.unpackParams(params)).transact({
+                    'from': Web3.toChecksumAddress(fromAddress),
+                    'gas': gasSupply
+                })
+                return transaction
+            except Exception as e:
+                raise Exception(e)
         if(method == 'eth_call'):
             try:
                 methodName = request.fn
@@ -174,7 +193,6 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 )
                 context.abort_with_status(rpc_status.to_status(rich_status))
     def BuildRawTransaction(self, request, context):
-        print(request)
         with futures.ProcessPoolExecutor(max_workers=1) as executor:
             task = executor.submit(self.web3Task, request, 'eth_buildRawTransaction')
             try:
@@ -197,6 +215,21 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 txhash = task.result(timeout=30)
                 print(txhash)
                 return ethereum_pb2.TxHash(txhash=Web3.toJSON(txhash))
+            except Exception as exc:
+                print("Exception: ", exc)
+                detail = any_pb2.Any()
+                rich_status = rpc_status.status_pb2.Status(
+                    code=code_pb2.NOT_FOUND,
+                    message=str(exc),
+                    details=[detail]
+                )
+                context.abort_with_status(rpc_status.to_status(rich_status))
+    def Transact(self, request, context):
+        with futures.ProcessPoolExecutor(max_workers=1) as executor:
+            task = executor.submit(self.web3Task, request, 'eth_Transact')
+            try:
+                tx = task.result(timeout=30)
+                return ethereum_pb2.TxHash(txhash=Web3.toJSON(tx))
             except Exception as exc:
                 print("Exception: ", exc)
                 detail = any_pb2.Any()
