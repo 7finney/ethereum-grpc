@@ -1,8 +1,8 @@
 networks:
   ganache:
     id: 0
-    url: "http://ganache:8545"
-    # url: "http://127.0.0.1:8545"
+    # url: "http://ganache:8545"
+    url: "http://127.0.0.1:8545"
   main:
     id: 1
     url: "http://networks.ethco.de/light"

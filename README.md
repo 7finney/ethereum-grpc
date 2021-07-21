@@ -12,7 +12,8 @@ python server.py
 # Development
 1. Generate protocol buffers
 ```
-python -m grpc_tools.protoc -I./src/protoeth --python_out=./ --grpc_python_out=./ ./src/protoeth/ethereum.proto
+cd src
+python -m grpc_tools.protoc -I./protoeth --python_out=./ --grpc_python_out=./ ./protoeth/ethereum.proto
 ```
 
 # Build & push docker image
