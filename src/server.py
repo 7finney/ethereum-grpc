@@ -46,6 +46,12 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 return tx
             except Exception as e:
                 raise Exception(e)
+        if(method == 'eth_getTransactionReceipt'):
+            try:
+                tx = web3.eth.getTransactionReceipt(request.txhash)
+                return tx
+            except Exception as e:
+                raise Exception(e)
         if(method == 'eth_sendRawTransaction'):
             try:
                 txhash = web3.eth.sendRawTransaction(request.tx)
@@ -131,7 +137,6 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
             except Exception as e:
                 raise Exception(e)
         if(method == 'estimate_gas'):
-            print(request)
             try:
                 bytecode = request.bytecode
                 abi = json.loads(request.abi)
@@ -181,8 +186,22 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
             task = executor.submit(self.web3Task, request, 'eth_getTransaction')
             try:
                 tx = task.result(timeout=30)
-                print(tx)
                 return ethereum_pb2.TransactionInfo(transaction=Web3.toJSON(tx))
+            except Exception as exc:
+                print("Exception: ", exc)
+                detail = any_pb2.Any()
+                rich_status = rpc_status.status_pb2.Status(
+                    code=code_pb2.NOT_FOUND,
+                    message=str(exc),
+                    details=[detail]
+                )
+                context.abort_with_status(rpc_status.to_status(rich_status))
+    def GetTransactionReceipt(self, request, context):
+        with futures.ProcessPoolExecutor(max_workers=1) as executor:
+            task = executor.submit(self.web3Task, request, 'eth_getTransactionReceipt')
+            try:
+                receipt = task.result(timeout=30)
+                return ethereum_pb2.TxReceipt(receipt=Web3.toJSON(receipt))
             except Exception as exc:
                 print("Exception: ", exc)
                 detail = any_pb2.Any()
@@ -213,7 +232,6 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
             task = executor.submit(self.web3Task, request, 'eth_sendRawTransaction')
             try:
                 txhash = task.result(timeout=30)
-                print(txhash)
                 return ethereum_pb2.TxHash(txhash=Web3.toJSON(txhash))
             except Exception as exc:
                 print("Exception: ", exc)
@@ -228,8 +246,8 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
         with futures.ProcessPoolExecutor(max_workers=1) as executor:
             task = executor.submit(self.web3Task, request, 'eth_Transact')
             try:
-                tx = task.result(timeout=30)
-                return ethereum_pb2.TxHash(txhash=Web3.toJSON(tx))
+                txhash = task.result(timeout=30)
+                return ethereum_pb2.TxHash(txhash=Web3.toJSON(txhash))
             except Exception as exc:
                 print("Exception: ", exc)
                 detail = any_pb2.Any()

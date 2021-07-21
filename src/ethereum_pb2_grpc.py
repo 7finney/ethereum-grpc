@@ -47,18 +47,18 @@ class ProtoEthServiceStub(object):
                 )
         self.GetTransaction = channel.unary_unary(
                 '/protoeth.ProtoEthService/GetTransaction',
-                request_serializer=ethereum__pb2.GetTxReq.SerializeToString,
+                request_serializer=ethereum__pb2.TxHashReq.SerializeToString,
                 response_deserializer=ethereum__pb2.TransactionInfo.FromString,
-                )
-        self.GetTransactionReceipt = channel.unary_unary(
-                '/protoeth.ProtoEthService/GetTransactionReceipt',
-                request_serializer=ethereum__pb2.TxHash.SerializeToString,
-                response_deserializer=ethereum__pb2.TxReceipt.FromString,
                 )
         self.ContractCall = channel.unary_unary(
                 '/protoeth.ProtoEthService/ContractCall',
                 request_serializer=ethereum__pb2.CallRequest.SerializeToString,
                 response_deserializer=ethereum__pb2.CallResponse.FromString,
+                )
+        self.GetTransactionReceipt = channel.unary_unary(
+                '/protoeth.ProtoEthService/GetTransactionReceipt',
+                request_serializer=ethereum__pb2.TxHashReq.SerializeToString,
+                response_deserializer=ethereum__pb2.TxReceipt.FromString,
                 )
         self.GetHashrate = channel.unary_unary(
                 '/protoeth.ProtoEthService/GetHashrate',
@@ -133,7 +133,13 @@ class ProtoEthServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def GetTransaction(self, request, context):
-        """TODO
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ContractCall(self, request, context):
+        """Doing
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -145,14 +151,9 @@ class ProtoEthServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ContractCall(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def GetHashrate(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """TODO
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -222,18 +223,18 @@ def add_ProtoEthServiceServicer_to_server(servicer, server):
             ),
             'GetTransaction': grpc.unary_unary_rpc_method_handler(
                     servicer.GetTransaction,
-                    request_deserializer=ethereum__pb2.GetTxReq.FromString,
+                    request_deserializer=ethereum__pb2.TxHashReq.FromString,
                     response_serializer=ethereum__pb2.TransactionInfo.SerializeToString,
-            ),
-            'GetTransactionReceipt': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetTransactionReceipt,
-                    request_deserializer=ethereum__pb2.TxHash.FromString,
-                    response_serializer=ethereum__pb2.TxReceipt.SerializeToString,
             ),
             'ContractCall': grpc.unary_unary_rpc_method_handler(
                     servicer.ContractCall,
                     request_deserializer=ethereum__pb2.CallRequest.FromString,
                     response_serializer=ethereum__pb2.CallResponse.SerializeToString,
+            ),
+            'GetTransactionReceipt': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTransactionReceipt,
+                    request_deserializer=ethereum__pb2.TxHashReq.FromString,
+                    response_serializer=ethereum__pb2.TxReceipt.SerializeToString,
             ),
             'GetHashrate': grpc.unary_unary_rpc_method_handler(
                     servicer.GetHashrate,
@@ -389,25 +390,8 @@ class ProtoEthService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/protoeth.ProtoEthService/GetTransaction',
-            ethereum__pb2.GetTxReq.SerializeToString,
+            ethereum__pb2.TxHashReq.SerializeToString,
             ethereum__pb2.TransactionInfo.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def GetTransactionReceipt(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protoeth.ProtoEthService/GetTransactionReceipt',
-            ethereum__pb2.TxHash.SerializeToString,
-            ethereum__pb2.TxReceipt.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -425,6 +409,23 @@ class ProtoEthService(object):
         return grpc.experimental.unary_unary(request, target, '/protoeth.ProtoEthService/ContractCall',
             ethereum__pb2.CallRequest.SerializeToString,
             ethereum__pb2.CallResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetTransactionReceipt(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protoeth.ProtoEthService/GetTransactionReceipt',
+            ethereum__pb2.TxHashReq.SerializeToString,
+            ethereum__pb2.TxReceipt.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
