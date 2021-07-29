@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z\010protoeth',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0e\x65thereum.proto\x12\x08protoeth\x1a\x1bgoogle/protobuf/empty.proto\"\x10\n\x0eGetAccountsReq\"\x18\n\nTestnetReq\x12\n\n\x02id\x18\x01 \x01(\r\"7\n\x12HashStringOrNumber\x12\x11\n\treqString\x18\x01 \x01(\t\x12\x0e\n\x06reqNum\x18\x02 \x01(\x04\"I\n\rInfoWithIndex\x12)\n\x03req\x18\x01 \x01(\x0b\x32\x1c.protoeth.HashStringOrNumber\x12\r\n\x05index\x18\x02 \x01(\x04\"\x1a\n\tCountResp\x12\r\n\x05\x63ount\x18\x01 \x01(\x04\"\x1a\n\x07ObjResp\x12\x0f\n\x07respObj\x18\x01 \x01(\t\"3\n\rGetBalanceReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\"!\n\x0eGetBalanceResp\x12\x0f\n\x07\x62\x61lance\x18\x01 \x01(\t\"O\n\x17\x43reateRawTransactionReq\x12\n\n\x02to\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\t\x12\x0b\n\x03gas\x18\x03 \x01(\r\x12\r\n\x05value\x18\x04 \x01(\r\")\n\x18\x43reateRawTransactionResp\x12\r\n\x05rawTX\x18\x01 \x01(\t\".\n\x1a\x44\x65ploySignedTransactionReq\x12\x10\n\x08signedTX\x18\x01 \x01(\t\"0\n\x1b\x44\x65ploySignedTransactionResp\x12\x11\n\ttxReciept\x18\x01 \x01(\t\"\x83\x01\n\x0e\x42uildTxRequest\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0b\n\x03\x61\x62i\x18\x02 \x01(\t\x12\x10\n\x08\x62ytecode\x18\x03 \x01(\t\x12\x0e\n\x06params\x18\x04 \x01(\t\x12\x13\n\x0b\x66romaddress\x18\x05 \x01(\t\x12\x0b\n\x03gas\x18\x06 \x01(\x04\x12\r\n\x05value\x18\x07 \x01(\x04\".\n\rSendTxRequest\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\n\n\x02tx\x18\x02 \x01(\t\"%\n\x0eRawTransaction\x12\x13\n\x0btransaction\x18\x01 \x01(\t\".\n\tTxHashReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0e\n\x06txhash\x18\x02 \x01(\t\"\x18\n\x06TxHash\x12\x0e\n\x06txhash\x18\x01 \x01(\t\"&\n\x0fTransactionInfo\x12\x13\n\x0btransaction\x18\x01 \x01(\t\"\x1c\n\tTxReceipt\x12\x0f\n\x07receipt\x18\x01 \x01(\t\"\x1f\n\x0b\x42lockNumber\x12\x10\n\x08\x62locknum\x18\x01 \x01(\x04\"\x1c\n\nTxResponse\x12\x0e\n\x06txData\x18\x01 \x01(\t\"\x1e\n\tNumResult\x12\x11\n\tresultNum\x18\x01 \x01(\x04\"\x8c\x01\n\x0b\x43\x61llRequest\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\n\n\x02\x66n\x18\x02 \x01(\t\x12\x0e\n\x06params\x18\x03 \x01(\t\x12\x0b\n\x03\x61\x62i\x18\x04 \x01(\t\x12\x0f\n\x07\x61\x64\x64ress\x18\x05 \x01(\t\x12\x14\n\x0c\x66rom_address\x18\x06 \x01(\t\x12\r\n\x05value\x18\x07 \x01(\x04\x12\x0b\n\x03gas\x18\x08 \x01(\x04\"\x1e\n\x0c\x43\x61llResponse\x12\x0e\n\x06result\x18\x01 \x01(\t\"v\n\x0e\x45stimateGasReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0b\n\x03\x61\x62i\x18\x02 \x01(\t\x12\x10\n\x08\x62ytecode\x18\x03 \x01(\t\x12\x0e\n\x06params\x18\x04 \x01(\t\x12\x13\n\x0b\x66romaddress\x18\x05 \x01(\t\x12\r\n\x05value\x18\x06 \x01(\x04\"!\n\x0f\x45stimateGasResp\x12\x0e\n\x06result\x18\x01 \x01(\t\"\"\n\rGanacheAccReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\"2\n\rGanacheAccRsp\x12\x10\n\x08\x61\x63\x63ounts\x18\x01 \x03(\t\x12\x0f\n\x07\x62\x61lance\x18\x02 \x01(\t2\x91\x08\n\x0fProtoEthService\x12\x41\n\nGetBalance\x12\x17.protoeth.GetBalanceReq\x1a\x18.protoeth.GetBalanceResp\"\x00\x12\x44\n\x0b\x45stimateGas\x12\x18.protoeth.EstimateGasReq\x1a\x19.protoeth.EstimateGasResp\"\x00\x12H\n\x12GetGanacheAccounts\x12\x17.protoeth.GanacheAccReq\x1a\x17.protoeth.GanacheAccRsp\"\x00\x12K\n\x13\x42uildRawTransaction\x12\x18.protoeth.BuildTxRequest\x1a\x18.protoeth.RawTransaction\"\x00\x12\x42\n\x13SendRawTransactions\x12\x17.protoeth.SendTxRequest\x1a\x10.protoeth.TxHash\"\x00\x12\x38\n\x08Transact\x12\x18.protoeth.BuildTxRequest\x1a\x10.protoeth.TxHash\"\x00\x12\x42\n\x0eGetTransaction\x12\x13.protoeth.TxHashReq\x1a\x19.protoeth.TransactionInfo\"\x00\x12?\n\x0c\x43ontractCall\x12\x15.protoeth.CallRequest\x1a\x16.protoeth.CallResponse\"\x00\x12\x43\n\x15GetTransactionReceipt\x12\x13.protoeth.TxHashReq\x1a\x13.protoeth.TxReceipt\"\x00\x12<\n\x0bGetHashrate\x12\x16.google.protobuf.Empty\x1a\x13.protoeth.NumResult\"\x00\x12<\n\x0bGetGasPrice\x12\x16.google.protobuf.Empty\x1a\x13.protoeth.NumResult\"\x00\x12\x41\n\x0eGetBlockNumber\x12\x16.google.protobuf.Empty\x1a\x15.protoeth.BlockNumber\"\x00\x12O\n\x18GetBlockTransactionCount\x12\x1c.protoeth.HashStringOrNumber\x1a\x13.protoeth.CountResp\"\x00\x12=\n\x08GetBlock\x12\x1c.protoeth.HashStringOrNumber\x1a\x11.protoeth.ObjResp\"\x00\x12G\n\x17GetTransactionFromBlock\x12\x17.protoeth.InfoWithIndex\x1a\x11.protoeth.ObjResp\"\x00\x42\nZ\x08protoethb\x06proto3'
+  serialized_pb=b'\n\x0e\x65thereum.proto\x12\x08protoeth\x1a\x1bgoogle/protobuf/empty.proto\"\x10\n\x0eGetAccountsReq\"\x18\n\nTestnetReq\x12\n\n\x02id\x18\x01 \x01(\r\"7\n\x12HashStringOrNumber\x12\x11\n\treqString\x18\x01 \x01(\t\x12\x0e\n\x06reqNum\x18\x02 \x01(\x04\"I\n\rInfoWithIndex\x12)\n\x03req\x18\x01 \x01(\x0b\x32\x1c.protoeth.HashStringOrNumber\x12\r\n\x05index\x18\x02 \x01(\x04\"\x1a\n\tCountResp\x12\r\n\x05\x63ount\x18\x01 \x01(\x04\"\x1a\n\x07ObjResp\x12\x0f\n\x07respObj\x18\x01 \x01(\t\"3\n\rGetBalanceReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\"!\n\x0eGetBalanceResp\x12\x0f\n\x07\x62\x61lance\x18\x01 \x01(\t\"O\n\x17\x43reateRawTransactionReq\x12\n\n\x02to\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\t\x12\x0b\n\x03gas\x18\x03 \x01(\r\x12\r\n\x05value\x18\x04 \x01(\r\")\n\x18\x43reateRawTransactionResp\x12\r\n\x05rawTX\x18\x01 \x01(\t\".\n\x1a\x44\x65ploySignedTransactionReq\x12\x10\n\x08signedTX\x18\x01 \x01(\t\"0\n\x1b\x44\x65ploySignedTransactionResp\x12\x11\n\ttxReciept\x18\x01 \x01(\t\"\x83\x01\n\x0e\x42uildTxRequest\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0b\n\x03\x61\x62i\x18\x02 \x01(\t\x12\x10\n\x08\x62ytecode\x18\x03 \x01(\t\x12\x0e\n\x06params\x18\x04 \x01(\t\x12\x13\n\x0b\x66romaddress\x18\x05 \x01(\t\x12\x0b\n\x03gas\x18\x06 \x01(\x04\x12\r\n\x05value\x18\x07 \x01(\x04\".\n\rSendTxRequest\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\n\n\x02tx\x18\x02 \x01(\t\"%\n\x0eRawTransaction\x12\x13\n\x0btransaction\x18\x01 \x01(\t\".\n\tTxHashReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0e\n\x06txhash\x18\x02 \x01(\t\"\x18\n\x06TxHash\x12\x0e\n\x06txhash\x18\x01 \x01(\t\"&\n\x0fTransactionInfo\x12\x13\n\x0btransaction\x18\x01 \x01(\t\"\x1c\n\tTxReceipt\x12\x0f\n\x07receipt\x18\x01 \x01(\t\"\x1f\n\x0b\x42lockNumber\x12\x10\n\x08\x62locknum\x18\x01 \x01(\x04\"\x1c\n\nTxResponse\x12\x0e\n\x06txData\x18\x01 \x01(\t\"\x1e\n\tNumResult\x12\x11\n\tresultNum\x18\x01 \x01(\x04\"\x8b\x01\n\x0b\x43\x61llRequest\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0b\n\x03\x61\x62i\x18\x02 \x01(\t\x12\x0e\n\x06params\x18\x03 \x01(\t\x12\n\n\x02\x66n\x18\x04 \x01(\t\x12\x0f\n\x07\x61\x64\x64ress\x18\x05 \x01(\t\x12\x13\n\x0b\x66romaddress\x18\x06 \x01(\t\x12\r\n\x05value\x18\x07 \x01(\x04\x12\x0b\n\x03gas\x18\x08 \x01(\x04\"\x1e\n\x0c\x43\x61llResponse\x12\x0e\n\x06result\x18\x01 \x01(\t\"v\n\x0e\x45stimateGasReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\x12\x0b\n\x03\x61\x62i\x18\x02 \x01(\t\x12\x10\n\x08\x62ytecode\x18\x03 \x01(\t\x12\x0e\n\x06params\x18\x04 \x01(\t\x12\x13\n\x0b\x66romaddress\x18\x05 \x01(\t\x12\r\n\x05value\x18\x06 \x01(\x04\"!\n\x0f\x45stimateGasResp\x12\x0e\n\x06result\x18\x01 \x01(\t\"\"\n\rGanacheAccReq\x12\x11\n\tnetworkid\x18\x01 \x01(\r\"2\n\rGanacheAccRsp\x12\x10\n\x08\x61\x63\x63ounts\x18\x01 \x03(\t\x12\x0f\n\x07\x62\x61lance\x18\x02 \x01(\t2\x8c\x08\n\x0fProtoEthService\x12\x41\n\nGetBalance\x12\x17.protoeth.GetBalanceReq\x1a\x18.protoeth.GetBalanceResp\"\x00\x12\x44\n\x0b\x45stimateGas\x12\x18.protoeth.EstimateGasReq\x1a\x19.protoeth.EstimateGasResp\"\x00\x12H\n\x12GetGanacheAccounts\x12\x17.protoeth.GanacheAccReq\x1a\x17.protoeth.GanacheAccRsp\"\x00\x12K\n\x13\x42uildRawTransaction\x12\x18.protoeth.BuildTxRequest\x1a\x18.protoeth.RawTransaction\"\x00\x12\x42\n\x13SendRawTransactions\x12\x17.protoeth.SendTxRequest\x1a\x10.protoeth.TxHash\"\x00\x12\x38\n\x08Transact\x12\x18.protoeth.BuildTxRequest\x1a\x10.protoeth.TxHash\"\x00\x12\x42\n\x0eGetTransaction\x12\x13.protoeth.TxHashReq\x1a\x19.protoeth.TransactionInfo\"\x00\x12:\n\x07\x45thCall\x12\x15.protoeth.CallRequest\x1a\x16.protoeth.CallResponse\"\x00\x12\x43\n\x15GetTransactionReceipt\x12\x13.protoeth.TxHashReq\x1a\x13.protoeth.TxReceipt\"\x00\x12<\n\x0bGetHashrate\x12\x16.google.protobuf.Empty\x1a\x13.protoeth.NumResult\"\x00\x12<\n\x0bGetGasPrice\x12\x16.google.protobuf.Empty\x1a\x13.protoeth.NumResult\"\x00\x12\x41\n\x0eGetBlockNumber\x12\x16.google.protobuf.Empty\x1a\x15.protoeth.BlockNumber\"\x00\x12O\n\x18GetBlockTransactionCount\x12\x1c.protoeth.HashStringOrNumber\x1a\x13.protoeth.CountResp\"\x00\x12=\n\x08GetBlock\x12\x1c.protoeth.HashStringOrNumber\x1a\x11.protoeth.ObjResp\"\x00\x12G\n\x17GetTransactionFromBlock\x12\x17.protoeth.InfoWithIndex\x1a\x11.protoeth.ObjResp\"\x00\x42\nZ\x08protoethb\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
@@ -838,7 +838,7 @@ _CALLREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='fn', full_name='protoeth.CallRequest.fn', index=1,
+      name='abi', full_name='protoeth.CallRequest.abi', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -852,7 +852,7 @@ _CALLREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='abi', full_name='protoeth.CallRequest.abi', index=3,
+      name='fn', full_name='protoeth.CallRequest.fn', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -866,7 +866,7 @@ _CALLREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='from_address', full_name='protoeth.CallRequest.from_address', index=5,
+      name='fromaddress', full_name='protoeth.CallRequest.fromaddress', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -899,7 +899,7 @@ _CALLREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=1060,
-  serialized_end=1200,
+  serialized_end=1199,
 )
 
 
@@ -930,8 +930,8 @@ _CALLRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1202,
-  serialized_end=1232,
+  serialized_start=1201,
+  serialized_end=1231,
 )
 
 
@@ -997,8 +997,8 @@ _ESTIMATEGASREQ = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1234,
-  serialized_end=1352,
+  serialized_start=1233,
+  serialized_end=1351,
 )
 
 
@@ -1029,8 +1029,8 @@ _ESTIMATEGASRESP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1354,
-  serialized_end=1387,
+  serialized_start=1353,
+  serialized_end=1386,
 )
 
 
@@ -1061,8 +1061,8 @@ _GANACHEACCREQ = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1389,
-  serialized_end=1423,
+  serialized_start=1388,
+  serialized_end=1422,
 )
 
 
@@ -1100,8 +1100,8 @@ _GANACHEACCRSP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1425,
-  serialized_end=1475,
+  serialized_start=1424,
+  serialized_end=1474,
 )
 
 _INFOWITHINDEX.fields_by_name['req'].message_type = _HASHSTRINGORNUMBER
@@ -1341,8 +1341,8 @@ _PROTOETHSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1478,
-  serialized_end=2519,
+  serialized_start=1477,
+  serialized_end=2513,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetBalance',
@@ -1415,8 +1415,8 @@ _PROTOETHSERVICE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='ContractCall',
-    full_name='protoeth.ProtoEthService.ContractCall',
+    name='EthCall',
+    full_name='protoeth.ProtoEthService.EthCall',
     index=7,
     containing_service=None,
     input_type=_CALLREQUEST,

@@ -5,13 +5,13 @@ networks:
     url: "http://127.0.0.1:8545"
   main:
     id: 1
-    url: "http://networks.ethco.de/light"
+    url: "http://networks.ethcode.dev/light"
   ropsten:
     id: 3
-    url: "http://networks.ethco.de/ropsten"
+    url: "http://networks.ethcode.dev/ropsten"
   rinkeby:
     id: 4
-    url: "http://networks.ethco.de/rinkeby"
+    url: "http://networks.ethcode.dev/rinkeby"
   görli:
     id: 5
-    url: "http://networks.ethco.de/goerli"
+    url: "http://networks.ethcode.dev/goerli"

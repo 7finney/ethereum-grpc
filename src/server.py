@@ -108,8 +108,8 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                 else:
                     params = None
                 contractAddress = Web3.toChecksumAddress(request.address)
-                fromAddress = Web3.toChecksumAddress(request.fromAddress)
-                gasSupply = request.gasSupply or 0
+                fromAddress = Web3.toChecksumAddress(request.fromaddress)
+                gasSupply = request.gas or 0
                 value = request.value or 0
                 # create contract instance
                 Contract = web3.eth.contract(address=contractAddress, abi=abi)
@@ -124,7 +124,6 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                                 estimatedGas = web3.eth.estimateGas(transaction)
                                 transaction['gas'] = estimatedGas
                             except Exception as e:
-                                print(e)
                                 transaction['gas'] = gasSupply
                             # assign transaction as call result
                             callResult = transaction
@@ -132,8 +131,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                         else:
                             callResult = method_to_call(*self.unpackParams(params)).call()
                             break
-                print(Web3.toJSON(callResult))
-                return Web3.toJSON(callResult)
+                return callResult
             except Exception as e:
                 raise Exception(e)
         if(method == 'estimate_gas'):
@@ -257,7 +255,7 @@ class ProtoEth(ethereum_pb2_grpc.ProtoEthServiceServicer):
                     details=[detail]
                 )
                 context.abort_with_status(rpc_status.to_status(rich_status))
-    def ContractCall(self, request, context):
+    def EthCall(self, request, context):
         with futures.ProcessPoolExecutor(max_workers=1) as executor:
             task = executor.submit(self.web3Task, request, 'eth_call')
             try:

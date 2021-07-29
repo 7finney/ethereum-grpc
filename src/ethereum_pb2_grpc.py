@@ -50,8 +50,8 @@ class ProtoEthServiceStub(object):
                 request_serializer=ethereum__pb2.TxHashReq.SerializeToString,
                 response_deserializer=ethereum__pb2.TransactionInfo.FromString,
                 )
-        self.ContractCall = channel.unary_unary(
-                '/protoeth.ProtoEthService/ContractCall',
+        self.EthCall = channel.unary_unary(
+                '/protoeth.ProtoEthService/EthCall',
                 request_serializer=ethereum__pb2.CallRequest.SerializeToString,
                 response_deserializer=ethereum__pb2.CallResponse.FromString,
                 )
@@ -138,7 +138,7 @@ class ProtoEthServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ContractCall(self, request, context):
+    def EthCall(self, request, context):
         """Doing
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -226,8 +226,8 @@ def add_ProtoEthServiceServicer_to_server(servicer, server):
                     request_deserializer=ethereum__pb2.TxHashReq.FromString,
                     response_serializer=ethereum__pb2.TransactionInfo.SerializeToString,
             ),
-            'ContractCall': grpc.unary_unary_rpc_method_handler(
-                    servicer.ContractCall,
+            'EthCall': grpc.unary_unary_rpc_method_handler(
+                    servicer.EthCall,
                     request_deserializer=ethereum__pb2.CallRequest.FromString,
                     response_serializer=ethereum__pb2.CallResponse.SerializeToString,
             ),
@@ -396,7 +396,7 @@ class ProtoEthService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def ContractCall(request,
+    def EthCall(request,
             target,
             options=(),
             channel_credentials=None,
@@ -406,7 +406,7 @@ class ProtoEthService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protoeth.ProtoEthService/ContractCall',
+        return grpc.experimental.unary_unary(request, target, '/protoeth.ProtoEthService/EthCall',
             ethereum__pb2.CallRequest.SerializeToString,
             ethereum__pb2.CallResponse.FromString,
             options, channel_credentials,
